@@ -1,0 +1,194 @@
+# 💼 갓생루팅
+
+
+<div className="lg:hidden p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8 mt-8 text-sm">
+  <p className="font-bold mb-2 text-gray-700">목차 바로가기</p>
+  <ul className="list-none p-0 m-0 ">
+    <li>
+      <a href="#-모임-통장-관리-서비스--갓생루팅" className="text-blue-600 hover:underline no-underline">
+        🏦 프로젝트 개요
+      </a>
+    </li>
+    <li>
+      <a href="#-주요-문제-해결-사례" className="text-blue-600 hover:underline no-underline">
+        🧩 주요 문제 해결 사례
+      </a>
+    </li>
+    <li className="pl-3 text-xs">
+      <a href="#문제-1-이체-시-중복-처리-및-데이터-충돌-발생" className="text-gray-500 hover:text-gray-700 no-underline">
+        └ 문제 1: 이체 시 중복 처리
+      </a>
+    </li>
+    <li className="pl-3 text-xs">
+      <a href="#문제-2--잔액-업데이트-동시성-충돌" className="text-gray-500 hover:text-gray-700 no-underline">
+        └ 문제 2: 잔액 업데이트 동시성
+      </a>
+    </li>
+    <li className="pl-3 text-xs">
+      <a href="#문제-3-이체-중-오류-발생-시-잔액-불일치-문제" className="text-gray-500 hover:text-gray-700 no-underline">
+        └ 문제 3: 이체 중 오류 발생
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+
+### 🏦 모임 통장 관리 서비스 – “갓생루팅”
+<div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px', marginTop: '20px'}}>
+  <span style={{ backgroundColor: '#e0f2fe', color: '#0369a1', padding: '4px 8px', borderRadius: '4px', fontSize: '0.9rem' }}>📅 2024.09 ~ 2024.10</span>
+  <span style={{ backgroundColor: '#f3e8ff', color: '#7e22ce', padding: '4px 8px', borderRadius: '4px', fontSize: '0.9rem' }}>👥 6명</span>
+  <span style={{ backgroundColor: '#dcfce7', color: '#15803d', padding: '4px 8px', borderRadius: '4px', fontSize: '0.9rem' }}>🛠 Spring Boot, Kafka, Redis</span>
+</div>
+
+**프로젝트 개요**
+
+모임 내 미션 수행 결과에 따라 **벌금과 상금을 자동으로 정산하는 웹 서비스**입니다.  
+모임원은 GPS/사진 인증으로 미션을 수행하고, 결과에 따라 벌금을 내거나 상금을 받습니다.
+
+**핵심 목표**
+- 데이터 일관성 유지
+- 동시성 문제 없는 정산 시스템 구축
+
+**⚙️ 시스템 구성**
+
+- **Spring Boot** 기반 REST API 서버
+- **MySQL + Redis** 로 데이터 정합성 및 캐시 처리
+- **Kafka** 로 알림과 로그를 비동기 이벤트로 처리
+- **Jenkins + Docker** 로 CI/CD 자동화 구축
+- **JWT + HttpOnly 쿠키** 기반 인증 구조
+
+**📌 주요 구현 기능**
+
+- Kafka 기반 알람 메시징 큐 설계로 **알람 누락률 10% → 1%** 개선
+- Redis 분산 락을 활용하여 **벌금 통장 트랜잭션 일관성 보장**
+- Jenkins CI/CD 파이프라인 구축으로 **PR 머지 → 자동 빌드 및 배포**
+
+**🚀 배운 점**
+
+- 메시지 큐를 통한 비동기 처리의 중요성
+- 트랜잭션 처리와 장애 대응 설계의 실제 감각 습득
+
+---
+
+### 🧩 **주요 문제 해결 사례**
+
+---
+
+### **문제 1: 이체 시 중복 처리 및 데이터 충돌 발생**
+
+**상황**
+
+이체시 하나의 사용자가 빠르게 버튼을 여러 번 누를 때, 정산하기 요청이 여러 번 가는 경우가 있어서 하나의 이체 요청에 대해 중복 트랜잭션이 생성되는 문제가 있었습니다. 이로 인해 사용자가 원하지 않는 이체가 발생하거나, 오류가 발생하는 경우가 있었습니다.
+
+**선택지**
+
+| **선택지** | **장점** | **단점** |
+| --- | --- | --- |
+| **1. 프론트엔드에서 요청 제한** | 단순하고, 요청이 두 번 들어올 경우를 원천차단 | 타 클라이언트 확장시 같은 문제 발생할 수 있음 |
+| **2. 거래 고유 ID(ref_id) + Unique 제약조건** | 멱등성 보장 | 예외 처리 필요 |
+| **3. 레디스 캐시 키로 요청 추적** | 빠름 | TTL 설정 관리 필요 |
+
+**판단 근거**
+
+일단 요청 그 자체가 여러 번 오는 경우를 최소화 하기 위해서 1번은 우선적으로 적용하고 이체 트랜잭션에서 중요한 것은 데이터의 신뢰성이라고 생각하여 가장 안정적인 DB단에서 제약을 걸어서 체크하는 방식으로 중복을 방지하였습니다.
+
+**해결 방법**
+
+- 클라이언트 요청마다  UUID 기반 ref_id 생성
+- 동일 ref_id 재요청 시, “이미 처리된 요청입니다.”를 최종적으로 반환
+
+**결과**
+
+- 중복 이체 0건
+- 네트워크 재전송 상황에서도 안정적인 처리
+
+### **문제 2 : 잔액 업데이트 동시성 충돌**
+
+**상황**
+
+다른 사용자의 이체와 동시에 같은 계좌에 접근하면 잔액 계산이 꼬이는 경우가 발생하였습니다.
+
+| 선택지 | 장점 | 단점 |
+| --- | --- | --- |
+| **1. 낙관적 락 (Optimistic Lock)** | 성능 우수, 락 경합 없음 | 충돌 시 재시도 필요 |
+| **2. 비관적 락 (Pessimistic Lock)** | 완벽한 일관성 보장 | 락 대기시간 증가 |
+| **3. Redis 분산락** | 확장성 좋음 | 인프라 관리 부담 |
+
+**판단 근거**
+
+서비스 트래픽이 낮고 단일 인스턴스 환경이었기 때문에
+
+**② 비관적 락(PESSIMISTIC_WRITE)** 을 적용했습니다.
+
+동시에 하나의 계좌에 접근하는 요청은 대기시켜 일관성 확보.
+
+**해결 방법**
+
+```java
+@Lock(LockModeType.PESSIMISTIC_WRITE)
+Account findByIdForUpdate(Long id);
+```
+
+**결과**
+
+- 동시 이체 요청 50건 테스트에서도 정확한 최종 잔액 유지
+- 평균 이체 처리시간 1.0s → 1.3s (일부 증가했으나 안정성 확보)
+
+### **문제 3: 이체 중 오류 발생 시 잔액 불일치 문제**
+
+**상황**
+
+벌금 납부나 상금 배분 과정에서,
+
+한 사용자의 잔액 차감이 성공하고 다른 사용자의 입금이 실패하면
+
+**총 계좌합(balance sum)** 이 맞지 않는 불일치 문제가 생겼습니다.
+
+**선택지**
+
+| 선택지 | 장점 | 단점 |
+| --- | --- | --- |
+| **① 단순 두 번의 DB UPDATE** | 구현 간단 | 원자성 보장 불가 (한쪽만 성공 가능) |
+| **② Spring @Transactional (단일 트랜잭션)** | 원자성 보장 | 서비스 계층 복잡도 증가 |
+| **③ SAGA 패턴 (보상 트랜잭션)** | 분산 트랜잭션 대체 가능 | 구현 복잡, 서비스 규모 대비 과함 |
+
+**판단 근거**
+
+서비스가 단일 DB 내에서 동작했기 때문에
+
+**② @Transactional 기반의 단일 트랜잭션**이 가장 적절했습니다.
+
+단, 트랜잭션 안에서 예외 발생 시 보상 로직을 구현하여,
+
+모든 이체가 실패 시 이전 상태로 완전히 복구되도록 설계했습니다.
+
+**해결 방법**
+
+```java
+@Transactional
+public void transfer(Long fromId, Long toId, BigDecimal amount) {
+    Account from = accountRepository.findById(fromId)
+        .orElseThrow(() -> new AccountNotFoundException());
+    Account to = accountRepository.findById(toId)
+        .orElseThrow(() -> new AccountNotFoundException());
+
+    if (from.getBalance().compareTo(amount) < 0) {
+        throw new InsufficientBalanceException();
+    }
+
+    from.withdraw(amount);
+    to.deposit(amount);
+
+    transactionRepository.save(new Transaction(from, to, amount, LocalDateTime.now()));
+}
+
+```
+
+**결과**
+
+- 이체 중 예외 발생 시 모든 변경 자동 롤백
+- 테스트 케이스 100회 중 데이터 불일치 0건
+- 전체 이체 트랜잭션 평균 처리시간 0.9s
+
+---

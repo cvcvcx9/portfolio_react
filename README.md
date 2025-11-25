@@ -51,7 +51,7 @@ vercel
 ## 연락처
 
 - **GitHub**: [cvcvcx9](https://github.com/cvcvcx9)
-- **Email**: cho.changhun@example.com
+- **Email**: cvcvcx9@gmail.com
 
 ---
 

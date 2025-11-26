@@ -53,7 +53,7 @@ export default async function RootLayout({ children }) {
         <Layout
           navbar={navbar}
           pageMap={await getPageMap()}
-          docsRepositoryBase="https://github.com/shuding/nextra/tree/main/docs"
+          docsRepositoryBase="https://github.com/cvcvcx9/portfolio_react/master"
           footer={footer}
           // ... Your additional layout options
         >

@@ -1,5 +1,4 @@
-# 💼 갓생루팅
-
+# 🏦 모임 벌금 통장 서비스
 
 <div className="lg:hidden p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8 mt-8 text-sm">
   <p className="font-bold mb-2 text-gray-700">목차 바로가기</p>
@@ -41,39 +40,73 @@
   <span style={{ backgroundColor: '#dcfce7', color: '#15803d', padding: '4px 8px', borderRadius: '4px', fontSize: '0.9rem' }}>🛠 Spring Boot, Kafka, Redis</span>
 </div>
 
-**프로젝트 개요**
+## 1) 프로젝트 개요
 
-모임 내 미션 수행 결과에 따라 **벌금과 상금을 자동으로 정산하는 웹 서비스**입니다.  
-모임원은 GPS/사진 인증으로 미션을 수행하고, 결과에 따라 벌금을 내거나 상금을 받습니다.
-
-**핵심 목표**
-- 데이터 일관성 유지
-- 동시성 문제 없는 정산 시스템 구축
-
-**⚙️ 시스템 구성**
-
-- **Spring Boot** 기반 REST API 서버
-- **MySQL + Redis** 로 데이터 정합성 및 캐시 처리
-- **Kafka** 로 알림과 로그를 비동기 이벤트로 처리
-- **Jenkins + Docker** 로 CI/CD 자동화 구축
-- **JWT + HttpOnly 쿠키** 기반 인증 구조
-
-**📌 주요 구현 기능**
-
-- Kafka 기반 알람 메시징 큐 설계로 **알람 누락률 10% → 1%** 개선
-- Redis 분산 락을 활용하여 **벌금 통장 트랜잭션 일관성 보장**
-- Jenkins CI/CD 파이프라인 구축으로 **PR 머지 → 자동 빌드 및 배포**
-
-**🚀 배운 점**
-
-- 메시지 큐를 통한 비동기 처리의 중요성
-- 트랜잭션 처리와 장애 대응 설계의 실제 감각 습득
+- 목표: 모임 구성원의 미션 수행을 기반으로 벌금·상금이 자동 정산되는 **금융형 협업 서비스** 백엔드 구축
+- 핵심 가치: **정확한 정산(ACID)** · **중복 없는 이벤트 처리(idempotency)** · **안전한 인증/인가(HTTP-Only Cookie, JWT)**
+- 프론트 요구사항 요약(연동):
+    - GPS/사진 기반 미션 판별
+    - 카카오톡 초대(링크) & 카카오맵 위치 표시
+    - 팀별 배팅 → 결과 반영 → 자동 정산/캘린더/갤러리
 
 ---
 
-### 🧩 **주요 문제 해결 사례**
+## 2) 아키텍처 개요
+
+- **기술 스택:**
+    
+    Spring Boot · Java · MySQL · Redis(분산락/캐시) · Kafka(비동기 이벤트) · Docker · Jenkins
+    
+    (배포: AWS EC2, Nginx 리버스 프록시)
+    
+
+```
+[Client(Web/App)]
+   │ REST API
+   ▼
+[Spring Boot Backend]
+   ├─ Auth Service (JWT/쿠키)
+   ├─ Mission Service (GPS/사진 메타)
+   ├─ Betting Service (배팅/정산 대기)
+   ├─ Settlement Service (정산/원장)
+   ├─ Notification Service (Kafka 이벤트)
+   └─ Media Service (S3 업로드/처리)
+```
+### ERD
+
+    ![image.png](/images/godLifeRouting/GodLifeRoutine%20v2.png)
 
 ---
+
+## 3) 핵심 시퀀스 설계
+
+**A. 초대 및 가입**
+
+1. 백엔드 → 초대 토큰 생성 (`invitations.token`)
+2. 카카오톡 링크로 전달
+3. 신규 사용자가 링크 클릭 → 회원가입 & 그룹 등록
+
+**B. 미션 판별**
+
+1. 미션 생성 (`missions`)
+2. 사용자가 GPS/사진 업로드 → 서버 저장 → `mission_proofs` 생성
+3. 관리자 검증 또는 자동 검증 → `verified='Y'`
+
+**C. 배팅**
+
+- 사용자들이 특정 팀원의 미션 성공/실패에 베팅 (`bets`)
+- 마감 시점까지 수정 가능
+
+**D. 정산**
+
+1. 정산 트리거 (스케줄러/관리자 실행)
+2. **Redis 분산락**으로 중복 실행 방지
+3. `transactions` 삽입 → `accounts.balance` 업데이트
+4. `settlements` 에 요약 저장
+
+---
+
+## 5) 문제 및 해결 방법
 
 ### **문제 1: 이체 시 중복 처리 및 데이터 충돌 발생**
 
@@ -115,7 +148,7 @@
 | **2. 비관적 락 (Pessimistic Lock)** | 완벽한 일관성 보장 | 락 대기시간 증가 |
 | **3. Redis 분산락** | 확장성 좋음 | 인프라 관리 부담 |
 
-**판단 근거**
+### 판단 근거
 
 서비스 트래픽이 낮고 단일 인스턴스 환경이었기 때문에
 
@@ -123,21 +156,21 @@
 
 동시에 하나의 계좌에 접근하는 요청은 대기시켜 일관성 확보.
 
-**해결 방법**
+### 해결 방법
 
 ```java
 @Lock(LockModeType.PESSIMISTIC_WRITE)
 Account findByIdForUpdate(Long id);
 ```
 
-**결과**
+### 결과
 
 - 동시 이체 요청 50건 테스트에서도 정확한 최종 잔액 유지
 - 평균 이체 처리시간 1.0s → 1.3s (일부 증가했으나 안정성 확보)
 
-### **문제 3: 이체 중 오류 발생 시 잔액 불일치 문제**
+### 문제 3: 이체 중 오류 발생 시 잔액 불일치 문제
 
-**상황**
+### 상황
 
 벌금 납부나 상금 배분 과정에서,
 
@@ -145,7 +178,7 @@ Account findByIdForUpdate(Long id);
 
 **총 계좌합(balance sum)** 이 맞지 않는 불일치 문제가 생겼습니다.
 
-**선택지**
+### 선택지
 
 | 선택지 | 장점 | 단점 |
 | --- | --- | --- |
@@ -153,7 +186,7 @@ Account findByIdForUpdate(Long id);
 | **② Spring @Transactional (단일 트랜잭션)** | 원자성 보장 | 서비스 계층 복잡도 증가 |
 | **③ SAGA 패턴 (보상 트랜잭션)** | 분산 트랜잭션 대체 가능 | 구현 복잡, 서비스 규모 대비 과함 |
 
-**판단 근거**
+### 판단 근거
 
 서비스가 단일 DB 내에서 동작했기 때문에
 
@@ -163,7 +196,7 @@ Account findByIdForUpdate(Long id);
 
 모든 이체가 실패 시 이전 상태로 완전히 복구되도록 설계했습니다.
 
-**해결 방법**
+### 해결 방법
 
 ```java
 @Transactional
@@ -185,10 +218,64 @@ public void transfer(Long fromId, Long toId, BigDecimal amount) {
 
 ```
 
-**결과**
+### 결과
 
 - 이체 중 예외 발생 시 모든 변경 자동 롤백
 - 테스트 케이스 100회 중 데이터 불일치 0건
 - 전체 이체 트랜잭션 평균 처리시간 0.9s
 
 ---
+
+## 5) 인증 및 보안
+
+- **인증:** JWT + HttpOnly Secure Cookie
+- **인가:** 그룹/미션 접근 시 권한(ROLE) 기반 접근
+- **입력 검증:**  @Value 어노테이션을 사용한 DTO 단위 입력검증
+- **비밀관리:** Jenkins Credential, .env 파일 분리
+
+---
+
+## 6) 성능 및 모니터링
+
+- **캐싱:** Redis로 그룹/미션 캐시 (TTL 5~15분)
+- **비동기 처리:** 이미지 리사이징 비동기화 → 응답속도 2.0s → 0.5s
+- **테스트:** JUnit5 + Testcontainers(MySQL/Redis)
+- **로깅:** JSON 구조화 로그 + Grafana/프로메테우스대시보드
+
+---
+
+## 7) CI/CD 및 배포
+
+- **Jenkins 파이프라인**
+    - GitHub PR → 빌드/테스트 → Docker 이미지 → 배포 자동화
+- **운영 환경**
+    - AWS EC2 + Nginx (HTTPS)
+- **롤백**
+    - Docker 이미지 태그 단위 재배포 스크립트 준비
+
+---
+
+## 8) 결과 및 성과
+
+- 정산 중복 실행 0건 (락/멱등키)
+- 알림 이벤트 누락률 90% 이상 감소 (Kafka)
+- 보안 강화: JWT + HttpOnly 쿠키로 토큰 탈취 방지
+- 주요 기능(API/정산/배팅) 100% 구현 완료
+
+### 9) 프로젝트 이미지
+
+- 미션수행 - 운동하기(장소미션)
+    
+    ![image.png](/images/godLifeRouting/image%201.png)
+    
+- 미션수행 - 물건촬영
+
+![image.png](/images/godLifeRouting/image%202.png)
+
+- 베팅하기 - 팀원의 미션 수행 여부를 놓고 배팅
+
+![image.png](/images/godLifeRouting/image%203.png)
+
+- 정산 및 캘린더와 갤러리 - 미션 결과를 캘린더와 갤러리에서 확인 및 정산에서 낸 벌금 확인가능
+
+![image.png](/images/godLifeRouting/image%204.png)

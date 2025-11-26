@@ -1,7 +1,4 @@
 export default {
-    projects: {
-        title:"프로젝트 목록"
-    },
     kingOfChoice: {
         title:"선택의 왕"
     },

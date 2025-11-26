@@ -1,12 +1,22 @@
-﻿# 안녕하세요, 백엔드 개발자 조창훈입니다.
+﻿import Image from 'next/image'
+
+# 안녕하세요, 백엔드 개발자 조창훈입니다.
 
 ## 👋 About Me
-<div className='mt-2 flex'>
-<div>
-    > 안녕하세요 JAVA 개발자 조창훈입니다.<br/>
-    사용자 경험과 서비스 신뢰성을 우선하는 백엔드 개발자가 되기 위해 “데이터 무결성”, “트랜잭션 일관성”, “비동기 처리 안정성”을 핵심 가치로 두고 코드를 짜고 있습니다.
-</div>
-<img src='https://assets.cvcvcx9.org/images/조창훈_증명사진.jpg' width={160}></img>
+<div className="mt-2 flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:flex-nowrap">
+  <div className="order-2 w-full sm:order-1">
+      > 안녕하세요 JAVA 개발자 조창훈입니다.<br/>
+      사용자 경험과 서비스 신뢰성을 우선하는 백엔드 개발자가 되기 위해 “데이터 무결성”, “트랜잭션 일관성”, “비동기 처리 안정성”을 핵심 가치로 두고 코드를 짜고 있습니다.
+  </div>
+  <div className="relative order-1 aspect-[3/4] w-[35vw] min-w-[140px] max-w-[150px] overflow-hidden rounded-[12px] shadow-lg dark:shadow-[0_8px_20px_rgba(0,0,0,0.35)] sm:order-2 sm:mx-0">
+    <Image
+      src="https://assets.cvcvcx9.org/images/조창훈_증명사진.jpg"
+      alt="조창훈 증명사진"
+      fill
+      sizes="(max-width: 640px) 40vw, 150px"
+      className="object-cover"
+    />
+  </div>
 </div>
 ## 📜 자격증 및 교육, 수상내역
 ### 교육내역
@@ -33,6 +43,35 @@
 | Monitoring | Grafana, Prometheus, 로그 추적 |
 | Collaboration | Git Flow, PR 리뷰, Swagger, Jira/Notion |
 
-## 💼 대표 프로젝트 하이라이트
-- [갓생루팅](/keyProjects/godLifeRouting): 벌금/정산 서비스. ref_id+unique+비관적 락으로 중복 결제 0%, Kafka/Redis로 경합 상황에서 일관성 유지, Jenkins CI/CD 자동화.
-- [MSA 사이드 프로젝트](/keyProjects/userEventDashboard): Spring Cloud(Eureka/Config/Gateway/Feign)로 서비스 분리, Docker로 로컬 멀티 서비스 구동, 모니터링/배운 점 기록.
+## 💼 대표 프로젝트
+<div className="project-grid project-grid--wide">
+  <a className="project-card" href="/keyProjects/godLifeRouting">
+    <div className="project-card__title">🏦 모임 벌금 통장 서비스</div>
+    <p className="project-card__body">ref_id+Unique 제약으로 중복 결제 0%, Redis 분산락과 Kafka로 동시성·알림 안정화, Jenkins CI/CD 자동화.</p>
+    <div className="project-card__meta">2024.09~10 · 6명 · Spring Boot · MySQL · Redis · Kafka</div>
+  </a>
+  <a className="project-card project-card--compact" href="/projects/kingOfChoice">
+    <div className="project-card__title">🎬 선택의왕</div>
+    <p className="project-card__body">사용자 선호 기반 OTT 추천, Django+Vue로 추천 도메인과 외부 API 연동 구현.</p>
+    <div className="project-card__meta">2024.05 · Django · Vue · REST API</div>
+  </a>
+  <a className="project-card" href="/keyProjects/userEventDashboard">
+    <div className="project-card__title">📊 웹 사용자 행동 분석 대시보드</div>
+    <p className="project-card__body">Kotlin, MongoDB, 사용자 페이지 이벤트를 집계하여 시각적으로 보여주는 프로젝트</p>
+    <div className="project-card__meta">2025.11~ (설계·진행 중) · Spring Cloud · MongoDB · Kafka</div>
+  </a>
+</div>
+
+## 📂 프로젝트 목록
+<div className="project-grid project-grid--compact">
+  <a className="project-card project-card--compact" href="/projects/kkatnyang">
+    <div className="project-card__title">🔔 깻냥</div>
+    <p className="project-card__body">카카오 알림 기반 미션 벌금/리워드 자동 정산, Redis 캐시와 스케줄러로 지연·중복 최소화.</p>
+    <div className="project-card__meta">2024.06~07 Spring Boot · Redis · Kakao API</div>
+  </a>
+  <a className="project-card project-card--compact" href="/projects/sonnuri">
+    <div className="project-card__title">🤟 손누리</div>
+    <p className="project-card__body">수어 번역 서비스-크롬익스텐션기반 한국 경제 용어를 수어 영상으로 번역하는 서비스</p>
+    <div className="project-card__meta">2024.10~11 · Python · ChatGPT · KIWI · RIFE AI · MongoDB </div>
+  </a>
+</div>

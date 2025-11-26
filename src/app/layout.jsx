@@ -22,6 +22,11 @@ export const metadata = {
     card: '/images/조창훈_증명사진.jpg',
     title: '조창훈 포트폴리오',
     description: 'Java/Spring Boot 백엔드 포트폴리오'
+  },
+   icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png'
   }
 }
 

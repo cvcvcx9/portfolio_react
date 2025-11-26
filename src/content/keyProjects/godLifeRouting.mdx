@@ -1,43 +1,22 @@
 # 🏦 모임 벌금 통장 서비스
 
-<div className="lg:hidden p-4 border border-gray-200 rounded-lg bg-gray-50 mb-8 mt-8 text-sm">
-  <p className="font-bold mb-2 text-gray-700">목차 바로가기</p>
-  <ul className="list-none p-0 m-0 ">
-    <li>
-      <a href="#-모임-통장-관리-서비스--갓생루팅" className="text-blue-600 hover:underline no-underline">
-        🏦 프로젝트 개요
-      </a>
-    </li>
-    <li>
-      <a href="#-주요-문제-해결-사례" className="text-blue-600 hover:underline no-underline">
-        🧩 주요 문제 해결 사례
-      </a>
-    </li>
-    <li className="pl-3 text-xs">
-      <a href="#문제-1-이체-시-중복-처리-및-데이터-충돌-발생" className="text-gray-500 hover:text-gray-700 no-underline">
-        └ 문제 1: 이체 시 중복 처리
-      </a>
-    </li>
-    <li className="pl-3 text-xs">
-      <a href="#문제-2--잔액-업데이트-동시성-충돌" className="text-gray-500 hover:text-gray-700 no-underline">
-        └ 문제 2: 잔액 업데이트 동시성
-      </a>
-    </li>
-    <li className="pl-3 text-xs">
-      <a href="#문제-3-이체-중-오류-발생-시-잔액-불일치-문제" className="text-gray-500 hover:text-gray-700 no-underline">
-        └ 문제 3: 이체 중 오류 발생
-      </a>
-    </li>
+<div className="lg:hidden mb-6 mt-6 rounded-lg border border-slate-200 bg-slate-50 p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+  <p className="mb-2 font-bold">목차 바로가기</p>
+  <ul className="space-y-1 text-[15px]">
+    <li><a className="text-blue-600 no-underline hover:underline dark:text-blue-300" href="#-모임-통장-관리-서비스--갓생루팅">🏦 프로젝트 개요</a></li>
+    <li><a className="text-blue-600 no-underline hover:underline dark:text-blue-300" href="#-주요-문제-해결-사례">🧩 주요 문제 해결 사례</a></li>
+    <li className="pl-3 text-xs"><a className="text-slate-500 no-underline hover:text-slate-700 dark:text-slate-300 dark:hover:text-slate-100" href="#문제-1-이체-시-중복-처리-및-데이터-충돌-발생">└ 문제 1: 이체 시 중복 처리</a></li>
+    <li className="pl-3 text-xs"><a className="text-slate-500 no-underline hover:text-slate-700 dark:text-slate-300 dark:hover:text-slate-100" href="#문제-2--잔액-업데이트-동시성-충돌">└ 문제 2: 잔액 업데이트 동시성</a></li>
+    <li className="pl-3 text-xs"><a className="text-slate-500 no-underline hover:text-slate-700 dark:text-slate-300 dark:hover:text-slate-100" href="#문제-3-이체-중-오류-발생-시-잔액-불일치-문제">└ 문제 3: 이체 중 오류 발생</a></li>
   </ul>
 </div>
 
-
-
 ### 🏦 모임 통장 관리 서비스 – “갓생루팅”
-<div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px', marginTop: '20px'}}>
-  <span style={{ backgroundColor: '#e0f2fe', color: '#0369a1', padding: '4px 8px', borderRadius: '4px', fontSize: '0.9rem' }}>📅 2024.09 ~ 2024.10</span>
-  <span style={{ backgroundColor: '#f3e8ff', color: '#7e22ce', padding: '4px 8px', borderRadius: '4px', fontSize: '0.9rem' }}>👥 6명</span>
-  <span style={{ backgroundColor: '#dcfce7', color: '#15803d', padding: '4px 8px', borderRadius: '4px', fontSize: '0.9rem' }}>🛠 Spring Boot, Kafka, Redis</span>
+
+<div className="mt-3 flex flex-wrap items-center gap-2">
+  <span className="inline-flex items-center rounded-md border border-sky-100 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-800 dark:border-sky-900 dark:bg-sky-900/40 dark:text-sky-100">📅 2024.09 ~ 2024.10</span>
+  <span className="inline-flex items-center rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-sm font-medium text-violet-800 dark:border-violet-900 dark:bg-violet-900/40 dark:text-violet-100">👥 6명</span>
+  <span className="inline-flex items-center rounded-md border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-800 dark:border-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-100">🛠 Spring Boot, Kafka, Redis</span>
 </div>
 
 ## 1) 프로젝트 개요

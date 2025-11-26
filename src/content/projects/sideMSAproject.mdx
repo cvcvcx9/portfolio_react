@@ -1,0 +1,125 @@
+# 🧏‍♂️ MSA 사이드 프로젝트(SIDE PROJECT)
+
+<div className="lg:hidden mb-6 mt-6 rounded-lg border border-slate-200 bg-slate-50 p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+  <p className="mb-2 font-bold">목차 바로가기</p>
+  <ul className="space-y-1 text-[15px]">
+    <li><a className="text-blue-600 no-underline hover:underline dark:text-blue-300" href="#-프로젝트-개요">🎯 프로젝트 개요</a></li>
+    <li><a className="text-blue-600 no-underline hover:underline dark:text-blue-300" href="#-기술-스택">🛠 기술 스택</a></li>
+    <li><a className="text-blue-600 no-underline hover:underline dark:text-blue-300" href="#-구현-내용-및-학습-포인트">⚙️ 구현 내용/학습 포인트</a></li>
+  </ul>
+</div>
+
+<div className="mt-3 flex flex-wrap items-center gap-2">
+  <span className="inline-flex items-center rounded-md border border-sky-100 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-800 dark:border-sky-900 dark:bg-sky-900/40 dark:text-sky-100">📅 2025.07 ~ 2025.08</span>
+  <span className="inline-flex items-center rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-sm font-medium text-violet-800 dark:border-violet-900 dark:bg-violet-900/40 dark:text-violet-100">👥 1명</span>
+  <span className="inline-flex items-center rounded-md border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-800 dark:border-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-100">🛠 Spring Boot · Spring Cloud · Eureka · Config · OpenFeign · Kafka · Docker</span>
+  <span className="inline-flex items-center rounded-md border border-amber-100 bg-amber-50 px-3 py-1 text-sm font-medium text-amber-800 dark:border-amber-900 dark:bg-amber-900/40 dark:text-amber-100">🎯 서비스 분리/통신 설계</span>
+</div>
+
+## 🎯 프로젝트 개요
+
+단일 서버 구조를 **서비스별로 분리하고 통신하는 MSA** 구조로 전환하는 개인 사이드 프로젝트입니다. Spring Cloud 핵심 컴포넌트(Eureka, Config, Gateway, Feign)를 연동하고 Docker로 멀티 서비스를 함께 구동하도록 구성했습니다.
+
+## 🛠 기술 스택
+
+- Spring Boot, Spring Cloud (Eureka, Config, Gateway, OpenFeign)
+- Kafka, Docker, WSL, Actuator
+
+## 🧩 구현 내용 및 학습 포인트
+
+### 1. 서비스 디스커버리 (Eureka)
+
+- 각 마이크로서비스가 Eureka 서버에 자동 등록되도록 설정.
+- 서비스 간 IP를 고정하지 않아도 자동 탐색 가능함을 확인.
+- `EUREKA_CLIENT`가 서버 상태를 주기적으로 갱신하며 장애 감지 동작을 실습함.
+
+```yaml
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+```
+
+ **학습 포인트:**
+
+수동 IP 연결이 필요 없는 **서비스 자동 탐색 구조의 원리**를 이해.
+
+---
+
+### 2. 중앙 설정 관리 (Config Server)
+
+- Config Server를 통해 각 서비스의 yml 파일을 중앙 Git 저장소에서 불러옴.
+- 서비스별 설정이 변경되어도, Config 서버의 저장소만 수정하면 됨.
+- 환경 변수(GIT_USERNAME, CONFIG_ENCRYPTION_KEY)를 사용해 보안값 관리 실습.
+
+```bash
+set GIT_USERNAME=your_github_username # 보안을 위해 임시 작성해놓은 유저네임
+set CONFIG_ENCRYPTION_KEY=my-super-secret-key
+```
+
+ **학습 포인트:**
+
+실제 운영 환경처럼 **중앙 설정 관리와 보안 분리의 개념**을 체득.
+
+---
+
+### 3. API Gateway 라우팅
+
+- 외부 요청이 `http://localhost:8080/user-service/**` 로 들어오면
+    
+    내부적으로 User-Service로 라우팅되도록 설정.
+    
+- 라우팅, 필터, 경로 리라이트 등 기본적인 Gateway 설정을 실습.
+
+```yaml
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: http://localhost:8081/
+          predicates:
+            - Path=/user-service/**
+
+```
+
+ 
+
+**학습 포인트:**
+
+**API 게이트웨이의 역할**(보안, 트래픽 제어, 라우팅)과 라우팅 설정의 기본 원리를 이해.
+
+---
+
+### 4. 서비스 간 통신 (Feign Client)
+
+- `auth-service`와 `user-service` 간 통신을 Feign Client로 구현.
+- RESTTemplate을 대체하여, 인터페이스 기반 통신 구조를 경험.
+
+```java
+@FeignClient(name = "auth-service")
+public interface AuthClient {
+    @GetMapping("/auth/validate")
+    String validate(@RequestParam String token);
+}
+
+```
+
+ **학습 포인트:**
+
+Feign이 내부적으로 HttpClient를 래핑하여 **간결한 서비스 간 호출 구조**를 만든다는 점을 이해.
+
+**📌 주요 기능**
+
+- 스프링 cloud를 사용한 msa 서비스
+- 유저, 기능, api 서버를 분리하고 FeignClient를 이용함으로써 각 msa간의 통신을 구현
+
+**🚀 배운 점**
+
+- msa 아키텍쳐의 설계방법
+- FeignClient를 사용하는 방식과 Config Server의 운영방법
+
+🔗 https://github.com/cvcvcx9/my-spring-microservice-repo

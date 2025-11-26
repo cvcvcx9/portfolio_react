@@ -1,12 +1,23 @@
 # 📊 웹 사용자 행동 분석 대시보드 – MongoDash (설계·진행 중)
 
-<div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px', marginTop: '20px'}}>
-  <span style={{ backgroundColor: '#e0f2fe', color: '#0369a1', padding: '4px 8px', borderRadius: '4px', fontSize: '0.9rem' }}>📅 2025.11.23 ~ 진행 중</span>
-  <span style={{ backgroundColor: '#f3e8ff', color: '#7e22ce', padding: '4px 8px', borderRadius: '4px', fontSize: '0.9rem' }}>👥 1명</span>
-  <span style={{ backgroundColor: '#dcfce7', color: '#15803d', padding: '4px 8px', borderRadius: '4px', fontSize: '0.9rem' }}>🛠 Kotlin, Spring Boot, MongoDB, Redis, Docker, WSL</span>
+<div className="lg:hidden mb-6 mt-6 rounded-lg border border-slate-200 bg-slate-50 p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+  <p className="mb-2 font-bold">목차 바로가기</p>
+  <ul className="space-y-1 text-[15px]">
+    <li><a className="text-blue-600 no-underline hover:underline dark:text-blue-300" href="#1-프로젝트-개요-1">🎯 프로젝트 개요</a></li>
+    <li><a className="text-blue-600 no-underline hover:underline dark:text-blue-300" href="#2️-시스템-구조-설계-단계">🛠 시스템 구조</a></li>
+    <li><a className="text-blue-600 no-underline hover:underline dark:text-blue-300" href="#3-현재까지-진행된-부분">⚙️ 현재까지 진행된 부분</a></li>
+    <li><a className="text-blue-600 no-underline hover:underline dark:text-blue-300" href="#4-이벤트-데이터-구조-설계">📁 이벤트 데이터 구조(설계)</a></li>
+    <li><a className="text-blue-600 no-underline hover:underline dark:text-blue-300" href="#5-예상되는-이슈">🧩 예상되는 이슈</a></li>
+  </ul>
 </div>
 
-## 📝 프로젝트 개요
+<div className="mt-3 flex flex-wrap items-center gap-2">
+  <span className="inline-flex items-center rounded-md border border-sky-100 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-800 dark:border-sky-900 dark:bg-sky-900/40 dark:text-sky-100">📅 2025.11.23 ~ 진행 중</span>
+  <span className="inline-flex items-center rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-sm font-medium text-violet-800 dark:border-violet-900 dark:bg-violet-900/40 dark:text-violet-100">👥 1명</span>
+  <span className="inline-flex items-center rounded-md border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-800 dark:border-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-100">🛠 Kotlin, Spring Boot, MongoDB, Redis, Docker, WSL</span>
+</div>
+
+## 1.📝 프로젝트 개요
 
 MongoDash는 웹 페이지 내에서 사용자가 발생시키는 **클릭, 호버, 호버 유지 시간** 등의 마우스 이벤트를 수집하고, 이를 분석·시각화하는 대시보드 서비스입니다.
 
@@ -23,7 +34,7 @@ MongoDash는 웹 페이지 내에서 사용자가 발생시키는 **클릭, 호�
 
 > 현재는 **기획/설계 단계**이며, MongoDB를 기반으로 이벤트 로그를 안정적으로 **수집 → 저장 → 조회** 하는 서버 아키텍처를 구성 중입니다.
 
-## ⚙️ 시스템 구조 *(설계 단계)*
+## 2.⚙️ 시스템 구조 *(설계 단계)*
 
 1. **클라이언트 – Event Collector (프론트)**
    - **수집할 이벤트**
@@ -50,7 +61,7 @@ MongoDash는 웹 페이지 내에서 사용자가 발생시키는 **클릭, 호�
    - UI 요소별 **평균 호버 시간** 계산
    - 페이지별 **관심도 분석** API 제공
 
-## 📌 현재까지 진행된 부분
+## 3.📌 현재까지 진행된 부분
 - **WSL + Docker**를 활용한 **MongoDB 개발 환경** 구축
   - `mongod` 실행 및 포트 포워딩
   - Compass 로 DB/컬렉션 조회 성공
@@ -60,7 +71,7 @@ MongoDash는 웹 페이지 내에서 사용자가 발생시키는 **클릭, 호�
   - `MongoConfig` 및 `Repository` 동작 확인
   - `/events` API 엔드포인트 작업 중
 
-## 📁 이벤트 데이터 구조 *(설계)*
+## 4.📁 이벤트 데이터 구조 *(설계)*
 ### 클릭 이벤트
 ```json
 {
@@ -108,7 +119,7 @@ MongoDash는 웹 페이지 내에서 사용자가 발생시키는 **클릭, 호�
 }
 ```
 
-## 🧩 설계 단계에서 검토 중인 핵심 기술 이슈
+## 5.🧩 예상되는 이슈
 
 ### 🔥 문제 1 – 클릭·호버 이벤트 폭주 시 MongoDB 성능 저하
 | 방법               | 장점                     | 단점                     |

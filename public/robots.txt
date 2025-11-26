@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://cvcvcx9.org
+
+# Sitemaps
+Sitemap: https://cvcvcx9.org/sitemap.xml

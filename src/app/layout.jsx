@@ -6,9 +6,25 @@ import './globals.css'
 import ScrollToTop from './components/ScrollToTop'
 
 export const metadata = {
-  // Define your metadata here
-  // For more information on metadata API, see: https://nextjs.org/docs/app/building-your-application/optimizing/metadata
+  metadataBase: new URL('https://cvcvcx9.com'),
+  title: '조창훈 포트폴리오',
+  description: 'Java/Spring Boot 백엔드 포트폴리오 — 데이터 무결성, 트랜잭션 안정성 중심',
+  alternates: { canonical: '/' },
+  openGraph: {
+    title: '조창훈 포트폴리오',
+    description: 'Java/Spring Boot 백엔드 포트폴리오',
+    url: 'https://cvcvcx9.com',
+    siteName: '조창훈 포트폴리오',
+    locale: 'ko_KR',
+    type: 'website'
+  },
+  twitter: {
+    card: '/images/조창훈_증명사진.jpg',
+    title: '조창훈 포트폴리오',
+    description: 'Java/Spring Boot 백엔드 포트폴리오'
+  }
 }
+
 
 const navbar = (
   <Navbar

@@ -12,7 +12,7 @@ export const metadata = {
 
 const navbar = (
   <Navbar
-    logo={<b>Portfolio</b>}
+    logo={<b>💼 조창훈 포트폴리오 페이지</b>}
     // ... Your additional navbar options
   />
 )

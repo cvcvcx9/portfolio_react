@@ -15,11 +15,11 @@
 <div className="mt-3 flex flex-wrap items-center gap-2">
   <span className="inline-flex items-center rounded-md border border-sky-100 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-800 dark:border-sky-900 dark:bg-sky-900/40 dark:text-sky-100">📅 2024.06 ~ 2024.07</span>
   <span className="inline-flex items-center rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-sm font-medium text-violet-800 dark:border-violet-900 dark:bg-violet-900/40 dark:text-violet-100">👥 6명</span>
-  <span className="inline-flex items-center rounded-md border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-800 dark:border-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-100">🛠 Flutter, React, Spring Boot</span>
-  <span className="inline-flex items-center rounded-md border border-amber-100 bg-amber-50 px-3 py-1 text-sm font-medium text-amber-800 dark:border-amber-900 dark:bg-amber-900/40 dark:text-amber-100">🎯 Frontend · 네이티브 알람</span>
+  <span className="inline-flex items-center rounded-md border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-800 dark:border-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-100">🛠 Spring Boot · FCM · Native Alarm · React</span>
+  <span className="inline-flex items-center rounded-md border border-amber-100 bg-amber-50 px-3 py-1 text-sm font-medium text-amber-800 dark:border-amber-900 dark:bg-amber-900/40 dark:text-amber-100">🎯 알림/스케줄링 · WebRTC 연동</span>
 </div>
 
-프로젝트 개요: WebRTC 및 모바일 네이티브 기능으로 미션 알람을 제공하는 프로젝트입니다.
+프로젝트 개요: WebRTC와 백엔드 알림 파이프라인(FCM+네이티브 알람)으로 정해진 시간에 미션을 실행·검증하게 만드는 알람 서비스입니다.
 
 ![Group 16.png](https://assets.cvcvcx9.org/images/kkatnyang/aefa2422-7b2f-4494-851c-1ba49be8c6bd.png)
 
@@ -51,40 +51,30 @@
 
 ### **2. 담당 역할 및 기여**
 
-- **역할:**
-    
-    프론트엔드 개발.
-    
+- **역할:** 프론트엔드 & 알림 연동
 - **기여:**
-    - **OAuth2.0 로그인 구현:** 사용자 인증 및 로그인 프로세스 개발.
-    - **노티 기능 개발:** 미션 시작 및 초대 알림 구현.
-    - **친구 초대 및 관리:** 사용자 초대 및 초대된 친구 관리 기능 개발.
-    - **WebRTC 기반 미션 방 접속:** 실시간 영상 통화 및 미션 방 접속 기능 구현.
-    - **미션 시간 조정 기능:** 사용자 맞춤형 미션 시간 설정 지원.
-    - **네이티브 알람 구현:** 안드로이드 네이티브 알람 기능을 활용해 미션 시간 알림 제공.
+    - **알림 백엔드 연동:** Spring Boot 알림 API + FCM 데이터 메시지 연동, 알람 재등록/취소 플로우 구현
+    - **네이티브 알람 이중화:** 로컬 알람과 FCM 재알림 이중화 UX 설계
+    - **WebRTC 방 연결:** 미션 시간에 맞춰 방 입장/초대 흐름 구현, 알림 딥링크 → 방 진입
+    - **미션 스케줄 관리:** 사용자 맞춤 시간/반복 설정 UI·상태 관리, 초대/참여 흐름
 
 ---
 
 ### **3. 사용 기술 및 이유**
 
-- **사용 기술:**
-    - **React:** 웹 및 모바일 인터페이스 구축에 활용.
-    - **Flutter:** 크로스 플랫폼 개발을 통해 빠른 빌드와 원활한 개발 지원.
-    - **FCM (Firebase Cloud Messaging):** 푸시 알림 기능 구현.
-    - **안드로이드 네이티브 알람:** 미션 알람 제공 및 시간 관리 지원.
-- **선택 이유:**
-    - `Openvidu`에서 공식적으로 제공하는 튜토리얼이 `React`기반으로 되어있어 빠른 적용을 위해 `React` 와 같이 사용하기로 결정
-    - Firebase와 안드로이드 네이티브 기능은 알림 및 시간 기반 이벤트 구현에 최적화되어 있어 효율적인 개발이 가능.
+- **Spring Boot + FCM**: 알림 API, 재알림(FCM) 백업, 멱등/취소 처리
+- **Native Alarm (AlarmManager/WorkManager)**: 절전·제조사 제한 환경에서도 정시 알람 보장
+- **React**: WebRTC 튜토리얼(OpenVidu)과 빠른 UI 구현
+- **WebRTC**: 실시간 미션 검증(영상통화)
 
 ---
 
 ### **4. 구현 사항**
 
-- **미션 수행 및 방 참여:** 미션 수행 시간이 되면 사용자는 미션 방에 접속하여 진행할 미션을 선택.
-- **미션 진행 확인 및 투표:** 실시간 영상 통화를 통해 팀원이 어떤 미션을 수행 중인지 확인하고, 투표를 통해 성공 여부를 평가.
-- **네이티브 알람 및 푸시 알림:**
-    - 네이티브 알람을 통해 미션 시작 시간을 사용자에게 알림.
-    - FCM을 활용한 푸시 알림으로 초대 및 진행 상황을 실시간 전달.
+- **알림 이중화 플로우:** 네이티브 알람을 1차, 실패 시 FCM 재알림(딥링크→방 입장)으로 동작
+- **반복 스케줄 확장:** 요일별 반복(월~금 등) 지원을 위해 알람 라이브러리 포크·커스텀
+- **미션 방 연결:** 알람 → 딥링크 → WebRTC 방 자동 연결, 초대/참여 상태 갱신
+- **시간 변경 시 재등록:** 알람 재설정 시 기존 스케줄 취소 후 재등록, 최신 설정만 유지
 
 ### ERD
 ![깻냥.png](https://assets.cvcvcx9.org/images/kkatnyang/깻냥.png)

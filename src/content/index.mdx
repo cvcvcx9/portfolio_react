@@ -36,9 +36,9 @@
 ## 🧰 Tech Stack (핵심)
 | 분야 | 경험/역할 |
 | --- | --- |
-| Backend | Java, Spring Boot 3.x, REST API 설계, AOP/JWT/ExceptionHandler |
-| Data | MySQL 인덱스/쿼리 튜닝, Redis 캐시/분산락 |
-| Messaging | Kafka 기반 비동기 이벤트, 멱등 처리 |
+| Backend | Java 17+, Spring Boot 3.x, 트랜잭션 전파/격리, AOP, Spring Security/JWT, JPA 성능 튜닝(N+1, 캐시/벌크), REST API 설계 |
+| Data | MySQL 인덱스/쿼리 튜닝, Redis 캐시/분산락, 멱등 키 관리 |
+| Messaging | Kafka 기반 비동기 이벤트, 멱등/재처리 설계 |
 | CI/CD & Infra | Docker, Jenkins 파이프라인, Nginx 리버스 프록시, AWS/OCI 배포 |
 | Monitoring | Grafana, Prometheus, 로그 추적 |
 | Collaboration | Git Flow, PR 리뷰, Swagger, Jira/Notion |
@@ -48,17 +48,12 @@
   <a className="project-card" href="/keyProjects/godLifeRouting">
     <div className="project-card__title">🏦 모임 벌금 통장 서비스</div>
     <p className="project-card__body">ref_id+Unique 제약으로 중복 결제 0%, Redis 분산락과 Kafka로 동시성·알림 안정화, Jenkins CI/CD 자동화.</p>
-    <div className="project-card__meta">2024.09~10 · 6명 · Spring Boot · MySQL · Redis · Kafka</div>
-  </a>
-  <a className="project-card project-card--compact" href="/projects/kingOfChoice">
-    <div className="project-card__title">🎬 선택의왕</div>
-    <p className="project-card__body">사용자 선호 기반 OTT 추천, Django+Vue로 추천 도메인과 외부 API 연동 구현.</p>
-    <div className="project-card__meta">2024.05 · Django · Vue · REST API</div>
+    <div className="project-card__meta">2024.09~10 · Spring Boot · MySQL/Redis · Kafka</div>
   </a>
   <a className="project-card" href="/keyProjects/userEventDashboard">
     <div className="project-card__title">📊 웹 사용자 행동 분석 대시보드</div>
-    <p className="project-card__body">Kotlin, MongoDB, 사용자 페이지 이벤트를 집계하여 시각적으로 보여주는 프로젝트</p>
-    <div className="project-card__meta">2025.11~ (설계·진행 중) · Spring Cloud · MongoDB · Kafka</div>
+    <p className="project-card__body">Spring Cloud(Eureka/Config/Gateway/Feign) 기반 서비스 분리, 사용자 이벤트 수집·시각화 설계.</p>
+    <div className="project-card__meta">진행 중 · Spring Cloud · Kafka · MongoDB</div>
   </a>
 </div>
 
@@ -66,12 +61,12 @@
 <div className="project-grid project-grid--compact">
   <a className="project-card project-card--compact" href="/projects/kkatnyang">
     <div className="project-card__title">🔔 깻냥</div>
-    <p className="project-card__body">카카오 알림 기반 미션 벌금/리워드 자동 정산, Redis 캐시와 스케줄러로 지연·중복 최소화.</p>
-    <div className="project-card__meta">2024.06~07 Spring Boot · Redis · Kakao API</div>
+    <p className="project-card__body">네이티브 알람+FCM 이중화로 정시 기상 보장, 미션 알람/영상통화 흐름 안정화.</p>
+    <div className="project-card__meta">2024.06~07 · Spring Boot · Redis · FCM</div>
   </a>
   <a className="project-card project-card--compact" href="/projects/sonnuri">
     <div className="project-card__title">🤟 손누리</div>
-    <p className="project-card__body">수어 번역 서비스-크롬익스텐션기반 한국 경제 용어를 수어 영상으로 번역하는 서비스</p>
-    <div className="project-card__meta">2024.10~11 · Python · ChatGPT · KIWI · RIFE AI · MongoDB </div>
+    <p className="project-card__body">크롬 익스텐션 기반 수어 번역(비핵심 스택), 캐싱/프레임 보간으로 응답·품질 개선.</p>
+    <div className="project-card__meta">2024.10~11 · Python · FastAPI · 번역/영상 처리</div>
   </a>
 </div>

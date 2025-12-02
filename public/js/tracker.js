@@ -153,3 +153,7 @@ class MongoDashTracker {
         return element.tagName.toLowerCase();
     }
 }
+
+if (typeof window !== 'undefined') {
+    window.MongoDashTracker = MongoDashTracker;
+}

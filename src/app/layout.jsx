@@ -4,7 +4,7 @@ import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 import './globals.css'
 import ScrollToTop from './components/ScrollToTop'
-import Script from 'next/script'
+import TrackerGate from './components/TrackerGate'
 
 export const metadata = {
   metadataBase: new URL('https://cvcvcx9.com'),
@@ -66,15 +66,7 @@ export default async function RootLayout({ children }) {
           {children}
           <ScrollToTop />
         </Layout>
-        <Script src="/js/tracker.js" strategy='beforeInteractive' />
-        <Script id='tracker-init' strategy='afterInteractive'>
-          {`
-            window.tracker = new MongoDashTracker({
-              apiEndpoint: 'https://api.cvcvcx9.org/api/track'
-            });
-            window.tracker.init();
-          `}
-        </Script>
+        <TrackerGate />
       </body>
     </html>
   )

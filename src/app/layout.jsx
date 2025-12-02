@@ -4,6 +4,7 @@ import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 import './globals.css'
 import ScrollToTop from './components/ScrollToTop'
+import TrackerGate from './components/TrackerGate'
 
 export const metadata = {
   metadataBase: new URL('https://cvcvcx9.com'),
@@ -65,6 +66,7 @@ export default async function RootLayout({ children }) {
           {children}
           <ScrollToTop />
         </Layout>
+        <TrackerGate />
       </body>
     </html>
   )

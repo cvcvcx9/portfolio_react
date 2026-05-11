@@ -1,0 +1,207 @@
+export const metadata = {
+  title: 'Malang AI 서비스 백엔드',
+  description: 'Codex와 Claude 기반 LLM Agent 코딩으로 AI 대화 응답 처리, provider adapter, 응답 속도 개선을 다룬 Malang 백엔드 프로젝트',
+  theme: {
+    breadcrumb: false,
+    copyPage: false,
+    footer: false,
+    layout: 'full',
+    navbar: false,
+    pagination: false,
+    sidebar: false,
+    timestamp: false,
+    toc: false
+  }
+}
+
+<div className="agent-project">
+  <aside className="agent-sidebar agent-project-sidebar" aria-label="Malang 프로젝트 사이드바">
+    <div>
+      <strong>Malang</strong>
+      <span>AI Backend</span>
+    </div>
+    <nav aria-label="프로젝트 링크">
+      <a href="/">Home</a>
+      <a href="#speed">Speed</a>
+      <a href="#skills">Skills</a>
+      <a href="https://github.com/cvcvcx9">GitHub</a>
+    </nav>
+    <small>Key Project</small>
+  </aside>
+
+  <main className="agent-project-main">
+    <nav className="agent-project-top" aria-label="프로젝트 상단 링크">
+      <a href="/">Home</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#agent-coding">Agent Coding</a>
+    </nav>
+
+<h1 className="portfolio-title">Malang AI 서비스 백엔드</h1>
+
+<div className="mt-3 flex flex-wrap items-center gap-2">
+  <span className="inline-flex items-center rounded-md border border-sky-100 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-800 dark:border-sky-900 dark:bg-sky-900/40 dark:text-sky-100">2026.02 ~ 2026.04 집중 개선</span>
+  <span className="inline-flex items-center rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-sm font-medium text-violet-800 dark:border-violet-900 dark:bg-violet-900/40 dark:text-violet-100">AI 대화 응답 처리</span>
+  <span className="inline-flex items-center rounded-md border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-800 dark:border-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-100">NestJS · Prisma · PostgreSQL · OpenAI · Vertex/Gemini · ElevenLabs</span>
+  <span className="inline-flex items-center rounded-md border border-amber-100 bg-amber-50 px-3 py-1 text-sm font-medium text-amber-800 dark:border-amber-900 dark:bg-amber-900/40 dark:text-amber-100">Codex · Claude Agent Coding</span>
+</div>
+
+<div className="portfolio-callout">
+  <strong>핵심 요약:</strong>
+  Malang은 AI API를 단순 호출하는 프로젝트가 아니라, LLM 응답을 제품 백엔드의 계약으로 다루는 프로젝트입니다. Codex와 Claude는 설계 초안, 리팩터링 후보, 테스트 보강, 문서화 루프에 활용했고, 최종 범위·코드 리뷰·검증 기준은 직접 결정했습니다.
+</div>
+
+## 1. 한눈에 보는 역할
+
+<div className="portfolio-proof-grid">
+  <div>
+    <strong>AI 대화 응답 처리</strong>
+    <span>사용자 입력을 받아 필요한 정보 추출, 모델 호출, 응답 생성, 실패 처리까지 이어지는 서버 흐름을 정리했습니다.</span>
+    <em>핵심 파일군: `workflow/controller`, `workflow-session.service`, `workflow/turns/*`</em>
+  </div>
+  <div>
+    <strong>응답 속도 개선</strong>
+    <span>확정 가능한 분기는 모델 호출 없이 처리하고, slot 추출과 응답 생성을 묶는 single-call 경로를 정리했습니다.</span>
+    <em>핵심 판단: 요청 묶기, 호출 수 축소, provider 리전 정렬</em>
+  </div>
+  <div>
+    <strong>Product API</strong>
+    <span>모바일 앱과 Admin이 공유하는 API에서 JWT/RBAC, Firebase App Check, 구독 정책, Swagger, error envelope를 다뤘습니다.</span>
+    <em>핵심 판단: 클라이언트 표시가 아니라 서버 기준 정책 검증</em>
+  </div>
+  <div>
+    <strong>LLM Agent Workflow</strong>
+    <span>Codex와 Claude를 코드 탐색, 변경 후보 검토, 테스트 보강에 활용하고 최종 범위와 검증 기준은 직접 결정했습니다.</span>
+    <em>핵심 방식: spec → patch → review → test → docs</em>
+  </div>
+</div>
+
+## 2. 프로젝트 개요
+
+Malang은 한일 커플/언어교환 사용자를 위한 모바일 앱과 내부 Admin이 공유하는 AI 서비스 백엔드입니다. 사용자는 상황별 대화 연습, 음성 입력, AI 응답, 구독 플랜별 기능 차이를 경험합니다. 백엔드는 NestJS와 Prisma/PostgreSQL 기반이며, OpenAI, Vertex/Gemini, ElevenLabs, Firebase App Check/FCM, S3-compatible storage를 연동합니다.
+
+핵심은 AI API 호출 자체가 아니라, AI 기능을 제품 백엔드의 상태, 권한, 응답 속도, 실패 처리, 검증 흐름으로 정리한 점입니다.
+
+## 3. 응답 속도 개선 과정 <span id="speed"></span>
+
+### 문제. 한 번의 대화 turn 안에 여러 왕복이 쌓임
+
+AI 대화는 사용자가 한 문장을 보낸 뒤 바로 답을 기대하는 흐름입니다. 그런데 초기 구조에서는 branch 판단, slot 추출, agent 응답 생성, provider 호출이 순차로 이어지면서 사용자가 기다리는 시간이 길어질 수 있었습니다. 특히 도메인 답변에 필요한 정보가 이미 정해져 있는데도 매번 모델 판단을 거치면 지연과 비용이 함께 커집니다.
+
+### 진단. 병목을 네 가지로 분리
+
+<div className="portfolio-proof-list">
+  <strong>모델 호출 수</strong><span>한 turn 안에서 branch 판단, slot 추출, 응답 생성이 각각 호출되는지 확인했습니다.</span>
+  <strong>요청 단위</strong><span>slot 추출과 답변 생성에 필요한 정보를 같은 요청으로 묶을 수 있는지 나눠 봤습니다.</span>
+  <strong>리전 왕복</strong><span>백엔드와 provider 호출 경로가 멀리 돌아가며 지연을 키우는지 점검했습니다.</span>
+  <strong>fallback 경로</strong><span>속도 개선 중에도 정보 질문, slot 수집, 실패 응답이 깨지지 않는지 reason code로 구분했습니다.</span>
+</div>
+
+### 해결 1. 확정 가능한 분기는 모델 호출 없이 처리
+
+RULE 평가만으로 다음 단계가 결정되는 branch는 LLM에게 다시 묻지 않도록 deterministic bypass를 정리했습니다. 예를 들어 사용자의 선택지가 이미 workflow rule 안에서 확정되는 경우에는 모델 판단보다 서버 규칙을 우선했습니다. 이 방식은 응답 지연을 줄이는 동시에 같은 입력이 같은 경로로 처리되도록 만들어 디버깅도 쉬워집니다.
+
+### 해결 2. slot 추출과 응답 생성을 한 요청으로 묶음
+
+도메인상 필요한 slot과 응답 형식이 정해져 있는 경로에서는 slot 추출 결과를 받은 뒤 다시 응답 생성을 호출하는 대신, 필요한 정보를 한 provider 요청에 담는 single-call 경로를 정리했습니다. 이 변경은 “모델이 할 일”을 줄인 것이 아니라, 모델에게 전달하는 작업 단위를 제품 흐름에 맞게 다시 묶은 것입니다.
+
+### 해결 3. provider 호출 리전을 가까운 권역으로 정렬
+
+응답 지연에는 코드 내부 처리뿐 아니라 네트워크 왕복도 영향을 줍니다. 백엔드와 AI provider 호출 경로가 불필요하게 멀리 돌아가지 않도록 리전 구성을 점검하고, 가까운 권역으로 맞추는 변경을 적용했습니다. 모델 성능 수치보다 사용자 요청이 provider까지 이동하고 돌아오는 경로를 짧게 만드는 백엔드 관점의 개선입니다.
+
+### 검증. 속도와 대화 품질을 함께 확인
+
+속도만 빠르게 만드는 변경은 실제 대화 품질을 깨뜨릴 수 있습니다. 그래서 identity 질문, 영업시간/메뉴 같은 정보 질문, slot 수집 중 끼어드는 질문, fallback이 필요한 경로를 테스트로 묶었습니다. 응답 지연을 줄이는 변경이 대화 의미와 action semantics를 망가뜨리지 않는지 함께 봤습니다.
+
+## 4. 시스템 구성 <span id="architecture"></span>
+
+<div className="portfolio-flow">
+  <div>
+    <strong>Mobile App</strong>
+    <span>AI practice, roleplay, voice input, subscription, notification</span>
+  </div>
+  <div>
+    <strong>Admin Console</strong>
+    <span>대화 시나리오 편집, 응답 테스트, content/user/subscription operations</span>
+  </div>
+  <div>
+    <strong>NestJS Server</strong>
+    <span>REST API, AI 대화 응답 처리, auth, Prisma, external provider adapters</span>
+  </div>
+  <div>
+    <strong>External Providers</strong>
+    <span>OpenAI, Vertex/Gemini, ElevenLabs, Firebase, PostgreSQL, S3</span>
+  </div>
+</div>
+
+### 백엔드 설계 판단
+
+<div className="portfolio-proof-grid">
+  <div>
+    <strong>모델 호출을 줄일 곳과 남길 곳을 분리</strong>
+    <span>RULE로 확정되는 branch는 서버 규칙으로 처리하고, 자유 응답이 필요한 경로는 provider adapter에 맡겼습니다.</span>
+  </div>
+  <div>
+    <strong>실패를 숨기지 않고 구분</strong>
+    <span>`SLOT_INFO_RESCUE`, `SLOT_INFO_RESCUE_FALLBACK`, `SLOT_SINGLE_CALL` 같은 reason code로 경로를 구분했습니다.</span>
+  </div>
+  <div>
+    <strong>정책 우회를 서버에서 차단</strong>
+    <span>무료 플랜 음성 선택, 광고 게이트, 응답 스타일 제한을 세션 생성과 subscription API에서 검증했습니다.</span>
+  </div>
+  <div>
+    <strong>대화 상태를 재현 가능하게 관리</strong>
+    <span>사용자 세션이 대화 시나리오 버전을 고정하고, 실행 이벤트를 쌓아 상태를 다시 만들 수 있게 했습니다.</span>
+  </div>
+</div>
+
+## 5. 사용 기술과 수준 <span id="skills"></span>
+
+<div className="portfolio-table-scroll">
+
+| 영역 | 사용 기술 | 현재 수준 | Malang에서의 근거 |
+| --- | --- | --- | --- |
+| Backend Framework | NestJS, Java/Spring Boot | 실무 프로젝트 구현·개선 수준 | AI 대화 응답 처리, 트랜잭션 경계, 인증/API 계약 |
+| Data | PostgreSQL, Prisma, MySQL, Redis | 스키마 설계와 상태 모델링 수준 | session/version model, migrations, idempotency key |
+| AI Integration | OpenAI, Vertex/Gemini, ElevenLabs | provider adapter와 fallback 처리 수준 | STT/GPT/TTS 호출 경로, retry/reason code |
+| LLM Agent Coding | Codex, Claude | 설계·리팩터링·테스트 보강 루프 활용 수준 | 문서화, 코드 변경 후보 생성, 회귀 테스트 보강 |
+| Infra & Quality | Docker, Cloud Run, GitHub Actions, testing | 배포 경로와 검증 흐름 구성 수준 | smoke/spec, Admin 응답 테스트, 작업 기록 기반 검증 |
+
+</div>
+
+## 6. LLM Agent 코딩 방식 <span id="agent-coding"></span>
+
+<div className="portfolio-proof-grid">
+  <div>
+    <strong>Codex</strong>
+    <span>코드베이스 탐색, 변경 후보 작성, 테스트 실패 원인 추적, 문서 정리에 활용했습니다.</span>
+  </div>
+  <div>
+    <strong>Claude</strong>
+    <span>설계 대안 검토, 긴 문서 요약, edge case 정리, prompt/spec 초안 작성에 활용했습니다.</span>
+  </div>
+  <div>
+    <strong>Human Review</strong>
+    <span>어떤 변경을 반영할지, 어떤 표현을 포트폴리오에 남길지, 테스트 기준을 어디까지 둘지는 직접 판단했습니다.</span>
+  </div>
+  <div>
+    <strong>Result</strong>
+    <span>복잡한 AI 백엔드 변경을 작은 단위로 쪼개고, 설계·구현·검증·문서화를 빠르게 반복했습니다.</span>
+  </div>
+</div>
+
+## 7. 핵심 검토 포인트
+
+<div className="portfolio-table-scroll">
+
+| 항목 | 정리한 내용 |
+| --- | --- |
+| AI API 호출과 백엔드 책임 | provider 호출 자체보다 상태 관리, fallback, 권한, 요청 단위, 검증 흐름을 제품 백엔드 안에서 정리했습니다. |
+| 요청 묶기 | 사용자가 기다리는 시간은 provider 왕복 횟수에 영향을 받기 때문에, 도메인상 함께 처리 가능한 slot 추출과 응답 생성을 single-call로 정리했습니다. |
+| 리전 정렬 | 모델 성능만이 아니라 서버와 provider 사이의 네트워크 왕복도 응답 체감에 영향을 주기 때문에 호출 권역을 점검했습니다. |
+| LLM Agent 활용 | Codex/Claude를 구현 속도와 리뷰 밀도를 높이는 도구로 쓰고, 최종 판단과 검증 기준은 직접 가져갔습니다. |
+| Java/Spring 경험과의 연결 | 멱등성, 트랜잭션, 권한, 데이터 모델링처럼 스택이 달라도 유지되는 백엔드 판단을 함께 적용했습니다. |
+
+</div>
+
+  </main>
+</div>

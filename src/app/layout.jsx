@@ -4,16 +4,15 @@ import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 import './globals.css'
 import ScrollToTop from './components/ScrollToTop'
-import TrackerGate from './components/TrackerGate'
 
 export const metadata = {
   metadataBase: new URL('https://cvcvcx9.com'),
   title: '조창훈 포트폴리오',
-  description: 'Java/Spring Boot 백엔드 포트폴리오 — 데이터 무결성, 트랜잭션 안정성 중심',
+  description: 'AI 서비스 백엔드와 Java/Spring 신뢰성 경험을 정리한 조창훈 포트폴리오',
   alternates: { canonical: '/' },
   openGraph: {
     title: '조창훈 포트폴리오',
-    description: 'Java/Spring Boot 백엔드 포트폴리오',
+    description: 'AI 서비스 백엔드와 Java/Spring 신뢰성 경험을 정리한 포트폴리오',
     url: 'https://cvcvcx9.com',
     siteName: '조창훈 포트폴리오',
     locale: 'ko_KR',
@@ -22,7 +21,7 @@ export const metadata = {
   twitter: {
     card: '/images/조창훈_증명사진.jpg',
     title: '조창훈 포트폴리오',
-    description: 'Java/Spring Boot 백엔드 포트폴리오'
+    description: 'AI 서비스 백엔드와 Java/Spring 신뢰성 경험을 정리한 포트폴리오'
   },
    icons: {
     icon: '/favicon.ico',
@@ -34,7 +33,7 @@ export const metadata = {
 
 const navbar = (
   <Navbar
-    logo={<b>💼 조창훈 포트폴리오 페이지</b>}
+    logo={<b>조창훈 포트폴리오</b>}
     // ... Your additional navbar options
   />
 )
@@ -44,7 +43,7 @@ export default async function RootLayout({ children }) {
   return (
     <html
       // Not required, but good for SEO
-      lang="en"
+      lang="ko"
       // Required to be set
       dir="ltr"
       // Suggested by `next-themes` package https://github.com/pacocoursey/next-themes#with-app
@@ -57,16 +56,21 @@ export default async function RootLayout({ children }) {
       </Head>
       <body>
         <Layout
+          darkMode={false}
           navbar={navbar}
           pageMap={await getPageMap()}
           docsRepositoryBase="https://github.com/cvcvcx9/portfolio_react/tree/master"
+          editLink={null}
+          feedback={{ content: null }}
           footer={footer}
+          search={null}
+          sidebar={{ toggleButton: false }}
+          toc={{ title: '목차', backToTop: '맨 위로' }}
           // ... Your additional layout options
         >
           {children}
           <ScrollToTop />
         </Layout>
-        <TrackerGate />
       </body>
     </html>
   )

@@ -1,12 +1,17 @@
 export default {
+    malang: {
+        title:"Malang AI 서비스 백엔드"
+    },
     godLifeRouting: {
-        title:"🏦 모임 벌금 통장 갓생루팅"
+        title:"갓생루팅 금융성 트랜잭션 백엔드"
     },
     kkatnyang: {
-        title:"🔔 미션 알람 서비스 깻냥"
+        title:"깻냥 알림/실시간 기능 백엔드",
+        display:"hidden"
     },
     userEventDashboard: {
-        title:"📊 웹 사용자 행동 분석 대시보드 – MongoDash (설계·진행 중) 대시보드"
+        title:"MongoDash 행동 분석 실험",
+        display:"hidden"
     }
     
 }

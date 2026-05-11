@@ -1,82 +1,198 @@
-﻿import Image from 'next/image'
+export const metadata = {
+  title: '조창훈 | AI 서비스 백엔드 개발자',
+  description: 'Codex와 Claude 기반 LLM Agent 코딩으로 AI 서비스 백엔드와 Java/Spring 트랜잭션 경험을 확장하는 조창훈 포트폴리오',
+  theme: {
+    breadcrumb: false,
+    copyPage: false,
+    footer: false,
+    layout: 'full',
+    navbar: false,
+    pagination: false,
+    sidebar: false,
+    timestamp: false,
+    toc: false
+  }
+}
 
-# 안녕하세요, 백엔드 개발자 조창훈입니다.
+<div className="agent-portfolio">
+  <aside className="agent-sidebar" aria-label="포트폴리오 사이드바">
+    <div>
+      <strong>조창훈</strong>
+      <span>AI Service Backend</span>
+    </div>
+    <nav aria-label="외부 링크">
+      <a href="https://github.com/cvcvcx9">GitHub</a>
+      <a href="/keyProjects/malang">Malang</a>
+      <a href="#skills">Skills</a>
+      <a href="mailto:cvcvcx9@gmail.com">Email</a>
+    </nav>
+    <small>2026 · Portfolio</small>
+  </aside>
 
-## 👋 About Me
-<div className="mt-2 flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:flex-nowrap">
-  <div className="order-2 w-full sm:order-1">
-      > 안녕하세요 JAVA 개발자 조창훈입니다.<br/>
-      사용자 경험과 서비스 신뢰성을 우선하는 백엔드 개발자가 되기 위해 “데이터 무결성”, “트랜잭션 일관성”, “비동기 처리 안정성”을 핵심 가치로 두고 코드를 짜고 있습니다.
-  </div>
-  <div className="relative order-1 aspect-[3/4] w-[35vw] min-w-[140px] max-w-[150px] overflow-hidden rounded-[12px] shadow-lg dark:shadow-[0_8px_20px_rgba(0,0,0,0.35)] sm:order-2 sm:mx-0">
-    <Image
-      src="https://assets.cvcvcx9.org/images/조창훈_증명사진.jpg"
-      alt="조창훈 증명사진"
-      fill
-      sizes="(max-width: 640px) 40vw, 150px"
-      className="object-cover"
-    />
-  </div>
-</div>
-## 📜 자격증 및 교육, 수상내역
-### 교육내역
-- 삼성청년SW아카데미 11기 수료 (2024.01 ~ 2024.12)
-- 이젠아카데미 AWS를 이용한 네이티브앱개발 수료 (2022.05 ~ 2022.12)
-### 수상내역
-- 이젠아카데미 프로젝트 우수상
-- 삼성청년SW아카데미 최종프로젝트 우수상
-- 삼성청년SW아카데미 1학기 우수교육생상
-### 진행한 프로젝트
-- 주요 프로젝트 4건 진행 (갓생루팅, 깻냥, 손누리, 선택의왕)
-- 사이드 프로젝트 2건 진행 (MSAConfig, MongoDash,Nextra_Portfolio)
-### 자격증
-- SQLD (2024.06 취득)
-- 정보처리기사 (2025.06 취득)
+  <main className="agent-main">
+    <section className="agent-hero">
+      <div className="agent-hero__copy">
+        <span className="agent-rule" aria-hidden="true"></span>
+        <p className="agent-kicker">Backend Developer · LLM Agent Coding</p>
+        <h1>안녕하세요, AI 서비스 백엔드 개발자 조창훈입니다.</h1>
+        <p className="agent-lead">{`사용자 경험과 서비스 신뢰성을 우선하는 백엔드 개발자가 되기 위해 데이터 모델, API 계약, 트랜잭션 안정성, 응답 지연 개선을 중심으로 작업합니다. 최근에는 Codex와 Claude를 설계·구현·테스트 보강 루프에 활용하며 Malang의 AI 대화 응답 처리 백엔드를 개선하고 있습니다.`}</p>
+        <div className="agent-actions">
+          <a href="#work">Selected Work</a>
+          <a href="#skills">Skill Matrix</a>
+        </div>
+      </div>
+      <div className="agent-hero__panel" aria-label="현재 집중 역량">
+        <figure className="agent-photo-card">
+          <img src="https://assets.cvcvcx9.org/images/조창훈_증명사진.jpg" alt="조창훈 프로필 사진" />
+          <figcaption>
+            <strong>조창훈</strong>
+            <span>AI Service Backend Developer</span>
+          </figcaption>
+        </figure>
+        <div>
+          <span>Current Focus</span>
+          <strong>LLM Agent Coding</strong>
+          <p>Codex · Claude · human review loop</p>
+        </div>
+        <div>
+          <span>Backend Stack</span>
+          <strong>NestJS · Java/Spring</strong>
+          <p>Prisma/PostgreSQL · Transaction · API contract</p>
+        </div>
+        <div>
+          <span>Representative Work</span>
+          <strong>Malang</strong>
+          <p>AI conversation backend · response speed improvement</p>
+        </div>
+      </div>
+    </section>
 
-## 🧰 Tech Stack (핵심)
-| 분야 | 경험/역할 |
-| --- | --- |
-| Backend | Java 17+, Spring Boot 3.x, 트랜잭션 전파/격리, AOP, Spring Security/JWT, JPA 성능 튜닝(N+1, 캐시/벌크), REST API 설계 |
-| Data | MySQL 인덱스/쿼리 튜닝, Redis 캐시/분산락, 멱등 키 관리 |
-| Messaging | Kafka 기반 비동기 이벤트, 멱등/재처리 설계 |
-| CI/CD & Infra | Docker, Jenkins 파이프라인, Nginx 리버스 프록시, AWS/OCI 배포 |
-| Monitoring | Grafana, Prometheus, 로그 추적 |
-| Collaboration | Git Flow, PR 리뷰, Swagger, Jira/Notion |
+    <section className="agent-section" id="work">
+      <div className="agent-section__head">
+        <span>Selected Work</span>
+        <h2>대표 작업 2개로 보는 백엔드 역량</h2>
+      </div>
+      <div className="agent-work-list">
+        <article className="agent-work-card">
+          <div className="agent-work-card__index">01</div>
+          <div className="agent-work-card__body">
+            <span>Malang</span>
+            <h3>AI 대화 응답 처리 백엔드</h3>
+            <p>{`AI 대화 응답이 느려지는 원인을 모델 호출 경로, 요청 단위, 리전 왕복 시간으로 나눠 보고 개선했습니다. 도메인 답변에 필요한 정보를 한 요청으로 묶고, 가까운 리전으로 정렬해 사용자가 기다리는 시간을 줄이는 방향으로 백엔드를 다듬었습니다.`}</p>
+            <div className="agent-tags">
+              <span>NestJS</span>
+              <span>Prisma</span>
+              <span>PostgreSQL</span>
+              <span>OpenAI</span>
+              <span>Vertex/Gemini</span>
+              <span>Codex</span>
+              <span>Claude</span>
+            </div>
+          </div>
+          <a href="/keyProjects/malang" className="agent-arrow" aria-label="Malang 상세 보기">상세 보기</a>
+        </article>
 
-## 💼 대표 프로젝트
-<div className="project-grid project-grid--wide">
-  <a className="project-card" href="/keyProjects/godLifeRouting">
-    <div className="project-card__title">🏦 모임 벌금 통장 서비스</div>
-    <p className="project-card__body">ref_id+Unique 제약으로 중복 결제 0%, Redis 분산락과 Kafka로 동시성·알림 안정화, Jenkins CI/CD 자동화.</p>
-    <div className="project-card__meta">2024.09~10 · Spring Boot · MySQL/Redis · Kafka</div>
-  </a>
-  <a className="project-card project-card--compact" href="/keyProjects/kkatnyang">
-    <div className="project-card__title">🔔 깻냥</div>
-    <p className="project-card__body">네이티브 알람+FCM 이중화로 정시 기상 보장, 미션 알람/영상통화 흐름 안정화.</p>
-    <div className="project-card__meta">2024.06~07 · Spring Boot · Redis · FCM</div>
-  </a>
-  <a className="project-card" href="/keyProjects/userEventDashboard">
-    <div className="project-card__title">📊 웹 사용자 행동 분석 대시보드</div>
-    <p className="project-card__body">Kotlin과 MongoDB, Nextra 및 Chartjs를 이용한 사용자 이벤트 수집·시각화 설계.</p>
-    <div className="project-card__meta">진행 중 · Spring Cloud · Kafka · MongoDB</div>
-  </a>
-</div>
+        <article className="agent-work-card">
+          <div className="agent-work-card__index">02</div>
+          <div className="agent-work-card__body">
+            <span>GodLifeRouting</span>
+            <h3>Java/Spring transaction reliability</h3>
+            <p>{`송금/정산처럼 중복 실행에 민감한 도메인에서 멱등키, DB Unique 제약, 비관적 락, 단일 트랜잭션 경계를 적용했습니다. Java/Spring 기반 트랜잭션 신뢰성 경험을 보여주는 프로젝트입니다.`}</p>
+            <div className="agent-tags">
+              <span>Java</span>
+              <span>Spring Boot</span>
+              <span>Transaction</span>
+              <span>Lock</span>
+              <span>Idempotency</span>
+            </div>
+          </div>
+          <a href="/keyProjects/godLifeRouting" className="agent-arrow" aria-label="갓생루팅 상세 보기">상세 보기</a>
+        </article>
+      </div>
+    </section>
 
-## 📂 프로젝트 목록
-<div className="project-grid project-grid--compact">
-  <a className="project-card project-card--compact" href="/projects/kingOfChoice">
-    <div className="project-card__title">🎬 선택의왕</div>
-    <p className="project-card__body">사용자 선호 기반 OTT 추천, Django+Vue로 추천 도메인과 외부 API 연동.</p>
-    <div className="project-card__meta">2024.05 · Django · Vue · REST API</div>
-  </a>
-  <a className="project-card project-card--compact" href="/projects/sonnuri">
-    <div className="project-card__title">🤟 손누리</div>
-    <p className="project-card__body">크롬 익스텐션 기반 수어 번역, 캐싱/프레임 보간으로 응답·품질 개선.</p>
-    <div className="project-card__meta">2024.10~11 · Python · FastAPI · 번역/영상 처리</div>
-  </a>
-  <a className="project-card project-card--compact" href="/projects/sideMSAproject">
-    <div className="project-card__title">🧩 MSA 사이드 프로젝트</div>
-    <p className="project-card__body">Spring Cloud(Eureka/Config/Gateway/Feign)로 서비스 분리·통신 연습, Docker 멀티 서비스 구동.</p>
-    <div className="project-card__meta">2025.07~08 · Spring Boot/Cloud · Kafka · Docker</div>
-  </a>
+    <section className="agent-section" id="skills">
+      <div className="agent-section__head">
+        <span>Skill Matrix</span>
+        <h2>언어·프레임워크별 현재 활용 수준</h2>
+      </div>
+      <div className="agent-skill-table" role="table" aria-label="기술 활용 수준">
+        <div role="row" className="agent-skill-table__head">
+          <span role="columnheader">영역</span>
+          <span role="columnheader">주요 기술</span>
+          <span role="columnheader">수준</span>
+          <span role="columnheader">근거</span>
+        </div>
+        <div role="row">
+          <strong role="cell">LLM Agent Coding</strong>
+          <span role="cell">Codex, Claude, prompt/spec loop</span>
+          <span role="cell" className="agent-level" aria-label="4.5 out of 5"><i></i><i></i><i></i><i></i><i className="half"></i></span>
+          <span role="cell">포트폴리오 개편, Malang 문서화, 테스트 보강 루프에 상시 활용</span>
+        </div>
+        <div role="row">
+          <strong role="cell">Backend Framework</strong>
+          <span role="cell">NestJS, Java/Spring Boot</span>
+          <span role="cell" className="agent-level" aria-label="4 out of 5"><i></i><i></i><i></i><i></i><i className="empty"></i></span>
+          <span role="cell">AI 대화 기능 백엔드, 트랜잭션 경계, 인증/API 계약 구현</span>
+        </div>
+        <div role="row">
+          <strong role="cell">Data & Storage</strong>
+          <span role="cell">PostgreSQL, Prisma, MySQL, Redis</span>
+          <span role="cell" className="agent-level" aria-label="4 out of 5"><i></i><i></i><i></i><i></i><i className="empty"></i></span>
+          <span role="cell">49 migrations, session/version model, idempotency key 설계</span>
+        </div>
+        <div role="row">
+          <strong role="cell">AI Integration</strong>
+          <span role="cell">OpenAI, Vertex/Gemini, ElevenLabs</span>
+          <span role="cell" className="agent-level" aria-label="3.5 out of 5"><i></i><i></i><i></i><i className="half"></i><i className="empty"></i></span>
+          <span role="cell">STT/GPT/TTS provider adapter, retry/fallback reason 정리</span>
+        </div>
+        <div role="row">
+          <strong role="cell">Infra & Quality</strong>
+          <span role="cell">Docker, Cloud Run, GitHub Actions, testing</span>
+          <span role="cell" className="agent-level" aria-label="3.5 out of 5"><i></i><i></i><i></i><i className="half"></i><i className="empty"></i></span>
+          <span role="cell">배포 경로, smoke/spec 검증, 작업 기록 기반 회귀 방지</span>
+        </div>
+      </div>
+    </section>
+
+    <section className="agent-section">
+      <div className="agent-section__head">
+        <span>Malang Speed Work</span>
+        <h2>응답 속도 개선을 어떻게 접근했는가</h2>
+      </div>
+      <div className="agent-process-grid">
+        <div>
+          <strong>1. 병목을 나눠서 봄</strong>
+          <p>한 번의 대화 turn 안에서 branch 판단, slot 추출, 응답 생성, provider 왕복 시간이 이어지며 체감 지연이 커졌습니다.</p>
+        </div>
+        <div>
+          <strong>2. 요청을 묶음</strong>
+          <p>도메인 답변에 필요한 intent, slot, 응답 생성 조건을 가능한 한 한 번의 provider 요청으로 합쳐 왕복 횟수를 줄였습니다.</p>
+        </div>
+        <div>
+          <strong>3. 리전을 정렬함</strong>
+          <p>백엔드와 AI provider 호출 경로가 멀리 돌아가지 않도록 리전 구성을 점검하고 가까운 권역으로 맞췄습니다.</p>
+        </div>
+        <div>
+          <strong>4. 테스트로 고정함</strong>
+          <p>응답 속도만 보는 대신 fallback, 정보 질문, slot 수집 흐름이 깨지지 않는지도 함께 검증했습니다.</p>
+        </div>
+      </div>
+      <a className="agent-inline-link" href="/keyProjects/malang">Malang 문제 해결 과정 보기</a>
+    </section>
+
+    <section className="agent-section agent-section--evidence" id="evidence">
+      <div className="agent-section__head">
+        <span>Backend Evidence</span>
+        <h2>코드와 문서로 확인 가능한 백엔드 판단</h2>
+      </div>
+      <div className="agent-evidence-grid">
+        <div><strong>API Contract</strong><p>모바일 앱과 Admin이 공유하는 요청/응답 계약을 DTO, validation, error envelope로 관리했습니다.</p></div>
+        <div><strong>State Modeling</strong><p>대화 시나리오 버전, 사용자 세션, 실행 이벤트를 분리해 재현 가능한 상태 모델을 만들었습니다.</p></div>
+        <div><strong>Agent Workflow</strong><p>Codex와 Claude를 코드 탐색, 변경 후보 검토, 테스트 보강에 활용하고 최종 설계·검증 기준은 직접 결정했습니다.</p></div>
+        <div><strong>Reliability</strong><p>갓생루팅에서 다룬 멱등성, 락, 트랜잭션 경계 경험을 AI 서비스 백엔드에도 적용합니다.</p></div>
+      </div>
+    </section>
+  </main>
 </div>

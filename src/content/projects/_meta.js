@@ -7,7 +7,7 @@ export default {
     },
     
     sideMSAproject: {
-        title:"🧏‍♂️ MSA 사이드 프로젝트(SIDE PROJECT)"
+        title:"Spring Cloud 서비스 분리 실험"
     },
     
 }

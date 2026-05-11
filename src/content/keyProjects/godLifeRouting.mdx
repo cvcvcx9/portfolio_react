@@ -1,254 +1,178 @@
-# 🏦 모임 벌금 통장 서비스 갓생루팅
+export const metadata = {
+  title: '갓생루팅 금융성 트랜잭션 백엔드',
+  description: 'Java/Spring 기반 모임 정산 서비스에서 멱등성, 락, 단일 트랜잭션 경계를 다룬 백엔드 프로젝트'
+}
 
-<div className="lg:hidden mb-6 mt-6 rounded-lg border border-slate-200 bg-slate-50 p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-  <p className="mb-2 font-bold">목차 바로가기</p>
-  <ul className="space-y-1 text-[15px]">
-    <li><a className="text-blue-600 no-underline hover:underline dark:text-blue-300" href="#-모임-통장-관리-서비스--갓생루팅">🏦 프로젝트 개요</a></li>
-    <li><a className="text-blue-600 no-underline hover:underline dark:text-blue-300" href="#-주요-문제-해결-사례">🧩 주요 문제 해결 사례</a></li>
-    <li className="pl-3 text-xs"><a className="text-slate-500 no-underline hover:text-slate-700 dark:text-slate-300 dark:hover:text-slate-100" href="#문제-1-이체-시-중복-처리-및-데이터-충돌-발생">└ 문제 1: 이체 시 중복 처리</a></li>
-    <li className="pl-3 text-xs"><a className="text-slate-500 no-underline hover:text-slate-700 dark:text-slate-300 dark:hover:text-slate-100" href="#문제-2--잔액-업데이트-동시성-충돌">└ 문제 2: 잔액 업데이트 동시성</a></li>
-    <li className="pl-3 text-xs"><a className="text-slate-500 no-underline hover:text-slate-700 dark:text-slate-300 dark:hover:text-slate-100" href="#문제-3-이체-중-오류-발생-시-잔액-불일치-문제">└ 문제 3: 이체 중 오류 발생</a></li>
-  </ul>
-</div>
+# 갓생루팅 금융성 트랜잭션 백엔드
 
 <div className="mt-3 flex flex-wrap items-center gap-2">
-  <span className="inline-flex items-center rounded-md border border-sky-100 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-800 dark:border-sky-900 dark:bg-sky-900/40 dark:text-sky-100">📅 2024.09 ~ 2024.10</span>
-  <span className="inline-flex items-center rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-sm font-medium text-violet-800 dark:border-violet-900 dark:bg-violet-900/40 dark:text-violet-100">👥 6명</span>
-  <span className="inline-flex items-center rounded-md border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-800 dark:border-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-100">🛠 Spring Boot, Kafka, Redis</span>
+  <span className="inline-flex items-center rounded-md border border-sky-100 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-800 dark:border-sky-900 dark:bg-sky-900/40 dark:text-sky-100">2024.09 ~ 2024.10</span>
+  <span className="inline-flex items-center rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-sm font-medium text-violet-800 dark:border-violet-900 dark:bg-violet-900/40 dark:text-violet-100">6인 팀 프로젝트</span>
+  <span className="inline-flex items-center rounded-md border border-emerald-100 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-800 dark:border-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-100">Spring Boot · MySQL · Redis · Kafka</span>
+  <span className="inline-flex items-center rounded-md border border-amber-100 bg-amber-50 px-3 py-1 text-sm font-medium text-amber-800 dark:border-amber-900 dark:bg-amber-900/40 dark:text-amber-100">정산/이체 신뢰성</span>
 </div>
 
-## 1) 프로젝트 개요
+<div className="portfolio-callout">
+  <strong>핵심 요약:</strong>
+  이 프로젝트는 Java/Spring 기반 트랜잭션 신뢰성 경험을 보여주는 사례입니다. 돈처럼 취급되는 벌금/상금 정산 흐름에서 멱등키, DB Unique 제약, 비관적 락, 단일 트랜잭션 경계를 어디에 둘지 판단했습니다.
+</div>
 
-- 목표: 모임 구성원의 미션 수행을 기반으로 벌금·상금이 자동 정산되는 **금융형 협업 서비스** 백엔드 구축
-- 배경: 혼자 습관 형성에 도전했지만 실패 경험이 반복됨 → 벌금·보상을 팀 단위로 묶어 상호 견제가 되면 효과적이라는 경험에서 출발해 서비스화
-- 핵심 가치: **정확한 정산(ACID)** · **중복 없는 이벤트 처리(idempotency)** · **안전한 인증/인가(HTTP-Only Cookie, JWT)**
-- 프론트 요구사항 요약(연동):
-    - GPS/사진 기반 미션 판별
-    - 카카오톡 초대(링크) & 카카오맵 위치 표시
-    - 팀별 배팅 → 결과 반영 → 자동 정산/캘린더/갤러리
+## 1. 한눈에 보는 근거
 
----
+<div className="portfolio-metric-grid">
+  <div className="portfolio-metric-card">
+    <strong>3 reliability controls</strong>
+    <span>ref_id 멱등키, DB Unique 제약, 비관적 락으로 중복/동시성 위험을 줄이는 구조</span>
+  </div>
+  <div className="portfolio-metric-card">
+    <strong>1 transaction boundary</strong>
+    <span>차감, 입금, 거래 기록을 단일 서비스 트랜잭션 안에서 처리하도록 설계</span>
+  </div>
+  <div className="portfolio-metric-card">
+    <strong>Redis / Kafka</strong>
+    <span>정산 중복 실행 방지와 알림 이벤트 분리를 위한 보조 인프라</span>
+  </div>
+  <div className="portfolio-metric-card">
+    <strong>claim policy</strong>
+    <span>재실행 로그가 없는 성능/무결성 수치는 제외하고, 설계 판단만 정리했습니다.</span>
+  </div>
+</div>
 
-## 2) 아키텍처 개요
+<div className="portfolio-proof-grid">
+  <div>
+    <strong>Idempotency</strong>
+    <span>클라이언트 요청마다 `ref_id`를 발급하고 거래 테이블에 Unique 제약을 두어 같은 요청의 중복 반영을 막는 방향을 선택했습니다.</span>
+    <em>설계 판단: 프론트 요청 제한만으로는 다른 클라이언트/재시도 상황을 막을 수 없습니다.</em>
+  </div>
+  <div>
+    <strong>Pessimistic lock</strong>
+    <span>계좌 잔액을 갱신하는 조회 경로에 `PESSIMISTIC_WRITE`를 적용해 같은 계좌에 대한 동시 업데이트를 순서화했습니다.</span>
+    <em>설계 판단: 낮은 트래픽과 단일 DB 환경에서는 재시도 복잡도보다 일관성을 우선했습니다.</em>
+  </div>
+  <div>
+    <strong>Atomic transfer</strong>
+    <span>출금, 입금, 거래 기록 생성을 하나의 `@Transactional` 경계로 묶어 부분 성공 상태를 남기지 않도록 설계했습니다.</span>
+    <em>설계 판단: 분산 트랜잭션이 필요한 규모가 아니면 SAGA보다 단일 DB 트랜잭션이 단순하고 안전합니다.</em>
+  </div>
+  <div>
+    <strong>Async notification</strong>
+    <span>정산 후 사용자 알림은 Kafka 이벤트로 분리해 핵심 정산 트랜잭션과 부가 알림 처리를 느슨하게 연결했습니다.</span>
+    <em>설계 판단: 알림 실패가 정산 무결성을 깨지 않도록 책임을 분리합니다.</em>
+  </div>
+</div>
 
-- **기술 스택:**
-    
-    Spring Boot · Java · MySQL · Redis(분산락/캐시) · Kafka(비동기 이벤트) · Docker · Jenkins
-    
-    (배포: AWS EC2, Nginx 리버스 프록시)
-    
+## 2. 프로젝트 개요
 
-```
-[Client(Web/App)]
-   │ REST API
-   ▼
-[Spring Boot Backend]
-   ├─ Auth Service (JWT/쿠키)
-   ├─ Mission Service (GPS/사진 메타)
-   ├─ Betting Service (배팅/정산 대기)
-   ├─ Settlement Service (정산/원장)
-   ├─ Notification Service (Kafka 이벤트)
-   └─ Media Service (S3 업로드/처리)
-```
+갓생루팅은 모임 구성원이 미션 성공/실패에 따라 벌금과 상금을 정산하는 협업 서비스입니다. GPS/사진 기반 미션 인증, 카카오 초대 링크, 팀별 배팅, 정산 캘린더/갤러리 같은 제품 기능이 있었고, 백엔드는 Spring Boot, MySQL, Redis, Kafka를 사용했습니다.
 
----
+제품 전체 기능보다 Java/Spring 기반 신뢰성 설계가 드러나는 정산 흐름을 중심으로 정리했습니다.
 
-## 3) 핵심 시퀀스 설계
+## 3. 시스템 구성
 
-**A. 초대 및 가입**
+<div className="portfolio-flow">
+  <div>
+    <strong>Client</strong>
+    <span>미션 인증, 배팅, 정산 요청, 캘린더/갤러리 조회</span>
+  </div>
+  <div>
+    <strong>Spring Boot API</strong>
+    <span>Auth, Mission, Betting, Settlement, Notification, Media</span>
+  </div>
+  <div>
+    <strong>MySQL / Redis</strong>
+    <span>거래/잔액 원장, Unique 제약, 비관적 락, 정산 실행 락</span>
+  </div>
+  <div>
+    <strong>Kafka / Storage</strong>
+    <span>알림 이벤트, 이미지 업로드와 처리 경로</span>
+  </div>
+</div>
 
-1. 백엔드 → 초대 토큰 생성
-2. 카카오톡 링크로 전달
-3. 신규 사용자가 링크 클릭 → 회원가입 & 그룹 등록
+## 4. 문제 해결 사례
 
-**B. 미션 판별**
-
-1. 미션 생성 (`missions`)
-2. 사용자가 GPS/사진 업로드 → 서버 저장 → `mission_proofs` 생성
-3. 관리자 검증 또는 자동 검증 → `verified='Y'`
-
-**C. 배팅**
-
-- 사용자들이 특정 팀원의 미션 성공/실패에 베팅 (`bets`)
-- 마감 시점까지 수정 가능
-
-**D. 정산**
-
-1. 정산 트리거 (스케줄러/관리자 실행)
-2. **Redis 분산락**으로 중복 실행 방지
-
----
-
-## 4) ERD
-
-    ![image.png](https://assets.cvcvcx9.org/images/godLifeRouting/GodLifeRoutine%20v2.png)
-
-
-## 5) 문제 및 해결 방법
-
-### **문제 1: 이체 시 중복 처리 및 데이터 충돌 발생**
-
-**상황**
-
-이체시 하나의 사용자가 빠르게 버튼을 여러 번 누를 때, 정산하기 요청이 여러 번 가는 경우가 있어서 하나의 이체 요청에 대해 중복 트랜잭션이 생성되는 문제가 있었습니다. 이로 인해 사용자가 원하지 않는 이체가 발생하거나, 오류가 발생하는 경우가 있었습니다.
-
-**선택지**
-
-| **선택지** | **장점** | **단점** |
-| --- | --- | --- |
-| **1. 프론트엔드에서 요청 제한** | 단순하고, 요청이 두 번 들어올 경우를 원천차단 | 타 클라이언트 확장시 같은 문제 발생할 수 있음 |
-| **2. 거래 고유 ID(ref_id) + Unique 제약조건** | 멱등성 보장 | 예외 처리 필요 |
-| **3. 레디스 캐시 키로 요청 추적** | 빠름 | TTL 설정 관리 필요 |
-
-**판단 근거**
-
-일단 요청 그 자체가 여러 번 오는 경우를 최소화 하기 위해서 1번은 우선적으로 적용하고 이체 트랜잭션에서 중요한 것은 데이터의 신뢰성이라고 생각하여 가장 안정적인 DB단에서 제약을 걸어서 체크하는 방식으로 중복을 방지하였습니다.
-
-**해결 방법**
-
-- 클라이언트 요청마다  UUID 기반 ref_id 생성
-- 동일 ref_id 재요청 시, “이미 처리된 요청입니다.”를 최종적으로 반환
-
-**결과**
-
-- 중복 이체 0건
-- 네트워크 재전송 상황에서도 안정적인 처리
-
-### **문제 2 : 잔액 업데이트 동시성 충돌**
+### 문제 1. 이체 요청 중복 처리
 
 **상황**
+사용자가 정산 버튼을 빠르게 여러 번 누르거나 네트워크 재전송이 발생하면 같은 의도의 이체가 여러 번 들어올 수 있습니다. 프론트엔드 버튼 비활성화만으로는 API 재시도, 다른 클라이언트, 장애 복구 상황을 충분히 막을 수 없습니다.
 
-다른 사용자의 이체와 동시에 같은 계좌에 접근하면 잔액 계산이 꼬이는 경우가 발생하였습니다.
+**선택**
+거래 요청마다 `ref_id`를 두고 DB Unique 제약을 적용했습니다. Redis 캐시 키도 후보였지만, 돈처럼 취급되는 상태에서는 TTL 관리보다 영속 저장소의 제약이 더 설명하기 쉽고 안정적이라고 판단했습니다.
 
-| 선택지 | 장점 | 단점 |
-| --- | --- | --- |
-| **1. 낙관적 락** | 성능 우수, 락 경합 없음 | 충돌 시 재시도 필요 |
-| **2. 비관적 락** | 완벽한 일관성 보장 | 락 대기시간 증가 |
-| **3. Redis 분산락** | 확장성 좋음 | 인프라 관리 부담 |
+**설명 가능한 코드 수준**
 
-### 판단 근거
+```java
+@Column(nullable = false, unique = true)
+private String refId;
+```
 
-서비스 트래픽이 낮고 단일 인스턴스 환경이었기 때문에
+**정리한 결과**
+중복 요청을 “성공처럼 한 번만 반영”하거나 “이미 처리된 요청으로 응답”하는 멱등 처리 방향을 설계했습니다. 최신 테스트 로그가 없는 운영 무결성 수치는 제외했습니다.
 
-**② 비관적 락** 을 적용했습니다.
+### 문제 2. 잔액 업데이트 동시성 충돌
 
-동시에 하나의 계좌에 접근하는 요청은 대기시켜 일관성 확보.
+**상황**
+여러 사용자의 정산이 같은 계좌 잔액을 동시에 변경하면 lost update나 잔액 불일치가 발생할 수 있습니다.
 
-### 해결 방법
+**선택**
+서비스 트래픽이 낮고 단일 DB를 사용한 프로젝트였기 때문에 비관적 락을 선택했습니다. 낙관적 락의 재시도 설계보다, 정산 흐름에서는 먼저 일관성을 확보하는 편이 적절하다고 봤습니다.
 
 ```java
 @Lock(LockModeType.PESSIMISTIC_WRITE)
 Account findByIdForUpdate(Long id);
 ```
 
-### 결과
+**정리한 결과**
+락 대기 시간이 생길 수 있지만, 같은 계좌의 잔액 변경을 순서화해 데이터 일관성을 지키는 구조를 만들었습니다. 재실행 가능한 부하 테스트 로그가 없는 특정 처리 시간 수치는 제외했습니다.
 
-- 동시 이체 요청 50건 테스트에서도 정확한 최종 잔액 유지
-- 평균 이체 처리시간 1.0s → 1.3s (일부 증가했으나 안정성 확보)
+### 문제 3. 부분 성공으로 인한 잔액 불일치
 
-### 문제 3: 이체 중 오류 발생 시 잔액 불일치 문제
+**상황**
+출금은 성공했는데 입금이나 거래 기록 저장이 실패하면 총액이 맞지 않는 상태가 남습니다.
 
-### 상황
-
-벌금 납부나 상금 배분 과정에서,
-한 사용자의 잔액 차감이 성공하고 다른 사용자의 입금이 실패하면
-**총 계좌합** 이 맞지 않는 불일치 문제가 생겼습니다.
-
-### 선택지
-
-| 선택지 | 장점 | 단점 |
-| --- | --- | --- |
-| **① 단순 두 번의 DB UPDATE** | 구현 간단 | 원자성 보장 불가 (한쪽만 성공 가능) |
-| **② Spring @Transactional (단일 트랜잭션)** | 원자성 보장 | 서비스 계층 복잡도 증가 |
-| **③ SAGA 패턴 (보상 트랜잭션)** | 분산 트랜잭션 대체 가능 | 구현 복잡, 서비스 규모 대비 과함 |
-
-### 판단 근거
-
-서비스가 단일 DB 내에서 동작했기 때문에
-**② @Transactional 기반의 단일 트랜잭션**이 가장 적절했습니다.
-단, 트랜잭션 안에서 예외 발생 시 보상 로직을 구현하여,
-모든 이체가 실패 시 이전 상태로 완전히 복구되도록 설계했습니다.
-
-### 해결 방법
+**선택**
+차감, 입금, 거래 기록 생성을 하나의 `@Transactional` 경계 안에 두었습니다. 단일 DB 프로젝트라서 SAGA 같은 보상 트랜잭션 패턴은 규모 대비 복잡하다고 판단했습니다.
 
 ```java
 @Transactional
-public void transfer(Long fromId, Long toId, BigDecimal amount) {
-    Account from = accountRepository.findById(fromId)
-        .orElseThrow(() -> new AccountNotFoundException());
-    Account to = accountRepository.findById(toId)
-        .orElseThrow(() -> new AccountNotFoundException());
-
-    if (from.getBalance().compareTo(amount) < 0) {
-        throw new InsufficientBalanceException();
-    }
+public void transfer(Long fromId, Long toId, BigDecimal amount, String refId) {
+    Account from = accountRepository.findByIdForUpdate(fromId);
+    Account to = accountRepository.findByIdForUpdate(toId);
 
     from.withdraw(amount);
     to.deposit(amount);
 
-    transactionRepository.save(new Transaction(from, to, amount, LocalDateTime.now()));
+    transactionRepository.save(Transaction.of(from, to, amount, refId));
 }
-
 ```
 
-### 결과
+**정리한 결과**
+정산 도메인에서 트랜잭션 경계를 어디에 둘지, 어떤 실패를 한 단위로 rollback할지 정리했습니다.
 
-- 이체 중 예외 발생 시 모든 변경 자동 롤백
-- 테스트 케이스 100회 중 데이터 불일치 0건
-- 전체 이체 트랜잭션 평균 처리시간 0.9s
+## 5. 인증, 배포, 운영 보조 경험
 
----
+- **인증/인가:** JWT와 HttpOnly Cookie 기반 인증, 그룹/미션 접근 권한 검사를 구성했습니다.
+- **입력 검증:** DTO 단위 validation으로 잘못된 요청이 서비스 계층으로 들어오기 전에 차단했습니다.
+- **캐싱/락:** Redis를 캐시와 정산 실행 중복 방지 용도로 사용했습니다.
+- **비동기 알림:** Kafka 이벤트로 알림 처리를 핵심 정산 경로와 분리했습니다.
+- **배포:** AWS EC2, Nginx, Docker, Jenkins 기반 배포 흐름을 경험했습니다.
 
-## 5) 인증 및 보안
+## 6. Java/Spring 신뢰성 설계로 연결되는 지점
 
-- **인증:** JWT + HttpOnly Secure Cookie
-- **인가:** 그룹/미션 접근 시 권한(ROLE) 기반 접근
-- **입력 검증:**  @Value 어노테이션을 사용한 DTO 단위 입력검증
-- **비밀관리:** Jenkins Credential, .env 파일 분리
+Malang은 AI 대화 응답 처리, provider adapter, 검증 흐름을 보여주는 최근 작업입니다. 갓생루팅은 제품 전체 기능보다 Java/Spring 트랜잭션 신뢰성 경험을 보여주는 프로젝트로 정리했습니다.
 
----
+핵심 검토 포인트는 다음과 같습니다.
 
-## 6) 성능 및 모니터링
+<div className="portfolio-table-scroll">
 
-- **캐싱:** Redis로 그룹/미션 캐시 (TTL 5~15분)
-- **비동기 처리:** 이미지 리사이징 비동기화 → 응답속도 2.0s → 0.5s
-- **테스트:** JUnit5 + Testcontainers(MySQL/Redis)
-- **로깅:** JSON 구조화 로그 + Grafana/프로메테우스대시보드
+| 항목 | 정리한 내용 |
+| --- | --- |
+| 왜 DB Unique 제약을 썼나? | 중복 요청 방지는 클라이언트가 아니라 서버/DB 경계에서 최종 보장하는 편이 안정적이기 때문 |
+| 왜 비관적 락인가? | 낮은 트래픽과 단일 DB 환경에서는 재시도 복잡도보다 잔액 일관성이 우선이었기 때문 |
+| 왜 SAGA를 쓰지 않았나? | 서비스가 단일 DB 트랜잭션으로 해결 가능한 범위였고, 보상 트랜잭션은 과한 복잡도였기 때문 |
+| 이 프로젝트의 한계 | 최신 재실행 로그와 운영 지표가 부족해 수치 성과보다 설계 판단 중심으로 제시 |
 
----
-
-## 7) CI/CD 및 배포
-
-- **Jenkins 파이프라인**
-    - GitHub PR → 빌드/테스트 → Docker 이미지 → 배포 자동화
-- **운영 환경**
-    - AWS EC2 + Nginx (HTTPS)
-- **롤백**
-    - Docker 이미지 태그 단위 재배포 스크립트 준비
+</div>
 
 ---
 
-## 8) 결과 및 성과
-
-- 정산 중복 실행 0건 (락/멱등키)
-- 알림 이벤트 누락률 90% 이상 감소 (Kafka)
-- 보안 강화: JWT + HttpOnly 쿠키로 토큰 탈취 방지
-- 주요 기능(API/정산/배팅) 100% 구현 완료
-
-### 9) 프로젝트 이미지
-
-- 미션수행 - 운동하기(장소미션)
-    
-    ![image.png](https://assets.cvcvcx9.org/images/godLifeRouting/image%201.png)
-    
-- 미션수행 - 물건촬영
-
-![image.png](https://assets.cvcvcx9.org/images/godLifeRouting/image%202.png)
-
-- 베팅하기 - 팀원의 미션 수행 여부를 놓고 배팅
-
-![image.png](https://assets.cvcvcx9.org/images/godLifeRouting/image%203.png)
-
-- 정산 및 캘린더와 갤러리 - 미션 결과를 캘린더와 갤러리에서 확인 및 정산에서 낸 벌금 확인가능
-
-![image.png](https://assets.cvcvcx9.org/images/godLifeRouting/image%204.png)
+*재검증하지 않은 구체적 무결성/성능 개선 수치는 제외했습니다. 최신 테스트 로그가 확보되면 수치 성과를 다시 추가할 수 있습니다.*

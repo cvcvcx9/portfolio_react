@@ -6,11 +6,12 @@ const themeComponents = getThemeComponents()
 function PortfolioStandaloneWrapper({ children, metadata, ...props }) {
   const standalonePages = new Set([
     'src/content/index.mdx',
-    'src/content/keyProjects/malang.mdx'
+    'src/content/keyProjects/malang.mdx',
+    'src/content/keyProjects/erpApartmentAutomation.mdx'
   ])
 
   if (standalonePages.has(metadata?.filePath)) {
-    const shellClassName = metadata.filePath === 'src/content/keyProjects/malang.mdx'
+    const shellClassName = metadata.filePath.startsWith('src/content/keyProjects/')
       ? 'agent-project-shell'
       : 'portfolio-home-shell'
 

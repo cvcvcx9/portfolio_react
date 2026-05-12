@@ -5,6 +5,10 @@ export default {
     godLifeRouting: {
         title:"갓생루팅 금융성 트랜잭션 백엔드"
     },
+    erpApartmentAutomation: {
+        title:"아파트 경리 ERP 엑셀 데이터 자동화",
+        display:"hidden"
+    },
     kkatnyang: {
         title:"깻냥 알림/실시간 기능 백엔드",
         display:"hidden"

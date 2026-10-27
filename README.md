@@ -1,58 +1,56 @@
-# 📚 Portfolio – Nextra + React
+# 조창훈 포트폴리오
 
-## 소개
+문제를 쪼개고, 경계를 긋고, 덜어낸 뒤, 검증으로 닫는 백엔드 개발자의 포트폴리오입니다.
+한 페이지 안에서 **사고 방식 → 해결한 문제(SPOS) → 테스트 콘솔 → 코딩 에이전트 활용 → 이전 작업** 순서로 읽힙니다.
 
-이 레포지토리는 **Nextra 4**와 **Next.js 16** 기반으로 만든 **개인 포트폴리오 사이트**입니다.  
-저의 백엔드·프론트엔드 역량을 한눈에 보여줄 수 있도록 **대표 프로젝트**(갓생루팅, MongoDash)와 **기술 스택**, **연락처** 등을 정리했습니다.
+## 실행
 
-## 주요 기능
-
-- **다크 모드 & Tailwind CSS** 로 깔끔하고 반응형 UI 구현
-- **사이드바**에 프로젝트 목록을 하위목록 형태로 표시
-- **Scroll‑to‑Top** 버튼, **인‑페이지 목차(TOC)** 등 UX 향상 요소 포함
-- **대표 프로젝트** 카드에서 바로 상세 페이지(`keyProjects/godLifeRouting`, `keyProjects/userEventDashboard`) 로 이동 가능
+```bash
+npm install
+npm run dev        # http://127.0.0.1:5173
+npm run build      # 타입 체크 + dist/ 생성
+npm run preview    # 빌드 결과 확인
+```
 
 ## 기술 스택
 
-| 분야 | 사용 기술 |
-|------|-----------|
-| **Framework** | Next.js 16, Nextra 4 |
-| **Styling**   | Tailwind CSS, vanilla CSS |
-| **Language**  | JavaScript (React), MDX |
-| **Backend**   | Kotlin, Spring Boot, MySQL, Redis, Kafka |
-| **DevOps**    | Docker, Jenkins, GitHub Actions |
-| **Cloud**     | AWS, Oracle Cloud |
+| 영역 | 사용 |
+| --- | --- |
+| 빌드 | Vite 8 · TypeScript |
+| 3D | Three.js(GPUComputationRenderer로 GPGPU 파티클 시뮬레이션) · GLSL(curl noise · 스프링) · postprocessing(Bloom · Vignette · Noise) |
+| 모션 | GSAP(ScrollTrigger · SplitText) · Lenis |
+| 글꼴 | Pretendard Variable · JetBrains Mono Variable(npm 패키지로 자체 호스팅) |
 
-## 로컬에서 실행하기
+## 구조
 
-```bash
-# 레포지토리 클론
-git clone https://github.com/cvcvcx9/portfolio_react.git
-cd portfolio_react
-
-# 의존성 설치 (npm 혹은 yarn)
-npm install   # 또는 yarn install
-
-# 개발 서버 실행
-npm run dev   # http://localhost:3000
+```
+index.html              모든 본문 콘텐츠(정적 HTML, 자바스크립트 없이도 읽힘)
+src/main.ts             부트스트랩: 스크롤 · WebGL 스테이지 · 애니메이션 · 데모 연결
+src/gl/stage.ts         렌더러 · GPGPU 시뮬레이션 · 후처리 · 포인터 반발 · 3D 라벨
+src/gl/shapes.ts        파티클 목표 형태 9종(planet, split, bound, subtract, loop, grid, console, agent, constellation)
+src/gl/glsl.ts          시뮬레이션 · 포인트 · 배경 셰이더
+src/ui/*                스크롤(Lenis), 등장 애니메이션, 내비게이션, 커서, 섹션 ↔ 형태 연결
+src/demos/*             인터랙티브 데모(배포 · 동기화 · 재시도 · 실패 지문 · 운영일 · 구조 테스트 · 요청 기록)
+src/styles/*            토큰 · 레이아웃 · 섹션 · 데모 스타일
 ```
 
-> **Tip**: `npm run dev` 은 Turbopack 기반으로 빠른 HMR을 제공합니다.
+## 콘텐츠 수정
+
+- 문장과 수치는 `index.html`에서 고칩니다. 섹션마다 `data-shape`(파티클 형태), `data-side`(left · right · center), `data-dim`(밝기)을 지정합니다.
+- 3D 라벨 문구는 `src/gl/shapes.ts`의 `anchor(...)`에 있습니다.
+- `prefers-reduced-motion` 사용자는 부드러운 스크롤과 큰 모션 없이 같은 내용을 봅니다. WebGL2를 쓸 수 없으면 정적 배경으로 대체합니다.
+
+## 공개 범위 원칙
+
+- SPOS(사내 프로젝트)는 기술 판단과 공개 가능한 수치만 싣습니다.
+- 내부 주소 · 이슈 번호 · 커밋 해시 · 노선/기관명 · 팀원 이름 · 개인 사진은 넣지 않습니다.
+- 데모의 경로 · 커밋 SHA · 값은 모두 예시입니다.
 
 ## 배포
 
-현재는 **Vercel** 혹은 **Netlify** 와 같은 정적 호스팅 서비스에 배포할 수 있습니다.
-```bash
-# Vercel CLI 사용 예시
-npm i -g vercel
-vercel
-```
+`vercel.json`이 Vite 프리셋과 빌드 출력(`dist`)을 지정합니다. 이전 Next.js 사이트의 상세 페이지 주소(`/keyProjects/*`, `/projects/*`)는 새 페이지의 해당 위치로 리다이렉트합니다.
 
-## 연락처
+## 연락
 
-- **GitHub**: [cvcvcx9](https://github.com/cvcvcx9)
-- **Email**: cvcvcx9@gmail.com
-
----
-
-*이 README는 프로젝트를 처음 보는 사람에게 전체적인 흐름을 빠르게 파악시켜 주기 위해 작성되었습니다.*
+- GitHub: [cvcvcx9](https://github.com/cvcvcx9)
+- Email: cvcvcx9@gmail.com

@@ -1,20 +1,8 @@
-_pagefind/
-public/_pagefind
-
 # dependencies
 /node_modules
-/.pnp
-.pnp.js
 
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
+# build output
+/dist
 
 # misc
 .DS_Store
@@ -22,8 +10,6 @@ public/_pagefind
 
 # debug
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
 
 # local env files
 .env*.local
@@ -33,7 +19,8 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+
+# local notes
 PORTFOLIO_PLAN.md
 .superpowers/
 docs/superpowers/

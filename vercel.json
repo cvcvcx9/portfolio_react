@@ -1,0 +1,23 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "redirects": [
+    { "source": "/keyProjects/malang", "destination": "/#malang", "permanent": true },
+    { "source": "/keyProjects/godLifeRouting", "destination": "/#godliferouting", "permanent": true },
+    { "source": "/keyProjects/erpApartmentAutomation", "destination": "/#erp", "permanent": true },
+    { "source": "/keyProjects/kkatnyang", "destination": "/#kkatnyang", "permanent": true },
+    { "source": "/keyProjects/userEventDashboard", "destination": "/#mongodash", "permanent": true },
+    { "source": "/projects/kingOfChoice", "destination": "/#kingofchoice", "permanent": true },
+    { "source": "/projects/sonnuri", "destination": "/#sonnuri", "permanent": true },
+    { "source": "/projects/sideMSAproject", "destination": "/#msa", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    }
+  ]
+}

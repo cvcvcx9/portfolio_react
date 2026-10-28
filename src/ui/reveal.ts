@@ -54,7 +54,8 @@ function fades() {
     gsap.from(group.children, { autoAlpha: 0, y: 22, duration: 0.9, ease: 'power3.out', stagger: 0.07, scrollTrigger: once(group) })
   }
   // Only panels without their own revealing children: a moving parent would shift the children's trigger positions.
-  const panels = '.demo, .notes, .features li, .measure, .leverage, .practices li, .fossils, .colophon, .work, .contact__grid > div, .pipeline__list li'
+  const panels =
+    '.problems__list li, .demo, .notes, .features li, .measure, .leverage, .practices li, .fossils, .colophon, .work, .contact__grid > div, .pipeline__list li'
   for (const el of $$(panels)) {
     gsap.from(el, { autoAlpha: 0, y: 40, duration: 1.1, ease: 'power3.out', scrollTrigger: once(el, 'top 92%') })
   }

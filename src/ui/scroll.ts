@@ -11,8 +11,6 @@ export interface Scroller {
   start(): void
 }
 
-const NAV_OFFSET = 76
-
 export function initScroll(): Scroller {
   let lenis: Lenis | null = null
   if (!env.reducedMotion) {
@@ -25,12 +23,13 @@ export function initScroll(): Scroller {
   const to = (target: string | number | HTMLElement) => {
     const el = typeof target === 'string' ? (target === '#top' ? 0 : document.querySelector<HTMLElement>(target)) : target
     if (el === null) return
+    // Lenis and native scrolling both apply the root scroll-padding-top, which keeps the target below the nav.
     if (lenis) {
-      lenis.scrollTo(el, { offset: typeof el === 'number' ? 0 : -NAV_OFFSET, duration: 1.4 })
+      lenis.scrollTo(el, { duration: 1.4 })
     } else if (typeof el === 'number') {
       window.scrollTo({ top: el })
     } else {
-      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - NAV_OFFSET })
+      el.scrollIntoView()
     }
   }
 

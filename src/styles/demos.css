@@ -802,11 +802,6 @@
   text-align: right;
 }
 
-.fp-bars small {
-  font-size: 12px;
-  color: var(--text-3);
-}
-
 /* ── Operating day ──────────────────────────────────────── */
 .opday {
   position: relative;
@@ -934,8 +929,9 @@
 }
 
 /* ── CI terminal ────────────────────────────────────────── */
+/* Reserve the finished run's height so typing never shifts the page below. */
 .demo-ci .term {
-  min-height: 14.5em;
+  min-height: 22.4em;
   font-size: 12.5px;
 }
 

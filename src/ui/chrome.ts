@@ -33,7 +33,7 @@ function menu(scroller: Scroller) {
 
 function chapters() {
   const railItems = $$('[data-rail-item]')
-  const navLinks = $$<HTMLAnchorElement>('.nav__links a')
+  const navLinks = $$<HTMLAnchorElement>('.nav__links a[href^="#"]')
   for (const section of $$('[data-chapter]')) {
     const id = section.dataset.chapter!
     ScrollTrigger.create({

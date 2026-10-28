@@ -808,7 +808,7 @@ b.sev {
 
 /* ── Agents ─────────────────────────────────────────────── */
 .pipeline {
-  max-width: 640px;
+  max-width: 620px;
   margin-bottom: clamp(48px, 8vh, 90px);
 }
 
@@ -830,7 +830,7 @@ b.sev {
 
 .pipeline__list li::before {
   content: '0' counter(p);
-  grid-row: span 2;
+  grid-row: span 3;
   font-family: var(--font-mono);
   font-size: 13px;
   color: var(--text-3);
@@ -847,6 +847,22 @@ b.sev {
   font-size: 14.5px;
   line-height: 1.6;
   color: var(--text-2);
+}
+
+.pipeline__list em {
+  grid-column: 2;
+  margin-top: 4px;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--acid);
+  text-shadow: 0 0 16px rgba(5, 6, 10, 0.95), 0 0 3px rgba(5, 6, 10, 0.9);
+}
+
+.inline-link {
+  color: var(--ice);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .pipeline__list li.is-active::before {
@@ -1000,6 +1016,175 @@ b.sev {
 
 .term--colophon {
   min-height: 12.5em;
+}
+
+/* ── Workflow examples ──────────────────────────────────── */
+.examples {
+  margin-bottom: clamp(28px, 5vh, 48px);
+}
+
+.examples__note {
+  max-width: 720px;
+  font-size: 14.5px;
+  color: var(--text-3);
+}
+
+.examples__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+  align-items: start;
+}
+
+.ex {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.ex__bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.ex__bar b {
+  color: var(--ice);
+  font-weight: 500;
+}
+
+.ex__body {
+  padding: 14px 16px;
+}
+
+.ex__code {
+  margin: 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: #d6dde8;
+}
+
+.ex__code .c {
+  color: var(--text-3);
+}
+
+.ex__code .k {
+  color: var(--ice);
+}
+
+.ex__code .a,
+.ex__code .d-add {
+  color: var(--acid);
+}
+
+.ex__code .d-del {
+  color: var(--ember);
+  text-decoration: line-through;
+}
+
+.ex__table {
+  font-size: 13px;
+}
+
+.ex__foot {
+  padding: 10px 16px 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-2);
+  border-top: 1px dashed var(--line);
+}
+
+.ex__body .ex__foot {
+  margin: 12px -16px -14px;
+}
+
+.ex__title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ex__title small {
+  margin-left: 6px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--acid);
+}
+
+.ex__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.ex__tags span {
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-2);
+}
+
+.ex__dl {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 13.5px;
+}
+
+.ex__dl dt {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ice);
+}
+
+.ex__dl dd {
+  color: var(--text-2);
+}
+
+.ex__review {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.ex__review b {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+}
+
+.ex__review .sev {
+  color: var(--ember);
+}
+
+.ex__review .mid {
+  color: var(--amber);
+}
+
+.ex__review .ok {
+  color: var(--acid);
 }
 
 /* ── Earlier work ───────────────────────────────────────── */
@@ -1221,7 +1406,8 @@ b.sev {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .lessons {
+  .lessons,
+  .examples__grid {
     grid-template-columns: minmax(0, 1fr);
   }
 

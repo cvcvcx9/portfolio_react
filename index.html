@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>조창훈 — 쪼개고, 경계 짓고, 검증하는 백엔드 개발자</title>
+    <title>조창훈 — 용어집 → 계약 → 검증 → 연동, 코딩 에이전트와 일하는 백엔드 개발자</title>
     <meta
       name="description"
-      content="사내 폐쇄망 철도 전력 관제 백엔드에서 무중단 배포, 유실을 전제로 한 실시간 동기화, 재시도에 안전한 API, 평문을 남기지 않는 파일 파이프라인을 설계·운영한 백엔드 개발자 조창훈의 포트폴리오. 코딩 에이전트와 일하는 방식까지 담았습니다."
+      content="사내 폐쇄망 철도 전력 관제 백엔드에서 맞닥뜨린 문제 8개(무중단 배포, 실시간 동기화, 재시도, 업로드 부하, 상태 해석, 아키텍처 규칙, 테스트 콘솔, 코딩 에이전트)와 각 문제에서 내린 판단, 결과를 정리한 백엔드 개발자 조창훈의 포트폴리오."
     />
     <meta name="theme-color" content="#05060a" />
     <meta name="color-scheme" content="dark" />
@@ -14,10 +14,10 @@
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ko_KR" />
     <meta property="og:site_name" content="조창훈 포트폴리오" />
-    <meta property="og:title" content="조창훈 — 문제를 쪼개고, 경계를 긋고, 검증으로 닫는 백엔드 개발자" />
+    <meta property="og:title" content="조창훈 — 용어집 → 계약 → 검증 → 연동, 코딩 에이전트와 일하는 백엔드 개발자" />
     <meta
       property="og:description"
-      content="오케스트레이터 없는 무중단 배포, 상태 수렴형 SSE 동기화, 멱등 재시도, 평문 없는 파일 파이프라인, 그리고 코딩 에이전트와 일하는 방식."
+      content="폐쇄망 관제 백엔드에서 맞닥뜨린 문제와 내린 판단, 결과. 무중단 배포, 상태 수렴형 SSE 동기화, 멱등 재시도, 평문 없는 파일 파이프라인, 테스트 콘솔, 코딩 에이전트."
     />
     <meta property="og:url" content="https://www.cvcvcx9.org/" />
     <meta property="og:image" content="https://www.cvcvcx9.org/og.jpg" />
@@ -40,11 +40,10 @@
         <span>Backend Engineer</span>
       </a>
       <nav class="nav__links" aria-label="주요 섹션">
-        <a href="#thinking">사고 방식</a>
-        <a href="#cases">해결한 문제</a>
+        <a href="#agents">일하는 방식</a>
         <a href="#flowlab">테스트 콘솔</a>
-        <a href="#agents">에이전트</a>
         <a href="#earlier">이전 작업</a>
+        <a href="/cases/">해결한 문제</a>
       </nav>
       <a class="nav__cta" href="#contact">연락하기<span aria-hidden="true">→</span></a>
       <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
@@ -54,21 +53,18 @@
 
     <div class="menu" id="menu" hidden data-menu>
       <nav aria-label="모바일 메뉴">
-        <a href="#thinking"><small>01</small>사고 방식</a>
-        <a href="#cases"><small>02</small>해결한 문제</a>
-        <a href="#flowlab"><small>03</small>테스트 콘솔</a>
-        <a href="#agents"><small>04</small>에이전트</a>
-        <a href="#earlier"><small>05</small>이전 작업</a>
-        <a href="#contact"><small>06</small>연락</a>
+        <a href="#agents"><small>01</small>일하는 방식</a>
+        <a href="#flowlab"><small>02</small>테스트 콘솔</a>
+        <a href="#earlier"><small>03</small>이전 작업</a>
+        <a href="#contact"><small>04</small>연락</a>
+        <a href="/cases/"><small>→</small>해결한 문제</a>
       </nav>
     </div>
 
     <aside class="rail" aria-hidden="true" data-rail>
       <a href="#top" tabindex="-1" data-rail-item="top"><span>시작</span></a>
-      <a href="#thinking" tabindex="-1" data-rail-item="thinking"><span>사고 방식</span></a>
-      <a href="#cases" tabindex="-1" data-rail-item="cases"><span>해결한 문제</span></a>
+      <a href="#agents" tabindex="-1" data-rail-item="agents"><span>일하는 방식</span></a>
       <a href="#flowlab" tabindex="-1" data-rail-item="flowlab"><span>테스트 콘솔</span></a>
-      <a href="#agents" tabindex="-1" data-rail-item="agents"><span>에이전트</span></a>
       <a href="#earlier" tabindex="-1" data-rail-item="earlier"><span>이전 작업</span></a>
       <a href="#contact" tabindex="-1" data-rail-item="contact"><span>연락</span></a>
       <i class="rail__progress"><b></b></i>
@@ -83,21 +79,19 @@
 
     <main id="main">
       <!-- ───────────────────────── HERO ───────────────────────── -->
-      <section id="top" class="hero" data-shape="planet" data-side="right" data-dim="1" data-dim-m="0.85" data-chapter="top">
+      <section id="top" class="hero" data-shape="agent" data-side="right" data-dim="1" data-dim-m="0.85" data-chapter="top">
         <div class="hero__inner">
           <p class="kicker"><span class="kicker__dot"></span>BACKEND ENGINEER — 조창훈</p>
           <h1 class="hero__title" data-hero-title>
-            <span class="hero__line">문제를 <em class="verb verb--split" data-preview="split" tabindex="0">쪼개고,</em></span>
-            <span class="hero__line"><em class="verb verb--bound" data-preview="bound" tabindex="0">경계를 긋고,</em></span>
-            <span class="hero__line"><em class="verb verb--subtract" data-preview="subtract" tabindex="0">덜어낸 뒤,</em></span>
-            <span class="hero__line"><em class="verb verb--loop" data-preview="loop" tabindex="0">검증으로</em> 닫습니다.</span>
+            <span class="hero__line"><em class="verb verb--bound" data-preview="glossary" tabindex="0">용어집</em> →</span>
+            <span class="hero__line"><em class="verb verb--split" data-preview="contract" tabindex="0">계약 확정</em> →</span>
+            <span class="hero__line"><em class="verb verb--loop" data-preview="scenario" tabindex="0">시나리오 검증</em> →</span>
+            <span class="hero__line"><em class="verb verb--subtract" data-preview="integration" tabindex="0">연동.</em></span>
           </h1>
           <p class="hero__lead" data-reveal>
-            사내 폐쇄망에서 돌아가는 철도 전력 관제 백엔드를 설계하고 운영합니다. 오케스트레이터 없는 무중단 배포, 유실을 전제로 한
-            실시간 동기화, 재시도에 안전한 API, 평문을 남기지 않는 파일 파이프라인을 만들었습니다. 그리고 그 규칙을 사람과 코딩
-            에이전트가 똑같이 지키도록 CI에 심었습니다.
+            코딩 에이전트와 함께 사내 폐쇄망 철도 전력 관제 백엔드 설계 · 운영. 기능 하나를 <b>용어집 → 폴더 규칙 → 계약 확정 → 구현 → 리뷰 · 시나리오 → 연동</b> 6단계로 만듭니다. 이 방식으로 푼 문제는 <a class="inline-link" href="/cases/">해결한 문제</a>에 따로 정리.
           </p>
-          <p class="hero__hint" data-reveal><span aria-hidden="true">↳</span> 강조된 동사에 마우스를 올려 보세요. 파티클이 그 생각의 모양이 됩니다.</p>
+          <p class="hero__hint" data-reveal><span aria-hidden="true">↳</span> 강조된 단계에 마우스 → 링에서 그 단계가 커짐</p>
         </div>
 
         <dl class="stats" data-reveal-group>
@@ -123,86 +117,7 @@
           </div>
         </dl>
 
-        <a class="scroll-cue" href="#thinking" data-cursor="내려가기"><span>SCROLL</span><i></i>생각하는 방식부터</a>
-      </section>
-
-      <!-- ───────────────────────── 01 THINKING ───────────────────────── -->
-      <section id="thinking" class="chapter thinking" data-chapter="thinking" aria-labelledby="thinking-title">
-        <header class="chapter__head" data-shape="planet" data-side="right" data-dim="0.9">
-          <span class="chapter__num" aria-hidden="true">01</span>
-          <p class="label">01 — 생각하는 방식</p>
-          <h2 id="thinking-title" data-split>문제는 달라도, 푸는 순서는 같았습니다.</h2>
-          <p class="chapter__lead" data-reveal>
-            배포, 실시간 동기화, 파일 업로드, AI 응답 속도. 서로 다른 문제였지만 매번 같은 네 단계로 풀었습니다. 스크롤하면 오른쪽
-            파티클이 각 단계의 모양으로 바뀝니다.
-          </p>
-        </header>
-
-        <div class="steps">
-          <ol class="steps__index" aria-hidden="true" data-steps-index>
-            <li data-step-dot="0"><b>01</b>쪼갠다</li>
-            <li data-step-dot="1"><b>02</b>경계를 긋는다</li>
-            <li data-step-dot="2"><b>03</b>덜어낸다</li>
-            <li data-step-dot="3"><b>04</b>검증으로 닫는다</li>
-          </ol>
-
-          <article class="step step--split" data-shape="split" data-side="right" data-dim="1" data-step="0">
-            <p class="step__verb">쪼갠다</p>
-            <h3>“무중단 배포”는 고칠 수 없습니다. 고칠 수 있는 위협으로 쪼갭니다.</h3>
-            <p>
-              replica가 하나뿐인 폐쇄망에서 서비스를 죽이는 것은 컨테이너 교체의 몇 초가 아니었습니다. 신·구 버전이 같은 DB를 쓰는
-              순간의 스키마 비호환, 배포 중 스케줄러의 중복 실행과 공백, 파이프라인끼리의 간섭이었습니다. 세 위협을 각각 구조적으로
-              먼저 막고, 남은 HTTP 재기동 구간은 마지막에 제거했습니다.
-            </p>
-            <ul class="evidence">
-              <li><b>SPOS</b> 무중단 배포를 위협 3개 + 재기동 구간으로 분해</li>
-              <li><b>Malang</b> 응답 지연을 호출 수 · 요청 단위 · 리전 왕복 · fallback으로 분해</li>
-            </ul>
-          </article>
-
-          <article class="step step--bound" data-shape="bound" data-side="right" data-dim="1" data-step="1">
-            <p class="step__verb">경계를 긋는다</p>
-            <h3>보장은 가장 단단한 층에. 규칙은 문서가 아니라 CI에.</h3>
-            <p>
-              “컨트롤러는 트랜잭션을 소유하지 않는다”, “도메인 판정 모듈은 DB·HTTP를 import하지 않는다” 같은 경계를 AST 구조
-              테스트로 만들었습니다. 사람이든 에이전트든 규칙을 어기면 리뷰 전에 파이프라인이 멈춥니다. 중복 업로드의 최종 방어선도
-              애플리케이션 코드가 아니라 DB의 부분 유니크 인덱스에 두었습니다.
-            </p>
-            <ul class="evidence">
-              <li><b>SPOS</b> AST 구조 테스트 · 게이트웨이 신뢰 경계(fail-closed) · 부분 유니크 인덱스</li>
-              <li><b>갓생루팅</b> 버튼 비활성화 대신 ref_id + DB UNIQUE</li>
-            </ul>
-          </article>
-
-          <article class="step step--subtract" data-shape="subtract" data-side="right" data-dim="1" data-step="2">
-            <p class="step__verb">덜어낸다</p>
-            <h3>가장 빠른 왕복은 하지 않는 왕복입니다.</h3>
-            <p>
-              부하 테스트에서 업로드의 약 25%가 실패한 원인은 요청마다 숨어 있던 키 조회 왕복이었습니다. 캐시와 single-flight로 동시
-              50개 요청의 조회를 1회로 묶었습니다. 같은 기준으로 Kafka 대신 이미 떠 있는 Redis를 쓰고, 필요가 증명되지 않은 전역 큐는
-              미뤘습니다.
-            </p>
-            <ul class="evidence">
-              <li><b>SPOS</b> 파일 핫패스의 숨은 왕복 제거 · Redis 전역 큐 보류</li>
-              <li><b>테스트 콘솔</b> 계획 선택 시 phase 요청 14회 → 3회</li>
-              <li><b>Malang</b> slot 추출과 응답 생성을 single-call로</li>
-            </ul>
-          </article>
-
-          <article class="step step--loop" data-shape="loop" data-side="right" data-dim="1" data-step="3">
-            <p class="step__verb">검증으로 닫는다</p>
-            <h3>판정 불능은 성공이 아니라 실패입니다.</h3>
-            <p>
-              백엔드 앱의 배포 잡은 사흘 치 머지 내내 초록이었는데, 컨테이너에는 아무것도 반영되지 않았습니다. 그 뒤로 배포 성공의
-              정의를 “잡이 초록”에서 “서빙 중인 이미지 태그 = 머지 커밋 SHA”로 바꿨습니다. 모든 수정은 회귀 테스트로 봉인하고, 검증하지 못한 범위는
-              “미검증”이라고 보고합니다.
-            </p>
-            <ul class="evidence">
-              <li><b>SPOS</b> “무배포 green” 사고 → 타임아웃 hard-fail · 서빙 태그 실측</li>
-              <li><b>갓생루팅</b> 재실행 로그가 없는 성능 수치는 포트폴리오에서도 제외</li>
-            </ul>
-          </article>
-        </div>
+        <a class="scroll-cue" href="#agents" data-cursor="내려가기"><span>SCROLL</span><i></i>6단계부터</a>
       </section>
 
       <div class="marquee" aria-hidden="true" data-marquee>
@@ -213,450 +128,205 @@
         </div>
       </div>
 
-      <!-- ───────────────────────── 02 CASES ───────────────────────── -->
-      <section id="cases" class="chapter cases" data-chapter="cases" aria-labelledby="cases-title">
-        <header class="chapter__head" data-shape="grid" data-side="center" data-dim="0.8">
-          <span class="chapter__num" aria-hidden="true">02</span>
-          <p class="label">02 — 해결한 문제</p>
-          <h2 id="cases-title" data-split>폐쇄망 관제 시스템에서 실제로 풀었던 문제들</h2>
+      <!-- ───────────────────────── 03 AGENTS ───────────────────────── -->
+      <section id="agents" class="chapter agents" data-chapter="agents" aria-labelledby="agents-title">
+        <header class="chapter__head" data-shape="agent" data-side="right" data-dim="0.75">
+          <span class="chapter__num" aria-hidden="true">01</span>
+          <p class="label">01 — 일하는 방식</p>
+          <h2 id="agents-title" data-split>기능 하나를 에이전트와 만드는 6단계</h2>
+          <ul class="facts" data-reveal-group>
+            <li>적용 대상: SPOS 서버(커밋 1,700+) · 테스트 콘솔 Flow Lab. 구현의 상당 부분을 Claude Code · Codex로 진행</li>
+            <li>출발점: 에이전트는 세션마다 기억이 리셋되고, 정하지 않은 부분은 추측으로 채움</li>
+            <li>그래서: 프롬프트 요령 대신 용어 · 구조 · 계약 · 검증을 저장소와 이슈에 고정</li>
+          </ul>
         </header>
 
-        <article class="project" data-shape="grid" data-side="center" data-dim="0.55">
-          <div class="project__body">
-            <p class="project__meta"><span>2026.06 – 현재</span><span>팀 프로젝트</span><span>백엔드 설계 · 구현 · 운영</span><span>서버 커밋 1,700+</span></p>
-            <h3 class="project__name">SPOS 서버 <small>철도 전력 관제 작업 관리 백엔드</small></h3>
-            <p class="project__desc" data-reveal>
-              단전·급전 작업을 계획하고, 결재하고, 현장에서 실행하고, 감사하는 시스템의 서버입니다. 관제 데스크와 현장 안전관리자 앱이
-              같은 상태를 실시간으로 봐야 하고, 배포가 업무 상태를 깨면 안 됩니다.
-            </p>
-            <ul class="constraints" data-reveal-group>
-              <li><b>사내 폐쇄망</b>외부 클라우드 · 레지스트리 · 오케스트레이터 없음</li>
-              <li><b>replica 1</b>스케일아웃으로 장애를 숨길 수 없음</li>
-              <li><b>관제 업무</b>배포가 상태를 깨면 곧 안전 문제</li>
-              <li><b>현장 망</b>응답 유실과 재전송이 일상</li>
-            </ul>
-            <p class="stack">Python · FastAPI · SQLAlchemy(async) · PostgreSQL + pgbouncer · Redis · APScheduler · Docker Swarm · Traefik · GitLab CI · Tavern</p>
-          </div>
+        <div class="pipeline" data-shape="agent" data-side="right" data-dim="0.95">
+          <p class="part">단계 · 하는 일 · 효과</p>
+          <ol class="pipeline__list" data-pipeline>
+            <li>
+              <b>용어집</b>
+              <span>mattpocock skills의 domain-modeling으로 서비스 용어를 GLOSSARY.md에 정리. 개념마다 승인 용어 1개 + 쓰지 않는 말을 함께 기록하고, 큰 결정은 ADR로 남김. 예: ‘정정’과 ‘수정’을 서로 다른 개념으로 고정</span>
+              <em>→ 사람 · 에이전트 · 클라이언트 · 코드가 같은 단어를 씀 → 요구사항 오해와 이름 불일치 감소</em>
+            </li>
+            <li>
+              <b>폴더 규칙</b>
+              <span>기능보다 폴더 구조를 먼저 설계. 폴더 · 파일마다 책임을 정함: 컨트롤러는 트랜잭션 소유 금지, 판정 모듈은 DB · HTTP import 금지, 라우터 등록은 선언 테이블 한 곳. 규칙은 AST 구조 테스트로 강제</span>
+              <em>→ 문제가 터진 위치를 보면 열어 볼 파일이 정해짐 → 에이전트 탐색 범위 축소, 규칙 위반은 CI에서 차단</em>
+            </li>
+            <li>
+              <b>계약 확정</b>
+              <span>이슈 발행(범위 · 완료 조건). 첫 구현이면 요청 · 응답 스키마와 API 초안을 들고 클라이언트와 협의 → 문제를 찾으면 설계부터 수정 → 확정 후 구현 착수</span>
+              <em>→ 수정이 코드가 아니라 문서 단계에서 끝남 → 재작업 감소, 에이전트가 추측할 공백 제거</em>
+            </li>
+            <li>
+              <b>구현</b>
+              <span>이슈 단위로 에이전트에 위임. 착수 전 흐름표(요청 → 권한 · lock → DB 변경 → side effect → 응답 · 에러)를 한글 의사코드로 승인, 호출자 · 형제 경로 영향 조사</span>
+              <em>→ 코드 전에 이해를 검증 → 같은 기준을 쓰는 경로를 한 번에 수정, 누락 감소</em>
+            </li>
+            <li>
+              <b>리뷰 · 시나리오</b>
+              <span>show-me로 변경점(diff · 호출 흐름 · 화면)을 눈으로 확인 → code-review 스킬로 리뷰 → Playwright로 실제 사용자 시나리오를 작성 · 실행</span>
+              <em>→ “다 됐습니다” 보고 대신 확인된 변경점과 시나리오 결과로 완료 판정</em>
+            </li>
+            <li>
+              <b>연동 · 배포</b>
+              <span>테스트 콘솔 Flow Lab으로 클라이언트 연동 전에 연동 · 실사용 테스트 → 클라이언트 연동 → 서버 반영</span>
+              <em>→ 클라이언트와 붙는 시점에 남은 수정 최소화</em>
+            </li>
+          </ol>
+          <p class="result"><b>결과</b> 지시 단위: “이 파일 고쳐줘” → “이 이슈 구현해줘” · <a class="inline-link" href="/cases/">이 방식으로 푼 문제 8개 보기 →</a></p>
+        </div>
 
-          <figure class="roles" data-roles>
-            <figcaption>
-              <b>하나의 코드베이스, 하나의 이미지, 네 개의 서버</b>
-              <span>SERVICE_ROLE 하나로 앱을 조립하는 role 기반 모듈러 모놀리스입니다. 라우터 등록을 선언 테이블로 만들어, 서버가 늘어도 코드 분기가 아니라 테이블 한 줄이 늘어납니다.</span>
-            </figcaption>
-            <div class="roles__diagram">
-              <div class="roles__image"><span>app:&lt;commit-sha&gt;</span><small>단일 Docker 이미지</small></div>
-              <svg class="roles__wires" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true">
-                <path d="M200 0 C200 60, 50 60, 50 120" />
-                <path d="M200 0 C200 60, 150 60, 150 120" />
-                <path d="M200 0 C200 60, 250 60, 250 120" />
-                <path d="M200 0 C200 60, 350 60, 350 120" />
-              </svg>
-              <ul class="roles__list">
-                <li><b>WEB Router</b><span>유일한 진입점 · JWT 게이트 · 헤더 화이트리스트 프록시</span></li>
-                <li><b>Auth</b><span>로그인 · versioned JWT · 마스터키 단독 보관</span></li>
-                <li><b>WAS</b><span>작업 · 작업계획 · 전력 · SSE · 알림</span></li>
-                <li><b>File</b><span>봉투 암호화 업로드 · 아카이브 배치</span></li>
-              </ul>
-            </div>
-            <pre class="code code--mini"><code><span class="k">@dataclass</span>(frozen=<span class="n">True</span>)
-<span class="k">class</span> <span class="t">RouterSpec</span>:
-    module_path: <span class="t">str</span>
-    prefix: <span class="t">str</span>
-    service_roles: <span class="t">frozenset</span>[<span class="t">str</span>]  <span class="c"># 이 라우터를 갖는 role</span>
-
-<span class="k">for</span> spec <span class="k">in</span> get_router_specs_for_role(role):
-    app.include_router(load(spec), prefix=spec.prefix)</code></pre>
-          </figure>
-        </article>
-
-        <!-- CASE 01 · 배포 -->
-        <article class="case" id="case-deploy" data-shape="grid" data-side="center" data-dim="0.3">
-          <header class="case__head">
-            <p class="case__tag"><span>CASE 01</span><span>배포</span><span class="sev">SEV</span></p>
-            <h3 data-split>초록색 배포가 아무것도 배포하지 않았습니다</h3>
-            <p class="case__lead" data-reveal>
-              오케스트레이터 없는 폐쇄망에서 무중단 배포를 만들었습니다. 위협을 셋으로 쪼개 CI 게이트와 리더 락으로 먼저 막고, 마지막에
-              호스트별 단일 노드 Swarm으로 롤링 교체를 붙였습니다. 그리고 cutover 이틀 동안 SEV를 포함한 사고 9건을 겪었습니다.
-            </p>
-          </header>
-
-          <div class="case__grid">
-            <div class="demo demo-deploy" data-demo="deploy">
-              <div class="demo__bar">
-                <span class="demo__title">배포 시뮬레이터 · 단일 노드 · replica 1</span>
-                <div class="seg" role="radiogroup" aria-label="배포 구성">
-                  <button type="button" role="radio" aria-checked="true" data-mode="before">변경 전</button>
-                  <button type="button" role="radio" aria-checked="false" data-mode="after">변경 후</button>
-                </div>
-              </div>
-              <p class="demo__caption" data-deploy-caption>앱 서비스가 host 포트를 직접 열고, 모든 서비스가 start-first로 교체됩니다.</p>
-              <div class="dd">
-                <div class="dd__node">
-                  <span class="dd__label">노드</span>
-                  <div class="dd__port" data-port>host :443 <small data-port-owner>앱 소유</small></div>
-                  <div class="dd__edge" data-edge>엣지 (Traefik)</div>
-                  <div class="dd__tasks">
-                    <div class="dd__task is-run" data-task="old"><b>구 태스크</b><code>7f3a2c1</code><span data-state>Running</span></div>
-                    <div class="dd__task" data-task="new"><b>신 태스크</b><code>b81e9d4</code><span data-state>—</span></div>
-                  </div>
-                  <ul class="dd__ready" data-ready>
-                    <li data-check="db">DB</li><li data-check="redis">Redis</li><li data-check="key">키</li><li data-check="storage">스토리지</li>
-                  </ul>
-                </div>
-                <ol class="dd__pipe" data-pipe>
-                  <li data-pstep="build">이미지 빌드 <small>per-commit 태그</small></li>
-                  <li data-pstep="migrate">마이그레이션 <small>expand-only one-shot</small></li>
-                  <li data-pstep="rollout">롤링 업데이트</li>
-                  <li data-pstep="converge">수렴 확인 <small data-converge>—</small></li>
-                  <li class="dd__result" data-presult>파이프라인 —</li>
-                </ol>
-              </div>
-              <div class="dd__verdict" data-verdict>
-                <span>서빙 중인 태그 <code data-serving>7f3a2c1</code></span>
-                <span>머지 커밋 <code>b81e9d4</code></span>
-                <b data-verdict-text>배포 전</b>
-              </div>
-              <div class="demo__actions">
-                <button type="button" class="btn btn--primary" data-act="deploy">배포 실행</button>
-                <button type="button" class="btn" data-act="fail" aria-pressed="false" disabled>readiness 실패 주입</button>
-                <button type="button" class="btn btn--ghost" data-act="reset">초기화</button>
-              </div>
-              <p class="demo__log" aria-live="polite" data-log>‘배포 실행’을 누르세요. 변경 전 구성에서 파이프라인이 무엇을 보고하는지 보세요.</p>
-            </div>
-
-            <div class="notes">
-              <h4>위협을 쪼개서 막은 순서</h4>
-              <dl class="notes__list">
-                <div><dt>스키마 비호환</dt><dd>파괴적 DDL 6종을 진실표로 탐지하는 CI 게이트. contract-phase 서명이 없으면 배포를 막아 expand–contract를 강제합니다.</dd></div>
-                <div><dt>스케줄러 중복·공백</dt><dd>Redis 리더 락(SET NX EX) + 소유 토큰 검증 + self-fencing. follower가 같은 20초 틱으로 재획득해 공백은 20초 이하, 중복은 0입니다.</dd></div>
-                <div><dt>파이프라인 간섭</dt><dd>호스트별 배포 직렬화, 배포 잡 취소 불가. 반쪽 배포가 구조적으로 생기지 않습니다.</dd></div>
-                <div><dt>HTTP 재기동</dt><dd>start-first 롤링 + 의존성을 실제로 호출하는 readiness 게이트 + 자동 롤백. 로컬 실증에서 롤링 중 연속 요청 5xx 0건.</dd></div>
-              </dl>
-              <p class="notes__punch">“사흘 치 배포가 반영되지 않았는데, 잡은 매번 초록이었습니다.”</p>
-            </div>
-          </div>
-
-          <details class="record" data-record>
-            <summary><span>사고 9건의 원인과 봉인 — 전체 기록 펼치기</span><i aria-hidden="true"></i></summary>
-            <div class="record__body">
-              <p>
-                로컬 실증은 메커니즘을 증명하지만, 실 호스트의 역사를 증명하지 않습니다. 사고 대부분은 신 체계의 결함이 아니라 compose
-                시절의 잔재(붙어 있던 컨테이너, 옛 이름을 참조하는 env, floating 태그, 상대경로)와 신 체계의 충돌이었습니다.
-              </p>
-              <div class="table-scroll">
-                <table class="incidents">
-                  <thead><tr><th>#</th><th>증상</th><th>근본 원인</th><th>해결과 봉인</th></tr></thead>
+        <div class="examples" data-shape="agent" data-side="center" data-dim="0.3">
+          <p class="part">예시 · 기능 하나가 6단계를 지나는 모습</p>
+          <p class="examples__note">실제 프로젝트 화면이 아니라, 같은 흐름을 가상의 기능 “환불 요청 API”로 재현한 예시입니다.</p>
+          <div class="examples__grid">
+            <figure class="ex">
+              <figcaption class="ex__bar"><b>01 용어집</b><span>GLOSSARY.md</span></figcaption>
+              <div class="ex__body">
+                <table class="ex__table">
+                  <thead><tr><th>용어</th><th>정의</th><th>쓰지 않는 말</th></tr></thead>
                   <tbody>
-                    <tr><td><b class="sev">SEV1</b> 1</td><td>cutover 배포 실패로 진입 서버 다운</td><td>잔존 컨테이너의 네트워크 점유 + 삼켜진 에러(<code>|| echo</code>)로 실패할 배포에 진입</td><td>잔존 컨테이너 강제 분리 → 실패 시 hard-fail. 순서까지 회귀 테스트</td></tr>
-                    <tr><td>2</td><td>엣지 신규 태스크 영구 Pending, 배포는 “성공”</td><td>host 포트 + start-first + 단일 노드 = 포트 데드락</td><td>host 포트를 쥔 서비스만 stop-first로 분리</td></tr>
-                    <tr><td>3</td><td>엣지가 모든 요청에 404</td><td>프록시 특정 버전대가 Docker API 버전을 구버전으로 고정</td><td>로컬에서 버전별 최소 재현으로 격리 → 패치 버전까지 명시한 태그 고정</td></tr>
-                    <tr><td>4</td><td>배포 “성공”, 서빙 코드는 그대로</td><td>고정 이미지 태그 → 오케스트레이터가 no-op 처리</td><td>per-commit 이미지 태그</td></tr>
-                    <tr><td>5</td><td>파일 서버 readiness 503 재시작 루프</td><td>env가 compose 시절 컨테이너 이름을 참조</td><td>공유 env 대신 스택 파일 override — “토폴로지 지식은 스택이 소유”</td></tr>
-                    <tr><td>6</td><td>로그 유실, 저장 경로 회귀</td><td><code>stack deploy</code>는 env 파일을 보간하지 않음</td><td>배포 스크립트가 필요한 값을 export, 규칙을 런북에 명시</td></tr>
-                    <tr><td>7</td><td>영속 데이터가 CI 워크스페이스에</td><td>상대경로 bind — git clean에 유실 가능</td><td>named volume·절대경로 + 볼륨 목록을 진실표 테스트로 봉인</td></tr>
-                    <tr><td><b class="sev">SEV</b> 8</td><td>백엔드 앱 사흘 치 배포 무반영, 잡은 매번 green</td><td>2번의 병리가 백엔드 앱에서 재발 + 수렴 체크 타임아웃이 실패를 은폐</td><td>타임아웃 hard-fail → 전 노드 엣지 도입, “host 포트를 가진 모든 서비스는 stop-first”를 술어 진실표로 봉인</td></tr>
-                    <tr><td>9</td><td>게이트웨이 경유 SSE 전멸(200 + 0 bytes)</td><td>스트리밍 응답 반환 직후 <code>finally</code>가 클라이언트를 조기 close</td><td>정리를 응답 BackgroundTask로 이동, 실패 테스트 먼저</td></tr>
+                    <tr><td>환불 요청</td><td>고객이 결제 금액의 반환을 신청한 상태</td><td>취소, 반품</td></tr>
+                    <tr><td>환불 승인</td><td>운영자가 요청을 받아들여 지급이 확정된 상태</td><td>처리 완료</td></tr>
+                    <tr><td>부분 환불</td><td>주문 항목 일부만 반환</td><td>일부 취소</td></tr>
                   </tbody>
                 </table>
-              </div>
-              <ul class="lessons">
-                <li><b>판정 불능은 성공이 아니라 실패다.</b> exit code 대신 UpdateStatus를 읽고, 최종 검증은 “서빙 중인 이미지 태그 = 머지 커밋 SHA”의 실측입니다.</li>
-                <li><b>실패는 크게, 즉시.</b> SEV1의 방아쇠는 거창한 설계 결함이 아니라 에러를 삼킨 한 줄이었습니다.</li>
-                <li><b>수정은 인스턴스가 아니라 클래스에 건다.</b> 같은 병리가 두 번 보이면 개별 패치가 아니라 술어 단위 진실표로 봉인합니다.</li>
-                <li><b>좋은 readiness는 사고를 앞당겨 준다.</b> DNS 결함이 프로덕션 업로드 실패가 아니라 배포 시점의 503으로 드러났습니다.</li>
-              </ul>
-              <p class="record__foot">배포 벽시계는 Swarm 전환 후 ~9.5분까지 늘었다가, 마이그레이션을 one-shot 잡으로 단일화하고 배포 잡을 DAG로 병렬화해 ~2.5분으로 돌아왔습니다. 병렬화가 안전한 근거는 파이프라인 트릭이 아니라 “expand-only 마이그레이션”이라는 계약입니다.</p>
-            </div>
-          </details>
-        </article>
-
-        <!-- CASE 02 · 실시간 동기화 -->
-        <article class="case" id="case-sync" data-shape="grid" data-side="center" data-dim="0.3">
-          <header class="case__head">
-            <p class="case__tag"><span>CASE 02</span><span>실시간 동기화</span></p>
-            <h3 data-split>연결이 살아 있어도, 화면은 틀릴 수 있습니다</h3>
-            <p class="case__lead" data-reveal>
-              Redis Pub/Sub는 영속 로그가 아닙니다. 마지막 발행 하나만 유실되고 이후 변경이 없으면, 다음 이벤트의 번호 차이로도 누락을
-              알 수 없습니다. 그래서 이벤트 전달이 아니라 상태 수렴을 설계했습니다.
-            </p>
-          </header>
-
-          <div class="case__grid">
-            <div class="demo demo-sync" data-demo="sync">
-              <div class="demo__bar">
-                <span class="demo__title">동기화 시뮬레이터 · power 채널</span>
-                <label class="switch"><input type="checkbox" checked data-checkpoint /><span></span>공유 checkpoint</label>
-              </div>
-              <div class="sync">
-                <div class="sync__box sync__box--db">
-                  <span class="sync__label">DB · 정본</span>
-                  <b class="sync__rev" data-db-rev>r12</b>
-                  <span class="sync__state" data-db-state>구간 A · 급전</span>
-                </div>
-                <div class="sync__wire" data-wire>
-                  <span class="sync__wire-label">Redis Pub/Sub</span>
-                  <span class="sync__wire-cp" data-cp-label>checkpoint · 5초 (시연은 2.5초)</span>
-                </div>
-                <div class="sync__box sync__box--client" data-client>
-                  <span class="sync__label">관제 화면</span>
-                  <b class="sync__rev" data-client-rev>r12</b>
-                  <span class="sync__state" data-client-state>구간 A · 급전</span>
-                  <span class="sync__match" data-match>일치</span>
-                </div>
-              </div>
-              <div class="demo__actions">
-                <button type="button" class="btn btn--primary" data-act="commit">상태 변경 (commit)</button>
-                <button type="button" class="btn" data-act="drop" aria-pressed="false">다음 발행 유실</button>
-                <button type="button" class="btn btn--ghost" data-act="reset">초기화</button>
-              </div>
-              <p class="demo__log" aria-live="polite" data-log>‘다음 발행 유실’을 켜고 상태를 한 번만 바꿔 보세요. 그다음 checkpoint를 끄고 다시 해 보세요.</p>
-            </div>
-
-            <div class="notes">
-              <h4>정본은 DB, Pub/Sub는 빠른 신호</h4>
-              <dl class="notes__list">
-                <div><dt>같은 트랜잭션</dt><dd>업무 변경과 revision 증가를 같은 DB 트랜잭션에 반영합니다. 공개 상태가 실제로 바뀔 때만 revision이 오릅니다.</dd></div>
-                <div><dt>commit 후 발행</dt><dd>rollback된 변경은 알리지 않습니다. 발행 실패 때문에 이미 성공한 commit을 실패 응답으로 뒤집지도 않습니다.</dd></div>
-                <div><dt>공유 checkpoint</dt><dd>워커 안 구독자들이 타이머와 DB 조회 한 번을 공유합니다. 연결 수만큼 폴링하지 않으면서 마지막 유실까지 찾습니다.</dd></div>
-                <div><dt>첫 이벤트 = snapshot</dt><dd>구독 ACK 확인 → 한 read-only 트랜잭션에서 읽기 → 첫 SSE 이벤트로 전송. 최초 접속과 복구가 같은 경로가 됩니다.</dd></div>
-              </dl>
-              <p class="notes__honest"><b>주장하지 않는 것</b> exactly-once 전달, Last-Event-ID replay, 5초 내 복구 보장.</p>
-            </div>
-          </div>
-
-          <details class="record" data-record>
-            <summary><span>이벤트 계약과 실패 처리 — 전체 기록 펼치기</span><i aria-hidden="true"></i></summary>
-            <div class="record__body">
-              <div class="table-scroll">
-                <table>
-                  <thead><tr><th>이벤트</th><th>의미</th><th>클라이언트 계약</th></tr></thead>
-                  <tbody>
-                    <tr><td><code>sync.snapshot</code></td><td>현재 전체 집합과 revision</td><td>기존 집합을 교체하고 서버 scope를 채택</td></tr>
-                    <tr><td><code>power.delta</code></td><td>전원·협의의 확정 최종값</td><td>중복·과거 revision은 무시, 다음 연속 revision만 적용</td></tr>
-                    <tr><td><code>plans.delta</code></td><td>포함된 계획의 공개 상태</td><td>해당 객체 전체 교체, 생략된 계획은 유지</td></tr>
-                    <tr><td><code>sync.checkpoint</code></td><td>Primary의 현재 revision</td><td>적용값보다 앞서면 복구. checkpoint로 적용 revision을 올리지 않음</td></tr>
-                    <tr><td><code>sync.resync</code></td><td>집합·기준일 변경 등 전체 복구 요구</td><td>재연결 후 snapshot 재수신</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <ul class="lessons">
-                <li><b>실패한 연결을 정상처럼 유지하지 않는다.</b> 연결별 큐 256 프레임 초과, Redis 재구독, checkpoint 오류는 일부 delta를 조용히 버리지 않고 연결 종료로 이어집니다.</li>
-                <li><b>배열의 의미를 구분한다.</b> snapshot의 빈 배열은 “전체가 비었음”, delta에서 항목 생략은 “기존 값 유지”입니다.</li>
-                <li><b>운영일은 달력 날짜가 아니다.</b> 계획 scope는 09:00~익일 09:00이고, 운영일이 바뀌면 resync 후 연결을 닫습니다. 같은 revision인데 조회 시각 때문에 내용이 달라지는 문제를 막습니다.</li>
-                <li><b>15초 ping은 생존 신호일 뿐이다.</b> 업무 상태 정합성의 증거로 쓰지 않습니다.</li>
-              </ul>
-            </div>
-          </details>
-        </article>
-
-        <!-- CASE 03 · 재시도 -->
-        <article class="case" id="case-retry" data-shape="grid" data-side="center" data-dim="0.3">
-          <header class="case__head">
-            <p class="case__tag"><span>CASE 03</span><span>재시도 · 멱등성</span></p>
-            <h3 data-split>백오프는 중복 실행을 막지 않습니다</h3>
-            <p class="case__lead" data-reveal>
-              현장 앱이 0.5초 → 1초 → 2초 지수 백오프 재시도를 도입하자, 응답이 유실된 요청이 같은 업무를 다시 실행했습니다. 증빙과
-              스텝 이벤트가 중복으로 쌓이고, 결재 대기 건이 교체됐습니다. 요청 키를 새로 만들지 않고, 이미 있던 잠금과 도메인 상태로 풀었습니다.
-            </p>
-          </header>
-
-          <div class="case__grid">
-            <div class="demo demo-retry" data-demo="retry">
-              <div class="demo__bar">
-                <span class="demo__title">재시도 시뮬레이터 · 스텝 제출</span>
-                <label class="switch"><input type="checkbox" checked data-guard /><span></span>멱등 가드</label>
-              </div>
-              <div class="retry">
-                <div class="retry__track" data-track>
-                  <div class="retry__lane"><span>현장 앱</span></div>
-                  <div class="retry__lane"><span>서버</span></div>
-                </div>
-                <dl class="retry__counters">
-                  <div><dt>증빙 행</dt><dd data-count-evidence>0</dd></div>
-                  <div><dt>스텝 이벤트</dt><dd data-count-events>0</dd></div>
-                  <div><dt>앱이 받은 응답</dt><dd data-count-response>—</dd></div>
-                </dl>
-                <ol class="retry__log" data-steps></ol>
-              </div>
-              <div class="demo__actions">
-                <button type="button" class="btn btn--primary" data-act="submit">스텝 제출 (응답 유실)</button>
-                <button type="button" class="btn btn--ghost" data-act="reset">초기화</button>
-              </div>
-              <p class="demo__log" aria-live="polite" data-log>응답이 두 번 유실되는 상황입니다. 가드를 끄고도 실행해 보세요.</p>
-            </div>
-
-            <div class="notes">
-              <h4>요청 UUID가 아니라 현재 도메인 상태로 판정</h4>
-              <dl class="notes__list">
-                <div><dt>이미 잡던 잠금</dt><dd>제출 경로는 원래 계획 행을 <code>FOR NO KEY UPDATE</code>로 읽고 있었습니다. 그 잠금 안에서 완료 여부를 확인하므로 Redis 요청 키·advisory lock·요청 상태 테이블을 추가하지 않았습니다.</dd></div>
-                <div><dt>가드의 위치</dt><dd>권한 · 순서 · 반려 · 계약 검증 뒤 마지막에 둡니다. 기존 오류 우선순위를 바꾸지 않고, 지난 phase의 잘못된 재제출은 여전히 실패합니다.</dd></div>
-                <div><dt>정정은 별도 경로</dt><dd>내용을 바꾸려면 정정·수정 API를 씁니다. 멱등 가드는 “같은 제출인지”만 판단합니다.</dd></div>
-                <div><dt>업로드 burst</dt><dd>multipart 본문을 읽기 전에 수용 여부를 결정합니다. 워커당 동시 5 · 대기 85 · 최대 30초 FIFO, 초과 시 429 + 대기 깊이 기반 Retry-After.</dd></div>
-              </dl>
-            </div>
-          </div>
-
-          <details class="record" data-record>
-            <summary><span>요청 유형별 서버 처리와 버린 대안 — 전체 기록 펼치기</span><i aria-hidden="true"></i></summary>
-            <div class="record__body">
-              <div class="table-scroll">
-                <table>
-                  <thead><tr><th>요청</th><th>서버 처리</th></tr></thead>
-                  <tbody>
-                    <tr><td>같은 phase에서 이미 COMPLETED인 일반 스텝 재제출</td><td>권한·순서·계약 검증 뒤, 증빙·이벤트 저장 본문을 실행하지 않고 완료 응답</td></tr>
-                    <tr><td>같은 사용자의 phase 재제출</td><td>미결재 PENDING이 있고 이후 초안 변경이 없으면 현재 상태 반환. PENDING 교체 없음 — 그 사이 관제사가 결재해도 대상이 어긋나지 않음</td></tr>
-                    <tr><td>이미 지난 phase의 스텝 재제출</td><td>기존 순서 검증 실패 유지. 멱등 가드로 무조건 200을 돌려주지 않음</td></tr>
-                    <tr><td>내용 정정</td><td>별도 정정·수정 경로</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <ul class="lessons">
-                <li><b>왜 Redis 전역 큐가 아닌가.</b> 단일 호스트·다중 워커에서는 워커 로컬 제한만으로 메모리 가드를 유지할 수 있었습니다. lease·heartbeat 상태를 늘리지 않고, 워커 간 편중이 실측되면 다시 검토합니다.</li>
-                <li><b>신호가 클라이언트까지 가는지 확인한다.</b> 구현 리뷰에서 운영 예외 처리기가 <code>Retry-After</code> 헤더를 버리는 문제를 찾아 고치고, 운영 응답 경로를 회귀 테스트에 넣었습니다.</li>
-                <li><b>주장 범위를 지킨다.</b> 이 계약은 모든 POST의 exactly-once가 아니라 “현재 도메인 상태상 같은 제출인지”의 판정입니다. 목표 조건과 실측 성과를 구분해서 기록합니다.</li>
-              </ul>
-            </div>
-          </details>
-        </article>
-
-        <!-- CASE 04 · 파일 파이프라인 -->
-        <article class="case" id="case-file" data-shape="grid" data-side="center" data-dim="0.3">
-          <header class="case__head">
-            <p class="case__tag"><span>CASE 04</span><span>파일 파이프라인 · 부하</span></p>
-            <h3 data-split>업로드의 25%가 정확히 +2.000초에 실패했습니다</h3>
-            <p class="case__lead" data-reveal>
-              현장 증빙(사진·음성)은 서버 디스크에 평문으로 남으면 안 되고, 무결성은 감사 가능해야 했습니다. 클라이언트 봉투 암호화로
-              파이프라인을 만들었는데, 프론트 팀과의 동시 업로드 부하 테스트에서 약 25%가 503으로 떨어졌습니다.
-            </p>
-          </header>
-
-          <div class="case__grid">
-            <figure class="demo demo-fingerprint" data-demo="fingerprint">
-              <div class="demo__bar"><span class="demo__title">실패 시각의 지문 · 도식</span></div>
-              <svg class="fp" viewBox="0 0 640 300" role="img" aria-label="성공한 요청은 0.1초에서 1.4초 사이에 흩어져 있고, 실패한 요청은 모두 2.000초 지점에 수직으로 몰려 있는 도식" data-fp></svg>
-              <figcaption class="demo__caption">
-                실제 로그를 옮긴 그림이 아니라, 관찰한 패턴을 그린 도식입니다. 처리가 느리면 실패 시각이 흩어집니다. 실패가 정확히 connect
-                타임아웃 값에 몰린다는 것은 <b>커넥션 수립 자체가 실패한다</b>는 지문이었습니다.
-              </figcaption>
-              <div class="fp-bars" aria-label="동시 50개 요청에서 키 조회 횟수">
-                <div><span>수정 전 · 요청마다 조회</span><i style="--w: 100%"></i><b>50회</b></div>
-                <div><span>수정 후 · TTL 캐시 + single-flight</span><i style="--w: 2%"></i><b>1회</b></div>
-                <small>동시 50 태스크에서 origin 조회 횟수를 세는 테스트로 봉인</small>
+                <p class="ex__foot">ADR-0007 · “주문 취소”와 “환불”은 다른 개념 — 취소는 결제 전, 환불은 결제 후</p>
               </div>
             </figure>
 
-            <div class="notes">
-              <h4>세 겹이 겹쳐 있었습니다</h4>
-              <ol class="notes__steps">
-                <li>복호용 키는 캐시했지만, 응답 암호화용 활성 키는 <b>매 요청</b> 인증 서버로 HTTP 왕복을 했습니다. 캐시가 있다고 모든 경로가 캐시를 타지는 않았습니다.</li>
-                <li>그 왕복마다 HTTP 클라이언트를 <b>새로 만들어</b> 커넥션 풀 없이 TCP를 매번 새로 열었습니다.</li>
-                <li>burst로 인증 서버의 accept 큐가 잠시 밀리면, 신규 connect들이 2초 타임아웃에서 <b>일제히</b> 죽었습니다.</li>
-              </ol>
-              <p class="notes__fix">
-                <b>수정</b> 활성 키에 TTL 캐시(60초) + single-flight, 모듈 공유 클라이언트로 커넥션 재사용(keepalive는 엣지 idle
-                timeout보다 짧게), 게이트웨이 프록시도 앱 수명 공유 클라이언트로 전환. 스트리밍 응답의 정리 계약은 그대로 지켰습니다.
-              </p>
-            </div>
-          </div>
+            <figure class="ex">
+              <figcaption class="ex__bar"><b>02 폴더 규칙</b><span>트리 + 파일별 책임</span></figcaption>
+              <pre class="ex__code"><code>src/
+├── api/refunds/router.py      <span class="c"># 경로 · DTO만. 트랜잭션 금지</span>
+├── services/refund_service.py <span class="c"># 트랜잭션 · 흐름 소유</span>
+├── domain/refund_policy.py    <span class="c"># 순수 판정. DB · HTTP import 금지</span>
+├── repositories/refund_repo.py<span class="c"> # 쿼리만</span>
+└── tests/architecture/
+    └── test_layers.py         <span class="c"># 위 규칙을 AST로 검사</span></code></pre>
+              <p class="ex__foot">“금액 계산이 틀림” → domain/refund_policy.py부터 열면 됨</p>
+            </figure>
 
-          <details class="record" data-record>
-            <summary><span>서버가 평문을 저장하지 않는 업로드 설계 — 전체 기록 펼치기</span><i aria-hidden="true"></i></summary>
-            <div class="record__body">
-              <ol class="flow">
-                <li><b>클라이언트</b>평문 sha256 계산 → AES-256-GCM 봉투 암호화. 봉투 헤더에 래핑된 키 메타와 nonce가 있어 파일 하나가 자기 완결적입니다.</li>
-                <li><b>파일 서버</b>키 언래핑은 인증 서버에 위임합니다. 마스터키를 갖지 않으므로 파일 호스트가 통째로 털려도 저장된 암호문을 열 수 없습니다.</li>
-                <li><b>검증</b>메모리에서만 복호 → 평문 해시 재계산·대조 → MIME 검증. 검증 순서는 값 객체 생성자가 단독 소유합니다(parse, don’t validate).</li>
-                <li><b>저장</b>암호문 해시를 주소로 쓰는 content-addressed 저장, 임시 파일 → rename으로 원자적 쓰기. 중복의 최종 방어선은 DB 부분 유니크 인덱스입니다.</li>
-                <li><b>아카이브</b>응답 경로 밖의 매시 배치가 원격 보관소로 전송 → 다시 읽어 해시 재검증 → 로컬 삭제. 다운로드 시 없으면 자동으로 되가져옵니다.</li>
-              </ol>
-              <div class="table-scroll">
-                <table>
-                  <thead><tr><th>해시</th><th>대상</th><th>역할</th></tr></thead>
-                  <tbody>
-                    <tr><td>checksum</td><td>평문 sha256</td><td>파일의 identity. 클라이언트가 선언해도 서버가 복호 후 다시 계산해 대조. 중복 업로드 판정 키</td></tr>
-                    <tr><td>blob sha256</td><td>암호문 sha256</td><td>저장 주소이자 아카이브 무결성 검증 키</td></tr>
-                  </tbody>
-                </table>
+            <figure class="ex">
+              <figcaption class="ex__bar"><b>03 이슈 발행</b><span>이슈 트래커</span></figcaption>
+              <div class="ex__body ex__issue">
+                <p class="ex__title">환불 요청 API 추가 <small>#예시 · opened</small></p>
+                <p class="ex__tags"><span>backend</span><span>In Progress</span><span>계약 협의 필요</span></p>
+                <dl class="ex__dl">
+                  <div><dt>범위</dt><dd>고객 환불 요청 생성 · 조회. 승인은 다음 이슈</dd></div>
+                  <div><dt>완료 조건</dt><dd>☑ 계약 확정 ☐ 구현 ☐ 리뷰 ☐ 시나리오 테스트 ☐ 연동</dd></div>
+                </dl>
               </div>
-              <ul class="lessons">
-                <li><b>왜 BackgroundTasks가 아니라 배치인가.</b> 요청에 붙인 백그라운드 작업은 배포·재시작 때 유실되고 재시도 이력이 남지 않습니다. 배치는 DB 장부를 보고 돌기 때문에 어떤 프로세스가 죽어도 다음 배치가 이어받습니다.</li>
-                <li><b>교훈.</b> 핫패스의 “요청당 1회 왕복”은 평시에는 몇 ms로 숨어 있다가 burst에서 connect 실패로 터집니다. 부하 최적화의 완료 정의도 “빨라진 것 같다”가 아니라 왕복 횟수를 세는 테스트와 재측정입니다.</li>
+            </figure>
+
+            <figure class="ex">
+              <figcaption class="ex__bar"><b>03 계약 확정</b><span>요청 · 응답 초안 → 협의 → 수정</span></figcaption>
+              <pre class="ex__code"><code><span class="k">POST</span> /orders/{id}/refund-requests
+{
+<span class="d-del">-  "amount": 12000</span>
+<span class="d-add">+  "items": [{ "orderItemId": 3, "quantity": 1 }]</span>
+   "reason": "SIZE"
+}
+<span class="k">201</span> { "refundRequestId": 41, "status": "REQUESTED" }
+<span class="k">409</span> REFUND_ALREADY_REQUESTED</code></pre>
+              <p class="ex__foot">협의 중 발견: 클라이언트 화면은 항목 단위 → 금액 필드 대신 items[]로 설계 수정</p>
+            </figure>
+
+            <figure class="ex">
+              <figcaption class="ex__bar"><b>04 구현</b><span>흐름표(한글 의사코드) 승인 후</span></figcaption>
+              <pre class="ex__code"><code>환불요청_생성(주문ID, 항목들):
+  주문을 잠그고 읽는다            <span class="c"># FOR UPDATE</span>
+  결제 전이면 → 409 주문_취소_대상
+  이미 요청 중이면 → 409 중복_요청
+  금액 = 환불정책.계산(항목들)    <span class="c"># domain, 순수 함수</span>
+  환불요청 저장, commit
+  commit 후 → 운영자 알림 발행   <span class="c"># side effect</span>
+  201 응답</code></pre>
+            </figure>
+
+            <figure class="ex">
+              <figcaption class="ex__bar"><b>05 show-me</b><span>변경점 확인</span></figcaption>
+              <pre class="ex__code"><code><span class="c"> src/</span>
+<span class="c"> ├── api/refunds/</span>
+<span class="d-add">+│   └── router.py         # POST refund-requests</span>
+<span class="c"> ├── services/</span>
+<span class="d-add">+│   └── refund_service.py</span>
+<span class="c"> └── domain/</span>
+<span class="d-add">+    └── refund_policy.py</span>
+
+<span class="c"> 환불요청_생성</span>
+<span class="c">   주문 잠금</span>
+<span class="d-add">+  중복 요청 검사</span>
+<span class="c">   금액 계산</span></code></pre>
+              <p class="ex__foot">diff를 파일 목록이 아니라 구조 · 흐름 단위로 보고 의도와 맞는지 확인</p>
+            </figure>
+
+            <figure class="ex">
+              <figcaption class="ex__bar"><b>05 code-review</b><span>리뷰 결과</span></figcaption>
+              <ul class="ex__review">
+                <li><b class="sev">높음</b>refund_service.py:48 · 알림 발행이 commit 전 → rollback 시 잘못된 알림</li>
+                <li><b class="mid">중간</b>router.py:21 · quantity 0 허용 → DTO 검증 추가</li>
+                <li><b class="ok">통과</b>계층 규칙 · import 방향 위반 없음</li>
               </ul>
-            </div>
-          </details>
-        </article>
+              <p class="ex__foot">지적 사항 수정 → 같은 리뷰 재실행 → 0건 확인</p>
+            </figure>
 
-        <div class="case-pair">
-          <!-- CASE 05 · 상태 해석 -->
-          <article class="case case--half" id="case-state" data-shape="grid" data-side="center" data-dim="0.3">
-            <header class="case__head">
-              <p class="case__tag"><span>CASE 05</span><span>상태 해석</span></p>
-              <h3 data-split>같은 계획을, 화면은 ‘대기 중’으로 알림은 ‘대상 아님’으로 읽었습니다</h3>
-              <p class="case__lead" data-reveal>
-                등록 직후 계획에는 저장된 상태 snapshot이 없었습니다. 화면 조회는 이벤트·초안에서 상태를 복원했지만, 전원 변경 알림은 빈
-                snapshot을 그대로 판정해 계획을 뺐습니다. NULL 처리 한 줄이 아니라, 두 경로를 공통 상태 재료와 도메인 조립기로
-                수렴시켰습니다.
-              </p>
-            </header>
-            <div class="demo demo-opday" data-demo="opday">
-              <div class="demo__bar"><span class="demo__title">운영일은 달력 날짜가 아닙니다 · KST 09:00 ~ 익일 09:00</span></div>
-              <div class="opday" data-opday>
-                <div class="opday__days" data-days></div>
-                <div class="opday__axis" data-axis></div>
-                <div class="opday__work" data-work tabindex="0" role="slider" aria-label="작업 시간 구간. 좌우 화살표로 이동합니다" aria-valuemin="0" aria-valuemax="60" aria-valuenow="0">
-                  <span class="opday__handle opday__handle--l" data-handle="l"></span>
-                  <b data-work-label>08:30–09:30</b>
-                  <span class="opday__handle opday__handle--r" data-handle="r"></span>
-                </div>
-              </div>
-              <div class="demo__actions demo__actions--wrap">
-                <button type="button" class="chip" data-preset="5,7">08:30–09:30</button>
-                <button type="button" class="chip" data-preset="0,6">06:00–09:00</button>
-                <button type="button" class="chip" data-preset="6,10">09:00–11:00</button>
-                <button type="button" class="chip" data-preset="34,40">23:00–02:00</button>
-              </div>
-              <p class="demo__log" aria-live="polite" data-log></p>
-              <p class="formula"><code>작업 시작 &lt; 운영일 종료 AND 작업 종료 &gt; 운영일 시작</code></p>
-            </div>
-            <p class="case__foot">공통 엔진을 쓴다고 대상 집합까지 같지는 않습니다. 화면은 완료·취소를 표시하고, 알림은 제외하고, 급전 안전 판정은 화면에 없는 전날 작업까지 포함합니다.</p>
-          </article>
+            <figure class="ex">
+              <figcaption class="ex__bar"><b>05 Playwright</b><span>실제 사용자 시나리오</span></figcaption>
+              <pre class="ex__code"><code><span class="k">test</span>('고객이 항목 하나를 환불 요청한다', async ({ page }) => {
+  await page.goto('/orders/1001')
+  await page.getByRole('button', { name: '환불 요청' }).click()
+  await page.getByLabel('티셔츠 · 1개').check()
+  await page.getByRole('button', { name: '요청 보내기' }).click()
+  await expect(page.getByText('환불 요청됨')).toBeVisible()
+})
+<span class="a">✓ 1 passed</span> <span class="c">· 중복 요청 시나리오 ✓ · 결제 전 주문 ✓</span></code></pre>
+            </figure>
+          </div>
+        </div>
 
-          <!-- CASE 06 · 경계의 테스트화 -->
-          <article class="case case--half" id="case-guard" data-shape="grid" data-side="center" data-dim="0.3">
-            <header class="case__head">
-              <p class="case__tag"><span>CASE 06</span><span>아키텍처 규칙</span></p>
-              <h3 data-split>“이렇게 하지 마세요”는 잊혀도, 빨간 파이프라인은 무시할 수 없습니다</h3>
-              <p class="case__lead" data-reveal>
-                구현의 상당 부분을 코딩 에이전트에 맡기면 “컨벤션을 아는 사람이 리뷰로 잡는다”가 성립하지 않습니다. 아키텍처 규칙을 AST
-                분석 테스트로 만들어 배포 게이트에 넣었습니다.
-              </p>
-            </header>
-            <div class="demo demo-ci" data-demo="ci">
-              <div class="demo__bar"><span class="demo__title">구조 테스트 · 배포 게이트</span><button type="button" class="btn btn--small" data-act="run">다시 실행</button></div>
-              <pre class="term" data-term><code>$ pytest src/tests -q</code></pre>
-            </div>
-            <ul class="rules">
-              <li><b>컨트롤러의 월권 금지</b>DTO 정의, commit·rollback·flush 호출</li>
-              <li><b>import 방향</b>utils → 도메인 금지, models ↛ pydantic, dtos ↛ sqlalchemy</li>
-              <li><b>순수 도메인 봉인</b>판정 모듈은 ORM·DB·HTTP import 금지</li>
-              <li><b>죽은 계약의 부활 금지</b>레거시 식별자를 코드와 DTO 양쪽에서 거부</li>
-              <li><b>지식 복제는 2벌째가 개입 시점</b>판정은 진실표로 단일 소유, 서비스에서 재선언하면 AST가 탐지</li>
-            </ul>
-            <p class="case__foot">은퇴시킨 read-model은 접근하는 순간 테스트가 터지는 가드로 봉인했습니다. 하지 않기로 한 결정도 회귀 대상입니다.</p>
-          </article>
+        <div class="fossils" data-shape="agent" data-side="center" data-dim="0.35">
+          <p class="label label--small">사고 → 남긴 규칙</p>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>문제(사고)</th><th>판단(남긴 규칙과 장치)</th></tr></thead>
+              <tbody>
+                <tr><td>스냅샷 마이그레이션이 신규 환경 빌드를 깨뜨림</td><td>체인을 pg_dump baseline으로 스쿼시 + <code>create_all</code> 전면 금지 테스트 + 일회용 Postgres 실측</td></tr>
+                <tr><td>배포 중 자동 취소로 반쪽 배포</td><td>배포 잡 취소 불가 + 호스트별 직렬화</td></tr>
+                <tr><td>git clean이 시크릿 마운트를 삭제</td><td>clean 예외 + 시크릿 주입 실패 시 fail-fast</td></tr>
+                <tr><td>pgbouncer·asyncpg 충돌, 커넥션 슬롯 고갈</td><td>pgbouncer 경유 강제 + 접속 설정 표준화, 설정 테스트로 봉인</td></tr>
+                <tr><td>신규 API의 프록시 등록 누락으로 404</td><td>라우터 등록 + 프록시 spec + 실호출 검증을 한 세트로</td></tr>
+                <tr><td>같은 판정 지식 3벌 복제로 drift</td><td>“2벌째가 개입 시점” + 진실표 단일 소유 + AST 재선언 탐지</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="loop-line">사고 → 원인 분석 → 규칙 문서화 → 테스트 · CI로 기계화 → CLAUDE.md · 런북 반영 → 다음 세션의 에이전트가 읽고 시작</p>
+        </div>
+
+        <div class="colophon" data-shape="agent" data-side="center" data-dim="0.35">
+          <p class="label label--small">이 사이트도 같은 방식으로 제작</p>
+          <pre class="term term--colophon" data-colophon><code><span class="p">$</span> claude "포트폴리오를 뜯어고쳐줘 — 해결한 문제, 사고 방식, 에이전트 활용법. WebGL로."
+<span class="g">▸ 읽기</span>   기존 케이스 스터디 8편 · SPOS 설계 문서 11편 · 테스트 콘솔 작업 노트
+<span class="g">▸ 제외</span>   내부 주소 · 이슈 번호 · 노선·기관명 · 사람 이름 · 개인 사진
+<span class="g">▸ 설계</span>   문제 → 판단 → 결과 · 파티클 형태 9종 · 데모 7종
+<span class="g">▸ 구현</span>   Vite · TypeScript · Three.js · GLSL · GSAP · Lenis
+<span class="g">▸ 검증</span>   타입 체크 · 프로덕션 빌드 · 헤드리스 브라우저(데스크톱·모바일)
+<span class="a">✓ 남은 일</span> 사실관계 · 표현 최종 검토 = 사람</code></pre>
         </div>
       </section>
 
-      <!-- ───────────────────────── 03 FLOW LAB ───────────────────────── -->
+      <!-- ───────────────────────── 02 FLOW LAB ───────────────────────── -->
       <section id="flowlab" class="chapter flowlab" data-chapter="flowlab" aria-labelledby="flowlab-title">
         <header class="chapter__head" data-shape="console" data-side="right" data-dim="0.85">
-          <span class="chapter__num" aria-hidden="true">03</span>
-          <p class="label">03 — 빠른 피드백</p>
-          <h2 id="flowlab-title" data-split>프론트엔드를 기다리지 않는 테스트 콘솔</h2>
-          <p class="chapter__lead" data-reveal>
-            서버를 바꿀 때마다 관제 웹과 현장 앱을 거쳐 확인하면 피드백이 늦습니다. 그래서 서버 API를 두 역할의 관점에서 바로 실행해
-            보는 사내 테스트 콘솔 <b>Flow Lab</b>을 만들었습니다. 백엔드 개발자가 직접 쓰는 “두 번째 클라이언트”입니다.
-          </p>
+          <span class="chapter__num" aria-hidden="true">02</span>
+          <p class="label">02 — 테스트 콘솔 · 6단계 연동</p>
+          <h2 id="flowlab-title" data-split>클라이언트 연동 전에 돌리는 테스트 콘솔</h2>
+          <ul class="facts" data-reveal-group>
+            <li>서버 변경마다 관제 웹 · 현장 앱을 거쳐 확인 → 피드백 지연</li>
+            <li>판단: 서버 API를 두 역할로 바로 실행하는 사내 테스트 콘솔 <b>Flow Lab</b> 구축(백엔드 개발자용 “두 번째 클라이언트”)</li>
+          </ul>
           <p class="project__meta"><span>2026.06 – 현재</span><span>Next.js · TypeScript</span><span>커밋 130+</span><span>유닛 테스트 600+</span><span>브라우저 테스트 12종</span></p>
         </header>
 
@@ -688,30 +358,32 @@
           </div>
 
           <div class="flowlab__notes">
+            <p class="part">판단</p>
             <ul class="features">
               <li>
-                <b>두 역할, 두 세션</b>
-                <span>관제 인증 채널과 앱 인증 채널을 각각 HttpOnly 쿠키 세션으로 관리합니다. 401이면 세션을 복원하고 재시도하며, 한 역할의 로그인이 다른 역할의 화면을 대신하지 않습니다.</span>
+                <b>역할별 확인</b>
+                <span>관제사 · 안전관리자 세션 분리(HttpOnly 쿠키), 401 시 세션 복원 후 재시도. 한 역할의 로그인이 다른 역할 화면을 대신하지 않음</span>
               </li>
               <li>
-                <b>실제 API, 안전한 프록시</b>
-                <span>브라우저는 콘솔의 서버 라우트만 호출합니다. 허용 목록에 있는 서버 주소만 통과시키고, 개발용 계정 정보는 서버 전용 환경변수에만 둡니다.</span>
+                <b>개발 계정 노출</b>
+                <span>브라우저는 콘솔 서버 라우트만 호출, 허용 목록 서버 주소만 통과. 계정 정보는 서버 전용 환경변수에만</span>
               </li>
               <li>
-                <b>버튼 하나 = 요청 묶음 하나</b>
-                <span>어떤 버튼이 어떤 API를 불렀는지, 실제 upstream 주소·상태·소요 시간·본문을 화면에서 바로 봅니다. 동작 후 5초, 이어지는 요청은 2초 안에 묶고 비밀번호·토큰·키 값은 가립니다.</span>
+                <b>요청 추적</b>
+                <span>버튼 하나 = 요청 묶음 하나. upstream 주소 · 상태 · 소요 시간 · 본문 표시, 비밀번호 · 토큰 · 키 값 가림</span>
               </li>
               <li>
-                <b>워크플로 전 구간</b>
-                <span>작업 등록 → 계획 → 결재 게이트 → 단전·급전 조작 → 증빙 업로드(브라우저 봉투 암호화) → 알림 → SSE 실시간 갱신까지 한 화면에서 실행합니다.</span>
+                <b>전 구간 확인</b>
+                <span>작업 등록 → 계획 → 결재 게이트 → 단전 · 급전 조작 → 증빙 업로드(브라우저 봉투 암호화) → 알림 → SSE 갱신을 한 화면에서</span>
               </li>
             </ul>
 
+            <p class="part">결과</p>
             <div class="measure">
               <div class="measure__item">
                 <p class="measure__k">계통도 로딩</p>
                 <p class="measure__v"><b>6.2s</b><i>→</i><b class="is-good">0.9s</b></p>
-                <p class="measure__d">브라우저가 SSE 응답의 첫 바이트를 5초 checkpoint까지 기다리고 있었습니다. 프록시가 upstream 헤더 직후 주석 바이트를 먼저 보내게 했습니다. 가짜 이벤트나 업무 상태는 만들지 않습니다.</p>
+                <p class="measure__d"><b>원인</b> 브라우저가 SSE 첫 바이트를 5초 checkpoint까지 대기. <b>판단</b> 프록시가 upstream 헤더 직후 SSE 주석 바이트 전송, 가짜 이벤트 · 업무 상태 생성 없음. 수정 전후 2회씩 실측.</p>
                 <div class="bars" aria-hidden="true">
                   <span style="--w: 100%">수정 전 1 · 6,333ms</span>
                   <span style="--w: 95%">수정 전 2 · 6,029ms</span>
@@ -722,107 +394,20 @@
               <div class="measure__item">
                 <p class="measure__k">계획 선택 시 요청</p>
                 <p class="measure__v"><b>14회</b><i>→</i><b class="is-good">3회</b></p>
-                <p class="measure__d">phase 7개를 두 번씩 읽던 fan-out을 없앴습니다. 열린 탭만 조회하고, 범위별 캐시와 진행 중 요청 공유를 두고, SSE가 오면 현재 탭만 다시 읽습니다.</p>
+                <p class="measure__d"><b>원인</b> phase 7개를 두 번씩 읽는 fan-out. <b>판단</b> 열린 탭만 조회, 범위별 캐시 + 진행 중 요청 공유, SSE 수신 시 현재 탭만 재조회.</p>
               </div>
             </div>
-
-            <p class="donedef"><b>“완료”의 정의</b> 타입 에러 0 · 유닛 전부 통과 · 외부 요청 없는 API fixture로 헤드리스 브라우저 테스트 · 별도 모델의 코드 리뷰 · 실행한 명령과 미검증 범위 기록.</p>
+            <p class="notes__honest"><b>완료 기준</b> 타입 에러 0 · 유닛 전부 통과 · 외부 요청 없는 API fixture로 헤드리스 브라우저 테스트 · 별도 모델 코드 리뷰 · 실행 명령과 미검증 범위 기록.</p>
           </div>
-        </div>
-      </section>
-
-      <!-- ───────────────────────── 04 AGENTS ───────────────────────── -->
-      <section id="agents" class="chapter agents" data-chapter="agents" aria-labelledby="agents-title">
-        <header class="chapter__head" data-shape="agent" data-side="right" data-dim="0.75">
-          <span class="chapter__num" aria-hidden="true">04</span>
-          <p class="label">04 — 에이전트와 일하는 방식</p>
-          <h2 id="agents-title" data-split>에이전트의 품질은 프롬프트가 아니라 저장소가 결정합니다.</h2>
-          <p class="chapter__lead" data-reveal>
-            SPOS의 상당 부분을 Claude Code·Codex와 함께 구현했습니다. 배운 것은 도구 사용법이 아니라 프로세스 설계였습니다. 에이전트는
-            그럴듯하지만 틀린 코드를 자신 있게 씁니다. 그래서 계약 · 가드레일 · 검증 루프를 저장소에 심었습니다.
-          </p>
-        </header>
-
-        <div class="pipeline" data-shape="agent" data-side="right" data-dim="0.95">
-          <p class="label label--small">두 번 일하지 않는 순서</p>
-          <ol class="pipeline__list" data-pipeline>
-            <li><b>계약 확정</b><span>API · 권한 · UX의 미결정 사항을 구현 전에 인터뷰로 확정합니다. 공백을 남기면 에이전트는 그럴듯한 추측으로 메웁니다.</span></li>
-            <li><b>흐름표</b><span>요청 → 권한·lock → DB 변경 → side effect → 응답·에러를 한글 의사코드로 씁니다. 코드가 아니라 의사코드 단계에서 이해를 검증합니다.</span></li>
-            <li><b>영향 조사</b><span>호출자 전체, read·write path, 스케줄러·알림·캐시·트랜잭션 side effect. 같은 상태 기준을 쓰는 형제 경로를 함께 고칩니다.</span></li>
-            <li><b>실패 테스트 먼저</b><span>“다 됐습니다”를 믿는 대신 빨간 테스트가 초록이 되는 것을 봅니다.</span></li>
-            <li><b>구현 · 스모크</b><span>실제로 띄운 서버에 시나리오 테스트로 프론트의 호출 순서를 재연합니다.</span></li>
-            <li><b>검증 보고</b><span>실행한 명령 · 결과 · 미검증 범위. 검증하지 못한 것은 “해결됨”이 아니라 “미검증”입니다.</span></li>
-          </ol>
-        </div>
-
-        <div class="agents__grid" data-shape="agent" data-side="center" data-dim="0.35">
-          <div class="leverage">
-            <p class="label label--small">실제로 레버리지가 있었던 순서</p>
-            <ol class="leverage__list" data-leverage>
-              <li style="--w: 1"><b>어기면 CI가 막는 가드레일</b><span>구조 테스트 · 마이그레이션 정책 테스트</span></li>
-              <li style="--w: 0.82"><b>구현 전 의사코드 · 계약 승인</b><span>싼 단계에서의 검증</span></li>
-              <li style="--w: 0.66"><b>source of truth 단일화</b><span>이슈 · 커밋 · Swagger · 런북</span></li>
-              <li style="--w: 0.52"><b>실측 기반 완료 정의</b><span>스모크 결과 없는 “완료”는 완료가 아님</span></li>
-              <li style="--w: 0.22"><b>프롬프트 요령</b><span>위 넷이 갖춰진 뒤에야 의미가 있었음</span></li>
-            </ol>
-          </div>
-
-          <ul class="practices">
-            <li>
-              <b>저장소 = 에이전트의 온보딩 문서</b>
-              <span>에이전트는 세션마다 기억이 리셋됩니다. CLAUDE.md(프로젝트 헌법) · 런북(알려진 장애와 절차) · 용어집 + ADR을 저장소에 두자, 지시가 “이 파일 고쳐줘”에서 “이 이슈 구현해줘”로 올라갔습니다.</span>
-            </li>
-            <li>
-              <b>역할 분담과 격리</b>
-              <span>계획 · 설계 · 리뷰는 상위 모델, 대량 구현은 서브에이전트에 맡깁니다. 넓은 조사는 읽기 전용 에이전트를 병렬로 펼치고, 병렬 구현은 git worktree로 격리합니다. 사람의 역할은 “계약 결정자 + 검증자”입니다.</span>
-            </li>
-            <li>
-              <b>이슈가 위임 단위</b>
-              <span>GitLab Issues가 스펙과 진행도의 유일한 정본입니다. In Progress 라벨이 곧 잠금이고, 큰 결정은 map → 조사 → 결정 잠금 → SPEC → phase 티켓으로 쪼갭니다. 범위와 완료 조건이 이슈에 있어야 위임이 안전합니다.</span>
-            </li>
-            <li>
-              <b>출력도 규칙으로</b>
-              <span>에이전트 보고에 한국어 간단 기술 문서(STE) 규칙과 프로젝트 승인 용어표를 적용합니다. 한 개념에 한 단어, 첫 줄은 결과. 라이브러리는 최신 문서(Context7)를 먼저 확인하고, 화면은 Playwright로 직접 봅니다.</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="fossils" data-shape="agent" data-side="center" data-dim="0.35">
-          <p class="label label--small">이 저장소의 규칙 대부분은 사고의 화석입니다</p>
-          <div class="table-scroll">
-            <table>
-              <thead><tr><th>사고</th><th>남긴 규칙과 장치</th></tr></thead>
-              <tbody>
-                <tr><td>스냅샷 마이그레이션이 신규 환경 빌드를 깨뜨림</td><td>체인을 pg_dump baseline으로 스쿼시 + <code>create_all</code> 전면 금지 테스트 + 일회용 Postgres 실측</td></tr>
-                <tr><td>배포 중 자동 취소로 반쪽 배포</td><td>배포 잡 취소 불가 + 호스트별 직렬화</td></tr>
-                <tr><td>git clean이 시크릿 마운트를 삭제</td><td>clean 예외 + 시크릿 주입 실패 시 fail-fast</td></tr>
-                <tr><td>pgbouncer·asyncpg 충돌, 커넥션 슬롯 고갈</td><td>pgbouncer 경유 강제 + 접속 설정 표준화, 설정 테스트로 봉인</td></tr>
-                <tr><td>신규 API의 프록시 등록 누락으로 404</td><td>라우터 등록 + 프록시 spec + 실호출 검증을 한 세트로</td></tr>
-                <tr><td>같은 판정 지식 3벌 복제로 drift</td><td>“2벌째가 개입 시점” + 진실표 단일 소유 + AST 재선언 탐지</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="loop-line">사고 → 원인 분석 → 규칙 문서화 → 테스트·CI로 기계화 → CLAUDE.md·런북 반영. 에이전트는 다음 세션부터 그 규칙을 읽고 시작합니다.</p>
-        </div>
-
-        <div class="colophon" data-shape="agent" data-side="center" data-dim="0.35">
-          <p class="label label--small">이 사이트도 같은 방식으로 만들었습니다</p>
-          <pre class="term term--colophon" data-colophon><code><span class="p">$</span> claude "포트폴리오를 뜯어고쳐줘 — 해결한 문제, 사고 방식, 에이전트 활용법. WebGL로."
-<span class="g">▸ 읽기</span>   기존 케이스 스터디 8편 · SPOS 설계 문서 11편 · 테스트 콘솔 작업 노트
-<span class="g">▸ 제외</span>   내부 주소 · 이슈 번호 · 노선·기관명 · 사람 이름 · 개인 사진
-<span class="g">▸ 설계</span>   네 단계 사고 방식 → GPGPU 파티클 형태 9종 · 인터랙티브 데모 6종
-<span class="g">▸ 구현</span>   Vite · TypeScript · Three.js · GLSL · GSAP · Lenis
-<span class="g">▸ 검증</span>   타입 체크 · 프로덕션 빌드 · 헤드리스 브라우저(데스크톱·모바일)
-<span class="a">✓ 남은 일</span> 사실관계와 표현의 최종 검토는 사람이 합니다</code></pre>
         </div>
       </section>
 
       <!-- ───────────────────────── 05 EARLIER ───────────────────────── -->
       <section id="earlier" class="chapter earlier" data-chapter="earlier" aria-labelledby="earlier-title">
         <header class="chapter__head" data-shape="constellation" data-side="right" data-dim="0.85">
-          <span class="chapter__num" aria-hidden="true">05</span>
-          <p class="label">05 — 이전 작업</p>
-          <h2 id="earlier-title" data-split>같은 방식은 그 전에도 있었습니다</h2>
+          <span class="chapter__num" aria-hidden="true">03</span>
+          <p class="label">03 — 이전 작업</p>
+          <h2 id="earlier-title" data-split>이전 프로젝트의 문제와 판단</h2>
         </header>
 
         <div class="works" data-shape="constellation" data-side="center" data-dim="0.4">
@@ -831,9 +416,9 @@
             <h3>Malang</h3>
             <p class="work__stack">NestJS · Prisma · PostgreSQL · OpenAI · Vertex/Gemini · ElevenLabs</p>
             <dl class="work__pdr">
-              <div><dt>문제</dt><dd>전화형 한국어 발화 연습에서 AI 응답이 10–20초. 사용자는 말한 직후 다음 반응을 기대합니다.</dd></div>
-              <div><dt>판단</dt><dd>RULE로 확정되는 분기는 모델 없이 처리, slot 추출과 응답 생성은 single-call, provider 리전은 가까운 권역으로.</dd></div>
-              <div><dt>결과</dt><dd><b>0.2–1.3초</b>. reason code로 경로를 구분하고 대화 의미가 깨지지 않는지 테스트로 고정.</dd></div>
+              <div><dt>문제</dt><dd>전화형 한국어 발화 연습, AI 응답 10–20초. 사용자는 말한 직후 반응을 기대</dd></div>
+              <div><dt>판단</dt><dd>지연을 호출 수 · 요청 단위 · 리전 왕복 · fallback으로 분리 → RULE 확정 분기는 모델 없이, slot 추출 + 응답 생성 single-call, 가까운 provider 리전</dd></div>
+              <div><dt>결과</dt><dd><b>0.2–1.3초</b>. reason code로 경로 구분, 대화 의미 유지를 테스트로 고정</dd></div>
             </dl>
           </article>
           <article class="work" id="godliferouting">
@@ -841,9 +426,9 @@
             <h3>갓생루팅</h3>
             <p class="work__stack">Java · Spring Boot · MySQL · Redis · Kafka</p>
             <dl class="work__pdr">
-              <div><dt>문제</dt><dd>버튼 연타·재전송으로 같은 이체가 중복, 같은 계좌 동시 갱신, 출금 후 입금 실패.</dd></div>
-              <div><dt>판단</dt><dd>ref_id + DB UNIQUE, PESSIMISTIC_WRITE, 단일 @Transactional(SAGA는 규모 대비 과함), 알림은 Kafka로 경계 밖에.</dd></div>
-              <div><dt>결과</dt><dd>재실행 로그가 없는 수치는 빼고 설계 판단만 남겼습니다.</dd></div>
+              <div><dt>문제</dt><dd>버튼 연타 · 재전송으로 이체 중복, 같은 계좌 동시 갱신, 출금 후 입금 실패</dd></div>
+              <div><dt>판단</dt><dd>버튼 비활성화 대신 ref_id + DB UNIQUE, PESSIMISTIC_WRITE, SAGA 대신 단일 @Transactional(규모 대비 과함), 알림은 Kafka로 트랜잭션 경계 밖</dd></div>
+              <div><dt>결과</dt><dd>재실행 로그 없는 수치는 제외, 설계 판단만 기재</dd></div>
             </dl>
           </article>
           <article class="work" id="erp">
@@ -851,9 +436,9 @@
             <h3>ERP 엑셀 자동화</h3>
             <p class="work__stack">Excel 데이터 · 검증 규칙 · 전표 입력 표준화</p>
             <dl class="work__pdr">
-              <div><dt>문제</dt><dd>ERP 엑셀을 부과내역서·재무제표·전표 형식으로 매번 수작업 재가공. 표기 차이·빈 셀·합계 불일치.</dd></div>
-              <div><dt>판단</dt><dd>산출물을 먼저 고정하고, 업무 필드로 매핑하고, 검증을 산출물보다 먼저 실행. 애매한 항목은 사람이 볼 목록으로.</dd></div>
-              <div><dt>결과</dt><dd>계정과목 · 적요 · 금액 부호 · 차변/대변 입력 규칙까지 표준화.</dd></div>
+              <div><dt>문제</dt><dd>ERP 엑셀을 부과내역서 · 재무제표 · 전표 형식으로 매번 수작업 재가공. 표기 차이 · 빈 셀 · 합계 불일치</dd></div>
+              <div><dt>판단</dt><dd>산출물 형식 먼저 고정 → 업무 필드 매핑 → 검증을 산출물 생성보다 먼저 실행. 애매한 항목은 사람 확인 목록으로</dd></div>
+              <div><dt>결과</dt><dd>계정과목 · 적요 · 금액 부호 · 차변/대변 입력 규칙 표준화</dd></div>
             </dl>
           </article>
           <article class="work" id="sonnuri">
@@ -861,9 +446,9 @@
             <h3>손누리</h3>
             <p class="work__stack">Chrome Extension · FastAPI · MongoDB · S3 · RIFE</p>
             <dl class="work__pdr">
-              <div><dt>문제</dt><dd>수어 번역 요청마다 형태소 분석·유사도·GPT를 순차 호출해 3–5초.</dd></div>
-              <div><dt>판단</dt><dd>같은 문장은 다시 계산하지 않습니다. 번역 캐시, 단어장 로컬 캐시, 형태소 매핑으로 같은 문장 = 같은 수어.</dd></div>
-              <div><dt>결과</dt><dd>평균 <b>3.8초 → 1.1초</b>, 프레임 보간으로 수어 영상 전환부를 자연스럽게.</dd></div>
+              <div><dt>문제</dt><dd>수어 번역 요청마다 형태소 분석 · 유사도 · GPT 순차 호출, 3–5초</dd></div>
+              <div><dt>판단</dt><dd>같은 문장 = 같은 수어 → 번역 캐시, 단어장 로컬 캐시, 형태소 매핑</dd></div>
+              <div><dt>결과</dt><dd>평균 <b>3.8초 → 1.1초</b>. 프레임 보간으로 수어 영상 전환부 보정</dd></div>
             </dl>
           </article>
           <article class="work" id="kkatnyang">
@@ -871,9 +456,9 @@
             <h3>깻냥</h3>
             <p class="work__stack">Spring Boot · FCM · Native Alarm · WebRTC</p>
             <dl class="work__pdr">
-              <div><dt>문제</dt><dd>절전 모드·제조사 OS에서 알람이 늦거나 중복으로 울림. 정시에 울리는 것이 핵심 가치.</dd></div>
-              <div><dt>판단</dt><dd>네이티브 알람 1차 + FCM 데이터 메시지 백업. 재등록 시 기존 예약을 취소하고, 라이브러리를 포크해 요일 반복 지원.</dd></div>
-              <div><dt>결과</dt><dd>알람 → 딥링크 → WebRTC 방 자동 입장.</dd></div>
+              <div><dt>문제</dt><dd>절전 모드 · 제조사 OS에서 알람 지연 · 중복. 정시 알람이 핵심 가치</dd></div>
+              <div><dt>판단</dt><dd>네이티브 알람 1차 + FCM 데이터 메시지 백업, 재등록 시 기존 예약 취소, 라이브러리 포크로 요일 반복 지원</dd></div>
+              <div><dt>결과</dt><dd>알람 → 딥링크 → WebRTC 방 자동 입장</dd></div>
             </dl>
           </article>
           <article class="work" id="kingofchoice">
@@ -881,9 +466,9 @@
             <h3>선택의왕</h3>
             <p class="work__stack">Django · Vue.js · OAuth2 · OpenAPI</p>
             <dl class="work__pdr">
-              <div><dt>문제</dt><dd>OTT 추천 요청마다 외부 API 호출 → 지연과 rate limit.</dd></div>
-              <div><dt>판단</dt><dd>요청 경로에서 외부 API를 뺍니다. 스테이징 → 정규화 → 집계 테이블, 하루 1회 배치.</dd></div>
-              <div><dt>결과</dt><dd>추천은 내부 집계만 조회, 사용자별 결과 캐싱.</dd></div>
+              <div><dt>문제</dt><dd>OTT 추천 요청마다 외부 API 호출 → 지연, rate limit</dd></div>
+              <div><dt>판단</dt><dd>요청 경로에서 외부 API 제거. 스테이징 → 정규화 → 집계 테이블, 하루 1회 배치</dd></div>
+              <div><dt>결과</dt><dd>추천은 내부 집계만 조회, 사용자별 결과 캐싱</dd></div>
             </dl>
           </article>
           <article class="work" id="msa">
@@ -891,8 +476,9 @@
             <h3>Spring Cloud MSA 실험</h3>
             <p class="work__stack">Eureka · Config Server · Gateway · OpenFeign · Kafka · Docker</p>
             <dl class="work__pdr">
-              <div><dt>목표</dt><dd>서비스 분리 · 탐색 · 중앙 설정 · 게이트웨이 라우팅을 직접 띄워 확인.</dd></div>
-              <div><dt>배운 점</dt><dd>모놀리스와 MSA 사이의 비용. 이후 SPOS의 role 기반 모듈러 모놀리스 판단의 바탕이 됐습니다.</dd></div>
+              <div><dt>목표</dt><dd>서비스 분리 · 탐색 · 중앙 설정 · 게이트웨이 라우팅을 직접 구성</dd></div>
+              <div><dt>결과</dt><dd>모놀리스와 MSA 사이 비용 확인</dd></div>
+              <div><dt>이어진 판단</dt><dd>SPOS에서 MSA 대신 role 기반 모듈러 모놀리스 선택</dd></div>
             </dl>
             <a class="work__link" href="https://github.com/cvcvcx9/my-spring-microservice-repo" target="_blank" rel="noopener" data-cursor="GitHub">저장소 보기 ↗</a>
           </article>
@@ -901,8 +487,8 @@
             <h3>MongoDash</h3>
             <p class="work__stack">Kotlin · Spring Boot · MongoDB · Redis · Docker</p>
             <dl class="work__pdr">
-              <div><dt>목표</dt><dd>방문자의 클릭·호버 행동을 수집해 관심 영역을 시각화.</dd></div>
-              <div><dt>판단</dt><dd>5초·300건 배치 전송, 호버 지속 시간은 서버 계산. MVP는 insertMany로 시작하고 병목을 측정한 뒤 BulkWrite로.</dd></div>
+              <div><dt>목표</dt><dd>방문자 클릭 · 호버 수집 → 관심 영역 시각화</dd></div>
+              <div><dt>판단</dt><dd>5초 · 300건 배치 전송, 호버 지속 시간은 서버 계산. MVP는 insertMany, 병목 측정 후 BulkWrite</dd></div>
             </dl>
           </article>
         </div>
@@ -910,7 +496,7 @@
 
       <!-- ───────────────────────── 06 CONTACT ───────────────────────── -->
       <section id="contact" class="chapter contact" data-chapter="contact" data-shape="planet" data-side="center" data-dim="0.9" data-dim-m="0.6" aria-labelledby="contact-title">
-        <p class="label">06 — 연락</p>
+        <p class="label">04 — 연락</p>
         <h2 id="contact-title" class="contact__title" data-split>다음 문제를 같이 쪼개 볼까요?</h2>
         <div class="contact__actions">
           <button type="button" class="mail" data-copy="cvcvcx9@gmail.com" data-cursor="복사">
@@ -945,7 +531,7 @@
 
     <footer class="footer">
       <span>© 2026 조창훈</span>
-      <span>Three.js · GLSL · GSAP · 코딩 에이전트와 함께 만들었습니다</span>
+      <span>Three.js · GLSL · GSAP · 코딩 에이전트와 제작</span>
       <a href="#top" data-cursor="위로">맨 위로 ↑</a>
     </footer>
 

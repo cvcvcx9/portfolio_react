@@ -477,6 +477,7 @@ main {
 /* Text that sits directly on the particle field gets a soft dark halo. */
 .hero__lead,
 .chapter__lead,
+.facts li,
 .step > p,
 .step h3,
 .evidence li,
@@ -492,6 +493,7 @@ main {
   text-wrap: pretty;
 }
 
+.hero__lead b,
 .chapter__lead b {
   color: var(--text);
 }
@@ -834,12 +836,6 @@ main {
   letter-spacing: -0.035em;
   font-weight: 700;
   text-wrap: balance;
-}
-
-.step > p:not(.step__verb) {
-  margin-top: 18px;
-  color: var(--text-2);
-  text-wrap: pretty;
 }
 
 .evidence {

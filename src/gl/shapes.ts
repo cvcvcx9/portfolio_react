@@ -1,6 +1,20 @@
 import { Vector3 } from 'three'
 
-export type ShapeName = 'planet' | 'split' | 'bound' | 'subtract' | 'loop' | 'grid' | 'console' | 'agent' | 'constellation'
+export type ShapeName =
+  | 'planet'
+  | 'split'
+  | 'bound'
+  | 'subtract'
+  | 'loop'
+  | 'grid'
+  | 'console'
+  | 'agent'
+  | 'constellation'
+  | AgentFocus
+
+/** Hero verbs: the agent loop with one step's knot swollen. Values are AGENT_STEPS indexes. */
+const AGENT_FOCUS = { glossary: 0, contract: 2, scenario: 4, integration: 5 } as const
+type AgentFocus = keyof typeof AGENT_FOCUS
 
 export type Tone = 'ice' | 'ember' | 'acid' | 'white'
 
@@ -401,14 +415,14 @@ function consoleAnchors(): Anchor[] {
 }
 
 // ── agent: the six-step loop, knots stay put while the ring flows ──
-const AGENT_STEPS = ['계약 확정', '흐름표', '영향 조사', '실패 테스트', '구현 · 스모크', '검증 보고']
+const AGENT_STEPS = ['용어집', '폴더 규칙', '계약 확정', '구현', '리뷰 · 시나리오', '연동 · 배포']
 const AGENT_R = 1.85
 
 function knotAngle(k: number) {
   return Math.PI / 2 - (k * Math.PI * 2) / AGENT_STEPS.length
 }
 
-function agent(count: number): Float32Array {
+function agent(count: number, focus = -1): Float32Array {
   const r = mulberry32(83)
   const w = new Writer(count)
   const nRing = Math.floor(count * 0.66)
@@ -420,10 +434,12 @@ function agent(count: number): Float32Array {
   const nKnots = Math.floor(count * 0.24)
   const v = new Vector3()
   for (let i = 0; i < nKnots; i++) {
-    const k = i % AGENT_STEPS.length
+    // A focused step takes half the knot particles and grows, so the hovered word reads as the loop's centre of weight.
+    const big = focus >= 0 && i % 2 === 0
+    const k = big ? focus : (focus >= 0 ? i >> 1 : i) % AGENT_STEPS.length
     const a = knotAngle(k)
-    unitVector(r, v).multiplyScalar(Math.cbrt(r()) * 0.17)
-    w.put(Math.cos(a) * AGENT_R + v.x, Math.sin(a) * AGENT_R + v.y, v.z, T.white)
+    unitVector(r, v).multiplyScalar(Math.cbrt(r()) * (big ? 0.42 : 0.17))
+    w.put(Math.cos(a) * AGENT_R + v.x, Math.sin(a) * AGENT_R + v.y, v.z, T.white) // white knots stay put under spin
   }
   while (w.left > 0) {
     const a = r() * Math.PI * 2
@@ -433,11 +449,11 @@ function agent(count: number): Float32Array {
   return sortSpatially(w.data, count)
 }
 
-function agentAnchors(): Anchor[] {
+function agentAnchors(focus = AGENT_STEPS.length - 1): Anchor[] {
   return AGENT_STEPS.map((text, k) => {
     const a = knotAngle(k)
-    const R = AGENT_R + 0.42
-    return anchor(Math.cos(a) * R, Math.sin(a) * R, 0, text, k === AGENT_STEPS.length - 1 ? 'acid' : 'white')
+    const R = AGENT_R + (k === focus ? 0.62 : 0.42)
+    return anchor(Math.cos(a) * R, Math.sin(a) * R, 0, text, k === focus ? 'acid' : 'white')
   })
 }
 
@@ -483,6 +499,14 @@ function constellationAnchors(): Anchor[] {
 }
 
 // ── registry ──
+function agentFocusShapes(count: number) {
+  const out = {} as Record<AgentFocus, Shape>
+  for (const [name, k] of Object.entries(AGENT_FOCUS) as [AgentFocus, number][]) {
+    out[name] = { name, data: agent(count, k), anchors: agentAnchors(k), spin: 0.16, glow: [0.6, 1.0, 0.5] }
+  }
+  return out
+}
+
 export function buildShapes(count: number): Record<ShapeName, Shape> {
   const p = planet(count)
   const ice: [number, number, number] = [0.43, 0.89, 1.0]
@@ -536,6 +560,7 @@ export function buildShapes(count: number): Record<ShapeName, Shape> {
     grid: { name: 'grid', data: grid(count), anchors: gridAnchors(), spin: 0, glow: [1.0, 0.45, 0.25] },
     console: { name: 'console', data: consoleShape(count), anchors: consoleAnchors(), spin: 0, glow: ice },
     agent: { name: 'agent', data: agent(count), anchors: agentAnchors(), spin: 0.16, glow: [0.6, 1.0, 0.5] },
+    ...agentFocusShapes(count),
     constellation: {
       name: 'constellation',
       data: constellation(count),

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>젤리 통통 — 조창훈</title>
+    <meta name="description" content="클릭하면 젤리가 점프하고, 공중에서 한 번 더 누르면 바다에 내리꽂으며 가속합니다. 바다 위 고리를 연속으로 통과하면 더 빨라집니다. Three.js로 만든 작은 놀이터." />
+    <meta name="theme-color" content="#05060a" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="canonical" href="https://www.cvcvcx9.org/play/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="조창훈 포트폴리오" />
+    <meta property="og:title" content="젤리 통통 — 조창훈" />
+    <meta property="og:url" content="https://www.cvcvcx9.org/play/" />
+    <meta property="og:image" content="https://www.cvcvcx9.org/og.jpg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body class="play-page">
+    <header class="nav is-scrolled" data-nav>
+      <a class="nav__brand" href="/">
+        <strong>조창훈</strong>
+        <span>Backend Engineer</span>
+      </a>
+      <nav class="nav__links" aria-label="주요 섹션">
+        <a href="/#agents">일하는 방식</a>
+        <a href="/#flowlab">테스트 콘솔</a>
+        <a href="/#earlier">이전 작업</a>
+        <a href="/cases/">해결한 문제</a>
+        <a href="/play/" class="is-active" aria-current="page">놀이터</a>
+      </nav>
+      <a class="nav__cta" href="/#contact">연락하기<span aria-hidden="true">→</span></a>
+      <button class="nav__menu" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
+        <span class="sr-only">메뉴 열기</span><i></i><i></i>
+      </button>
+    </header>
+
+    <div class="menu" id="menu" hidden data-menu>
+      <nav aria-label="모바일 메뉴">
+        <a href="/#agents"><small>01</small>일하는 방식</a>
+        <a href="/#flowlab"><small>02</small>테스트 콘솔</a>
+        <a href="/#earlier"><small>03</small>이전 작업</a>
+        <a href="/#contact"><small>04</small>연락</a>
+        <a href="/cases/"><small>→</small>해결한 문제</a>
+        <a href="/play/"><small>→</small>놀이터</a>
+      </nav>
+    </div>
+
+    <main id="main" class="play">
+      <h1 class="sr-only">젤리 통통</h1>
+      <canvas
+        class="play__canvas"
+        tabindex="0"
+        data-play
+        aria-label="바다 위의 젤리. 물 위에서 클릭하거나 Space를 누르면 점프하고, 공중에서 누르면 내리꽂아 가속합니다. 젤리 왼쪽이나 오른쪽을 누르면 그쪽으로 방향을 틉니다. 바다 위 고리를 연속으로 통과하면 더 빨라집니다."
+      ></canvas>
+      <canvas class="play__lines" aria-hidden="true" data-lines></canvas>
+      <div class="play__flash" aria-hidden="true" data-flash></div>
+      <div class="play__pops" aria-hidden="true" data-pops></div>
+      <div class="play__coach" aria-hidden="true" data-coach hidden>
+        <span>클릭하면 점프!</span>
+      </div>
+
+      <button type="button" class="play__sound" data-sound aria-pressed="true" aria-label="소리 끄기">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" />
+          <path class="is-on" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" />
+          <path class="is-off" d="M16 9.5l5 5M21 9.5l-5 5" />
+        </svg>
+      </button>
+
+      <p class="play__fallback" hidden data-fallback>이 브라우저에서는 WebGL을 쓸 수 없어 놀이터를 열 수 없습니다.</p>
+    </main>
+
+    <script type="module" src="/src/play/main.ts"></script>
+  </body>
+</html>

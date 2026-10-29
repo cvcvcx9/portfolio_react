@@ -22,7 +22,26 @@
   box-shadow: inset 0 0 0 2px var(--ice);
 }
 
-/* Score text that floats up from each touch point. */
+/* Speed lines drawn over the scene; they never take clicks. */
+.play__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Edge glow when the jelly breaks into a faster tier; colour and opacity come from the script. */
+.play__flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(ellipse at center, transparent 42%, var(--flash, #c8ff4a) 135%);
+  mix-blend-mode: screen;
+}
+
+/* "완벽!" floating up from the jelly. */
 .play__pops {
   position: absolute;
   inset: 0;
@@ -41,27 +60,12 @@
   display: block;
   transform: translate(-50%, -50%);
   font-family: var(--font-mono);
+  font-size: 26px;
   font-weight: 700;
   white-space: nowrap;
+  color: var(--acid);
   text-shadow: 0 2px 14px rgba(5, 6, 10, 0.8);
   animation: pop-rise 1.1s var(--ease-out) forwards;
-}
-
-.play__pop.is-skip span {
-  font-size: 26px;
-  color: var(--acid);
-}
-
-.play__pop.is-total span {
-  font-size: 34px;
-  color: #fff;
-  animation-duration: 2.2s;
-}
-
-.play__pop.is-record span {
-  font-size: 30px;
-  color: var(--amber);
-  animation-duration: 2.2s;
 }
 
 @keyframes pop-rise {
@@ -116,83 +120,38 @@
   }
 }
 
-.play__panel {
+/* Sound on/off: the only control on screen. */
+.play__sound {
   position: absolute;
   left: var(--gutter);
   bottom: calc(24px + env(safe-area-inset-bottom));
-  width: min(320px, calc(100vw - var(--gutter) * 2));
-  padding: 18px 20px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
   border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: rgba(10, 11, 20, 0.66);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-
-.play__title {
-  font-size: 24px;
-  letter-spacing: -0.03em;
-}
-
-.play__status {
-  min-height: 1.6em;
-  margin-top: 4px;
-  font-size: 14px;
-  line-height: 1.6;
+  border-radius: 50%;
+  background: rgba(10, 11, 20, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: var(--text-2);
+  transition: border-color 0.2s, color 0.2s;
 }
 
-.play__score {
-  display: flex;
-  gap: 24px;
-  margin: 12px 0 14px;
-}
-
-.play__score dt {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  color: var(--text-3);
-}
-
-.play__score dd {
-  font-family: var(--font-mono);
-  font-size: 32px;
-  font-weight: 600;
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
-  color: var(--acid);
-}
-
-.play__controls {
-  display: flex;
-  gap: 8px;
-}
-
-.play__btn {
-  padding: 7px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--line-2);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  transition: border-color 0.2s, background 0.2s;
-}
-
-.play__btn:hover,
-.play__btn:focus-visible {
+.play__sound:hover,
+.play__sound:focus-visible {
   border-color: var(--line-3);
-  background: rgba(241, 238, 232, 0.06);
+  color: var(--text);
 }
 
-.play__btn[aria-pressed='false'] {
-  color: var(--text-3);
+.play__sound svg {
+  width: 18px;
+  height: 18px;
 }
 
-.play__keys {
-  margin-top: 12px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-3);
+.play__sound[aria-pressed='true'] .is-off,
+.play__sound[aria-pressed='false'] .is-on {
+  display: none;
 }
 
 .play__fallback[hidden] {
@@ -207,34 +166,6 @@
   padding: var(--gutter);
   text-align: center;
   color: var(--text-2);
-}
-
-@media (max-width: 600px) {
-  .play__panel {
-    right: var(--gutter);
-    width: auto;
-    padding: 12px 16px;
-  }
-
-  .play__panel .label {
-    display: none;
-  }
-
-  .play__title {
-    font-size: 18px;
-  }
-
-  .play__score {
-    margin: 8px 0 10px;
-  }
-
-  .play__score dd {
-    font-size: 26px;
-  }
-
-  .play__keys {
-    display: none;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

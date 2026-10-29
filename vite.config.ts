@@ -8,7 +8,11 @@ export default defineConfig({
     target: 'es2022',
     chunkSizeWarningLimit: 900,
     rollupOptions: {
-      input: { main: resolve(__dirname, 'index.html'), cases: resolve(__dirname, 'cases/index.html'), play: resolve(__dirname, 'play/index.html') },
+      input: {
+        main: resolve(import.meta.dirname, 'index.html'),
+        cases: resolve(import.meta.dirname, 'cases/index.html'),
+        play: resolve(import.meta.dirname, 'play/index.html'),
+      },
     },
   },
 })

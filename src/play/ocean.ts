@@ -146,33 +146,38 @@ export function skyDome(radius: number, stars: boolean) {
   return mesh
 }
 
-// ── Ripples: a damped wave equation on a float texture covering the throw lane ──
+// ── Ripples: a damped wave equation on a float texture that travels with the jelly ──
 const MAX_DROPS = 16
+const QUAD_VS = /* glsl */ `
+  varying vec2 vUv;
+  void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`
 
 export class RippleSim {
   readonly rect: Vector4
   readonly texel: Vector2
   readonly worldTexel: number
+  private center = new Vector2()
+  private size: number
   private a: WebGLRenderTarget
   private b: WebGLRenderTarget
   private scene = new Scene()
+  private quad: Mesh
   private cam = new OrthographicCamera(-1, 1, 1, -1, 0, 1)
-  private mat: ShaderMaterial
+  private stepMat: ShaderMaterial
+  private shiftMat: ShaderMaterial
   private drops: Vector4[] = []
   private acc = 0
 
+  /** A `size` x `size` metre window; it scrolls in whole texels so the water under the jelly is always simulated. */
   constructor(
     private renderer: WebGLRenderer,
-    minX: number,
-    minZ: number,
-    sizeX: number,
-    sizeZ: number,
+    size: number,
     texelSize: number,
   ) {
-    const w = Math.round(sizeX / texelSize)
-    const h = Math.round(sizeZ / texelSize)
-    this.rect = new Vector4(minX, minZ, sizeX, sizeZ)
-    this.texel = new Vector2(1 / w, 1 / h)
+    const n = Math.round(size / texelSize)
+    this.size = n * texelSize
+    this.rect = new Vector4(-this.size / 2, -this.size / 2, this.size, this.size)
+    this.texel = new Vector2(1 / n, 1 / n)
     this.worldTexel = texelSize
     const opts = {
       type: HalfFloatType,
@@ -183,11 +188,11 @@ export class RippleSim {
       wrapT: ClampToEdgeWrapping,
       depthBuffer: false,
     }
-    this.a = new WebGLRenderTarget(w, h, opts)
-    this.b = new WebGLRenderTarget(w, h, opts)
+    this.a = new WebGLRenderTarget(n, n, opts)
+    this.b = new WebGLRenderTarget(n, n, opts)
     // Same speed in metres per second whatever the resolution: coupling scales with texel area.
     const coupling = 0.4 * (0.125 / texelSize) ** 2
-    this.mat = new ShaderMaterial({
+    this.stepMat = new ShaderMaterial({
       depthTest: false,
       depthWrite: false,
       uniforms: {
@@ -198,9 +203,7 @@ export class RippleSim {
         uDropCount: { value: 0 },
         uCoupling: { value: Math.min(coupling, 1.6) },
       },
-      vertexShader: /* glsl */ `
-        varying vec2 vUv;
-        void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }`,
+      vertexShader: QUAD_VS,
       fragmentShader: /* glsl */ `
         uniform sampler2D uState;
         uniform vec2 uTexel;
@@ -226,12 +229,29 @@ export class RippleSim {
             float x = 1.0 - length(world - d.xy) / d.z;
             if (x > 0.0) c.r += d.w * (0.5 - 0.5 * cos(x * 3.14159265));
           }
-          float e = smoothstep(0.0, 0.04, vUv.x) * smoothstep(1.0, 0.96, vUv.x) * smoothstep(0.0, 0.025, vUv.y) * smoothstep(1.0, 0.975, vUv.y);
+          float e = smoothstep(0.0, 0.04, vUv.x) * smoothstep(1.0, 0.96, vUv.x) * smoothstep(0.0, 0.04, vUv.y) * smoothstep(1.0, 0.96, vUv.y);
           c.rg *= mix(0.85, 1.0, e);
           gl_FragColor = vec4(c.rg, 0.0, 1.0);
         }`,
     })
-    this.scene.add(new Mesh(new PlaneGeometry(2, 2), this.mat))
+    this.shiftMat = new ShaderMaterial({
+      depthTest: false,
+      depthWrite: false,
+      uniforms: { uState: { value: null }, uShift: { value: new Vector2() } },
+      vertexShader: QUAD_VS,
+      fragmentShader: /* glsl */ `
+        uniform sampler2D uState;
+        uniform vec2 uShift;
+        varying vec2 vUv;
+        void main() {
+          vec2 src = vUv + uShift;
+          bool inside = src.x >= 0.0 && src.x <= 1.0 && src.y >= 0.0 && src.y <= 1.0;
+          gl_FragColor = inside ? texture2D(uState, src) : vec4(0.0);
+        }`,
+    })
+    this.quad = new Mesh(new PlaneGeometry(2, 2), this.stepMat)
+    this.quad.frustumCulled = false
+    this.scene.add(this.quad)
     const prev = renderer.getRenderTarget()
     for (const rt of [this.a, this.b]) {
       renderer.setRenderTarget(rt)
@@ -252,23 +272,41 @@ export class RippleSim {
     if (this.drops.length < MAX_DROPS) this.drops.push(new Vector4(x, z, Math.max(radius, this.worldTexel * 1.5), strength))
   }
 
+  /** Re-centre the window on (x, z) once the jelly drifts away from the middle. */
+  follow(x: number, z: number) {
+    const dx = x - this.center.x
+    const dz = z - this.center.y
+    const limit = this.size * 0.12
+    if (Math.abs(dx) < limit && Math.abs(dz) < limit) return
+    const sx = Math.round(dx / this.worldTexel) * this.worldTexel
+    const sz = Math.round(dz / this.worldTexel) * this.worldTexel
+    this.shiftMat.uniforms.uShift.value.set(sx / this.size, sz / this.size)
+    this.run(this.shiftMat)
+    this.center.x += sx
+    this.center.y += sz
+    this.rect.x = this.center.x - this.size / 2
+    this.rect.y = this.center.y - this.size / 2
+  }
+
   update(dt: number) {
     this.acc = Math.min(this.acc + dt, 0.1)
     let steps = 0
     while (this.acc >= 1 / 60 && steps < 4) {
-      this.step()
+      const u = this.stepMat.uniforms
+      const list = u.uDrops.value as Vector4[]
+      this.drops.forEach((d, i) => list[i].copy(d))
+      u.uDropCount.value = this.drops.length
+      this.drops = []
+      this.run(this.stepMat)
       this.acc -= 1 / 60
       steps++
     }
   }
 
-  private step() {
-    const u = this.mat.uniforms
-    u.uState.value = this.a.texture
-    const list = u.uDrops.value as Vector4[]
-    this.drops.forEach((d, i) => list[i].copy(d))
-    u.uDropCount.value = this.drops.length
-    this.drops = []
+  /** One full-screen pass from the current state into the other target, then swap. */
+  private run(mat: ShaderMaterial) {
+    mat.uniforms.uState.value = this.a.texture
+    this.quad.material = mat
     const prev = this.renderer.getRenderTarget()
     this.renderer.setRenderTarget(this.b)
     this.renderer.render(this.scene, this.cam)
@@ -279,13 +317,13 @@ export class RippleSim {
 
 // ── Sea surface ──
 /** A grid whose spacing is fine around the play area and coarse toward the horizon. */
-function seaGeometry(segments: number, size: number, centerZ: number) {
+function seaGeometry(segments: number, size: number) {
   const plane = new PlaneGeometry(2, 2, segments, segments)
   const src = plane.attributes.position
   const pos: number[] = []
   const warp = (u: number) => size * u * (0.07 + 0.93 * Math.abs(u))
   for (let i = 0; i < src.count; i++) {
-    pos.push(warp(src.getX(i)), 0, centerZ - warp(src.getY(i)))
+    pos.push(warp(src.getX(i)), 0, -warp(src.getY(i)))
   }
   const g = new BufferGeometry()
   g.setAttribute('position', new Float32BufferAttribute(pos, 3))
@@ -312,19 +350,22 @@ export class Ocean {
         uRippleTexel: { value: ripples?.texel ?? new Vector2(1, 1) },
         uRippleWorldTexel: { value: ripples?.worldTexel ?? 1 },
         uJelly: { value: new Vector3() },
+        uOrigin: { value: new Vector2() },
       },
       vertexShader: /* glsl */ `
         uniform float uTime;
+        uniform vec2 uOrigin;
         varying vec3 vWorld;
         varying vec2 vBase;
         varying float vHeight;
         ${GERSTNER_GLSL}
         void main() {
           vec3 n;
-          vec3 off = gerstner(position.xz, uTime, n);
-          vec3 p = position + off;
+          vec2 base = position.xz + uOrigin;
+          vec3 off = gerstner(base, uTime, n);
+          vec3 p = vec3(base.x, 0.0, base.y) + off;
           vWorld = p;
-          vBase = position.xz;
+          vBase = base;
           vHeight = off.y;
           gl_Position = projectionMatrix * viewMatrix * vec4(p, 1.0);
         }`,
@@ -407,15 +448,18 @@ export class Ocean {
           gl_FragColor = vec4(col, 1.0);
         }`,
     })
-    this.mesh = new Mesh(seaGeometry(segments, 320, -18), this.material)
+    this.mesh = new Mesh(seaGeometry(segments, 320), this.material)
     this.mesh.frustumCulled = false
   }
 
-  update(dt: number, t: number, jelly: Vector3) {
+  /** `center` is where the dense part of the grid should sit (just ahead of the camera). */
+  update(dt: number, t: number, jelly: Vector3, center: Vector3) {
+    this.ripples?.follow(jelly.x, jelly.z)
     this.ripples?.update(dt)
     const u = this.material.uniforms
     u.uTime.value = t
     u.uJelly.value.copy(jelly)
+    u.uOrigin.value.set(Math.round(center.x), Math.round(center.z))
     if (this.ripples) u.uRipple.value = this.ripples.texture
   }
 }

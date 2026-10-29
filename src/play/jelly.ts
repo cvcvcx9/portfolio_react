@@ -118,6 +118,9 @@ export class Jelly {
   private lagV = new Vector3()
   private press = 0
   pressTarget = 0
+  /** 0–1: how brightly the body glows, e.g. right after flying through an arch. */
+  glow = 0
+  private bodyMat: MeshPhysicalMaterial
   private impIndex = 0
   private sproutAngle = new Vector2()
   private sproutVel = new Vector2()
@@ -156,6 +159,7 @@ export class Jelly {
       envMapIntensity: 1.3,
     })
     deformable(bodyMat, this.u, 'jelly-body', true)
+    this.bodyMat = bodyMat
     this.body = new Mesh(geo, bodyMat)
 
     // A hot core seen through the transmissive body reads as subsurface glow.
@@ -277,6 +281,7 @@ export class Jelly {
 
     this.press += (this.pressTarget - this.press) * Math.min(1, dt * 12)
     this.u.uPress.value = this.press
+    this.bodyMat.emissiveIntensity = 0.12 + this.glow * 2
 
     // Sprout: sits on the deformed crown and swings on its own spring.
     const a = 1 + this.u.uSq.value

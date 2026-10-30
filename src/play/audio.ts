@@ -120,7 +120,7 @@ export class Sfx {
     this.noise(0.3, 520, 0.55)
   }
 
-  /** Through an arch: a soft pop, then a sparkle that climbs a whole tone with each arch in a row. */
+  /** Through a gate: a soft pop, then a sparkle that climbs a whole tone with each gate in a row. */
   gate(chain: number) {
     const f = 660 * Math.pow(2, (Math.min(chain, 9) - 1) / 6)
     this.tone(240, 520, 0.08, 'sine', 0.7)
@@ -128,7 +128,38 @@ export class Sfx {
     this.tone(f * 1.5, f * 2, 0.16, 'sine', 0.3, 0.11)
   }
 
-  /** Around an arch: the chain breaks with two falling notes. */
+  /** A puffer blowing itself up: a low, swelling note. */
+  puff() {
+    this.tone(160, 380, 0.28, 'sine', 0.45)
+    this.noise(0.18, 600, 0.15)
+  }
+
+  /** Stomping a puffer: a sharp pop, then a bright pair of rising notes. */
+  pop() {
+    this.noise(0.12, 2400, 0.7)
+    this.tone(700, 140, 0.14, 'square', 0.22)
+    this.tone(988, 1318, 0.12, 'triangle', 0.45, 0.06)
+    this.tone(1318, 1760, 0.16, 'triangle', 0.4, 0.13)
+  }
+
+  /** A puffer locked on: two quick high blips. */
+  lock() {
+    this.tone(1568, 1568, 0.05, 'square', 0.16)
+    this.tone(2093, 2093, 0.07, 'square', 0.14, 0.06)
+  }
+
+  /** Dashing onto a locked puffer: a rising zip. */
+  zip() {
+    this.sweep(600, 3600, 0.18, 0.6)
+  }
+
+  /** Bumping into a puffer: a dull cartoon bonk. */
+  bonk() {
+    this.tone(260, 70, 0.3, 'square', 0.25)
+    this.tone(130, 60, 0.35, 'sine', 0.6)
+  }
+
+  /** Around a gate: the chain breaks with two falling notes. */
   miss() {
     this.tone(440, 300, 0.16, 'triangle', 0.4)
     this.tone(300, 150, 0.3, 'sine', 0.5, 0.12)

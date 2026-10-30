@@ -1,49 +1,65 @@
-import { Color, Mesh, MeshBasicMaterial, TorusGeometry, Vector3, type Scene } from 'three'
+import { Color, Vector3, type Scene } from 'three'
+import { GATE_H, LanternGate } from './gate'
+import { Puffer } from './puffer'
 
-// ── The course: glowing arches standing in the sea, curving ahead of the jelly ──
+// ── The course: lantern gates standing in the sea, curving ahead of the jelly, with puffers in between ──
+type Height = (x: number, z: number) => number
+
 const UP = new Vector3(0, 1, 0)
-/** Arch radius. Its centre sits at sea level, so it stands over the water as a half ring. */
-export const ARCH_R = 2.6
 const SPACING = 26
+/** From the fourth gate on, this share of the gaps has a puffer waiting halfway. */
+const PUFFER_CHANCE = 0.45
 const DIM = new Color(1.1, 1.1, 1.2)
 const GRAY = new Color(0.22, 0.22, 0.26)
+const FLASH = new Color(3, 3, 3)
 
-export type Arch = {
-  mesh: Mesh<TorusGeometry, MeshBasicMaterial>
-  /** Centre at sea level, the way through, and the arch's right-hand side. */
+export type Gate = {
+  look: LanternGate
+  /** Middle of the gate at sea level, the way through, and the gate's right-hand side. */
   pos: Vector3
   dir: Vector3
   right: Vector3
-  /** The jelly's signed distance to the arch's plane last frame: negative while still before it. */
+  /** The jelly's signed distance to the gate's plane last frame: negative while still before it. */
   side: number
   state: 'live' | 'passed' | 'missed'
   age: number
 }
 
 export class Course {
-  private live: Arch[] = []
-  private fading: Arch[] = []
-  // A little more than half a ring, so both feet go under the water.
-  private geo = new TorusGeometry(ARCH_R, 0.11, 10, 72, Math.PI + 0.6).rotateZ(-0.3)
+  readonly puffers: Puffer[] = []
+  private live: Gate[] = []
+  private fading: Gate[] = []
+  /** Gates laid since the last reset. */
+  private placed = 0
   private endPos = new Vector3()
   private endDir = new Vector3(0, 0, -1)
   private turn = 0
   private rel = new Vector3()
+  private paint = new Color()
 
   constructor(
     private scene: Scene,
     private count: number,
   ) {}
 
-  /** The arch to fly through next. */
-  get next(): Arch | undefined {
+  /** The gate to fly through next. */
+  get next(): Gate | undefined {
     return this.live[0]
   }
 
-  /** Lays a new course: the first arch `first` metres straight ahead, then gentle curves. The old arches sink away. */
+  /** A point on `gate`'s outline (`u` 0–1) in the world, for sparkles. */
+  outline(gate: Gate, u: number) {
+    gate.look.root.updateMatrixWorld()
+    return gate.look.root.localToWorld(LanternGate.outline(u, new Vector3()))
+  }
+
+  /** Lays a new course: the first gate `first` metres straight ahead, then gentle curves. The old gates sink away. */
   reset(from: Vector3, dir: Vector3, first = 18) {
-    for (const a of this.live) this.retire(a, 'missed')
+    for (const g of this.live) this.retire(g, 'missed')
+    for (const p of this.puffers) p.dispose()
     this.live = []
+    this.puffers.length = 0
+    this.placed = 0
     this.turn = 0
     this.endDir.set(dir.x, 0, dir.z).normalize()
     this.endPos.set(from.x, 0, from.z).addScaledVector(this.endDir, first)
@@ -52,93 +68,127 @@ export class Course {
   }
 
   private spawn(delay: number) {
-    const mesh = new Mesh(this.geo, new MeshBasicMaterial({ color: DIM.clone(), transparent: true, opacity: 0, depthWrite: false }))
+    const look = new LanternGate()
     const dir = this.endDir.clone()
-    const a: Arch = { mesh, pos: this.endPos.clone(), dir, right: new Vector3().crossVectors(dir, UP), side: -1, state: 'live', age: -delay }
-    mesh.position.copy(a.pos)
-    mesh.rotation.y = Math.atan2(dir.x, dir.z)
-    this.scene.add(mesh)
-    this.live.push(a)
+    const g: Gate = { look, pos: this.endPos.clone(), dir, right: new Vector3().crossVectors(dir, UP), side: -1, state: 'live', age: -delay }
+    look.root.position.copy(g.pos)
+    look.root.rotation.y = Math.atan2(dir.x, dir.z)
+    this.scene.add(look.root)
+    this.live.push(g)
+    this.placed++
   }
 
-  /** Keeps `count` arches ahead; the curve bends a little more or less at each one. */
+  /** Keeps `count` gates ahead; the curve bends a little more or less at each one. */
   private extend() {
     while (this.live.length < this.count) {
+      const prev = this.endPos.clone()
       this.turn = Math.max(-0.3, Math.min(0.3, this.turn * 0.7 + (Math.random() - 0.5) * 0.4))
       this.endDir.applyAxisAngle(UP, this.turn)
       this.endPos.addScaledVector(this.endDir, SPACING + (Math.random() - 0.5) * 6)
       this.spawn(this.live.length * 0.1)
+      if (this.placed > 3 && Math.random() < PUFFER_CHANCE) {
+        // Roughly halfway along the gap, close to the line between the two gates.
+        const at = prev.lerp(this.endPos, 0.4 + Math.random() * 0.25)
+        at.addScaledVector(this.live[this.live.length - 1].right, (Math.random() - 0.5) * 2.4)
+        this.puffers.push(new Puffer(this.scene, at.x, at.z))
+      }
     }
   }
 
-  private retire(a: Arch, state: 'passed' | 'missed') {
-    a.state = state
-    a.age = 0
-    this.fading.push(a)
+  /** Marks the puffer a press right now would dash onto. */
+  lock(target: Puffer | null) {
+    for (const p of this.puffers) p.locked = p === target
+  }
+
+  private retire(g: Gate, state: 'passed' | 'missed') {
+    g.state = state
+    g.age = 0
+    this.fading.push(g)
   }
 
   /**
-   * Checks the jelly against the next arch. `onGate` fires as the jelly crosses that arch's plane:
-   * through the arch (`pass`) or around it. `travel` is the jelly's direction; `color` is what the next arch glows in.
+   * Checks the jelly against the next gate. `on.gate` fires as the jelly crosses that gate's plane:
+   * through the gate (`pass`) or around it; `on.puff` fires as a puffer blows itself up.
+   * `travel` is the jelly's direction; `color` is what the next gate glows in.
    */
-  update(dt: number, t: number, jelly: Vector3, travel: Vector3, color: Color, onGate: (pass: boolean, arch: Arch) => void) {
-    const a = this.live[0]
-    if (a) {
-      const rel = this.rel.subVectors(jelly, a.pos)
-      const s = rel.x * a.dir.x + rel.z * a.dir.z
-      if (a.side < 0 && s >= 0) {
-        const lat = rel.x * a.right.x + rel.z * a.right.z
-        const pass = Math.hypot(lat, rel.y) < ARCH_R - 0.25
+  update(
+    dt: number,
+    t: number,
+    jelly: Vector3,
+    travel: Vector3,
+    color: Color,
+    height: Height,
+    on: { gate: (pass: boolean, gate: Gate) => void; puff: () => void },
+  ) {
+    const onGate = on.gate
+    const g = this.live[0]
+    if (g) {
+      const rel = this.rel.subVectors(jelly, g.pos)
+      const s = rel.x * g.dir.x + rel.z * g.dir.z
+      if (g.side < 0 && s >= 0) {
+        const pass = LanternGate.passes(rel.x * g.right.x + rel.z * g.right.z, rel.y)
         this.live.shift()
-        this.retire(a, pass ? 'passed' : 'missed')
-        onGate(pass, a)
+        this.retire(g, pass ? 'passed' : 'missed')
+        onGate(pass, g)
         this.extend()
       } else {
-        a.side = s
+        g.side = s
         // Turned away from the course: it counts as a miss, and a new course starts ahead.
         const dist = Math.hypot(rel.x, rel.z)
         const facing = -(rel.x * travel.x + rel.z * travel.z) / Math.max(dist, 1e-3)
         if ((dist > 12 && facing < 0.26) || dist > SPACING * 3) {
-          onGate(false, a)
+          onGate(false, g)
           this.reset(jelly, travel, SPACING)
         }
       }
     }
 
-    // New arches rise out of the sea; the next one glows in `color` and breathes, the rest wait dimmed.
-    this.live.forEach((arch, i) => {
-      arch.age += dt
-      const rise = 1 - (1 - Math.min(1, Math.max(0, arch.age / 0.7))) ** 3
-      arch.mesh.position.y = (rise - 1) * ARCH_R * 1.3
-      const m = arch.mesh.material
+    // Puffers left far behind are cleared away.
+    for (let i = this.puffers.length - 1; i >= 0; i--) {
+      const p = this.puffers[i]
+      const behind = (p.x - jelly.x) * travel.x + (p.z - jelly.z) * travel.z < -30
+      if (!p.update(dt, t, jelly, height, on.puff) || (p.live && behind)) {
+        p.dispose()
+        this.puffers.splice(i, 1)
+      }
+    }
+
+    // New gates rise out of the sea; the next one glows in `color` and breathes, the rest wait dimmed.
+    this.live.forEach((gate, i) => {
+      gate.age += dt
+      const rise = 1 - (1 - Math.min(1, Math.max(0, gate.age / 0.7))) ** 3
+      const root = gate.look.root
+      root.position.y = (rise - 1) * GATE_H * 1.3
+      gate.look.tick(t)
       if (i === 0) {
-        m.color.copy(color).multiplyScalar(2.4)
-        m.opacity = rise
-        arch.mesh.scale.setScalar(1 + Math.sin(t * 6) * 0.025)
+        gate.look.paint(this.paint.copy(color).multiplyScalar(2.4), rise)
+        root.scale.setScalar(1 + Math.sin(t * 6) * 0.025)
       } else {
-        m.color.copy(DIM)
-        m.opacity = rise * 0.5
-        arch.mesh.scale.setScalar(1)
+        gate.look.paint(DIM, rise * 0.5)
+        root.scale.setScalar(1)
       }
     })
-    // Passed arches flash and widen as they vanish; missed ones turn grey and sink.
-    this.fading = this.fading.filter((arch) => {
-      arch.age += dt
-      const m = arch.mesh.material
-      if (arch.state === 'passed') {
-        const p = arch.age / 0.35
-        arch.mesh.scale.setScalar(1 + p * 0.4)
-        m.color.setRGB(3, 3, 3)
-        m.opacity = Math.max(0, 1 - p)
+    // Passed gates flash and widen a little as they vanish; missed ones turn grey and sink.
+    this.fading = this.fading.filter((gate) => {
+      gate.age += dt
+      const root = gate.look.root
+      gate.look.tick(t)
+      let opacity: number
+      if (gate.state === 'passed') {
+        // Gone quickly: the camera, high and behind, flies through the gate a moment later.
+        const p = gate.age / 0.35
+        root.scale.setScalar(1 + p * 0.15)
+        opacity = Math.max(0, 1 - p) ** 2
+        gate.look.paint(FLASH, opacity)
       } else {
-        const p = arch.age / 0.8
-        arch.mesh.position.y = -p * ARCH_R * 1.4
-        m.color.copy(GRAY)
-        m.opacity = Math.max(0, 0.6 * (1 - p))
+        const p = gate.age / 0.8
+        root.position.y = -p * GATE_H * 1.4
+        opacity = Math.max(0, 0.6 * (1 - p))
+        gate.look.paint(GRAY, opacity)
       }
-      if (m.opacity > 0) return true
-      this.scene.remove(arch.mesh)
-      m.dispose()
+      if (opacity > 0) return true
+      this.scene.remove(root)
+      gate.look.dispose()
       return false
     })
   }

@@ -1,7 +1,10 @@
 import {
   AdditiveBlending,
+  BufferAttribute,
+  BufferGeometry,
   Color,
   CylinderGeometry,
+  DoubleSide,
   Float32BufferAttribute,
   InstancedMesh,
   Mesh,
@@ -29,6 +32,73 @@ const q = new Quaternion()
 const WHITE = new Color(1, 1, 1)
 
 type Height = (x: number, z: number) => number
+
+// ── Tether: a dashed line of light from the jelly to the puffer it is locked on, the dashes running toward the puffer ──
+export class Tether {
+  private pos = new Float32Array(12)
+  private geo = new BufferGeometry()
+  private mat = new ShaderMaterial({
+    transparent: true,
+    depthWrite: false,
+    depthTest: false,
+    side: DoubleSide,
+    blending: AdditiveBlending,
+    uniforms: { uColor: { value: new Color(2.4, 0.35, 0.3) }, uOpacity: { value: 0 }, uTime: { value: 0 }, uLen: { value: 1 } },
+    vertexShader: /* glsl */ `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }`,
+    fragmentShader: /* glsl */ `
+      uniform vec3 uColor;
+      uniform float uOpacity;
+      uniform float uTime;
+      uniform float uLen;
+      varying vec2 vUv;
+      void main() {
+        float dash = step(0.45, fract(vUv.x * uLen / 0.8 - uTime * 5.0));
+        float across = 1.0 - abs(vUv.y * 2.0 - 1.0);
+        float ends = smoothstep(0.0, 0.1, vUv.x) * smoothstep(1.0, 0.85, vUv.x);
+        gl_FragColor = vec4(uColor, dash * across * ends * uOpacity);
+      }`,
+  })
+  private mesh = new Mesh(this.geo, this.mat)
+  private along = new Vector3()
+  private side = new Vector3()
+
+  constructor(scene: Scene) {
+    this.geo.setAttribute('position', new BufferAttribute(this.pos, 3))
+    this.geo.setAttribute('uv', new Float32BufferAttribute([0, 0, 0, 1, 1, 0, 1, 1], 2))
+    this.geo.setIndex([0, 2, 1, 2, 3, 1])
+    this.mesh.frustumCulled = false
+    this.mesh.renderOrder = 4
+    this.mesh.visible = false
+    scene.add(this.mesh)
+  }
+
+  /** Stretches the line from `from` to `to`, turned to face `eye`; hidden at opacity 0. */
+  update(from: Vector3, to: Vector3, eye: Vector3, t: number, opacity: number) {
+    this.mesh.visible = opacity > 0.01
+    if (!this.mesh.visible) return
+    this.along.subVectors(to, from)
+    this.side.subVectors(eye, from).cross(this.along).normalize().multiplyScalar(0.06)
+    const p = this.pos
+    const corner = (i: number, at: Vector3, s: number) => {
+      p[i] = at.x + this.side.x * s
+      p[i + 1] = at.y + this.side.y * s
+      p[i + 2] = at.z + this.side.z * s
+    }
+    corner(0, from, -1)
+    corner(3, from, 1)
+    corner(6, to, -1)
+    corner(9, to, 1)
+    this.geo.getAttribute('position').needsUpdate = true
+    this.mat.uniforms.uLen.value = this.along.length()
+    this.mat.uniforms.uTime.value = t
+    this.mat.uniforms.uOpacity.value = opacity
+  }
+}
 
 // ── Spray: stretched droplets that leave tiny ripples where they fall back ──
 export class Droplets {
@@ -279,7 +349,7 @@ export class Lanterns {
   }
 }
 
-// ── Sparkles: bits flying off each arch flown through, and a short trail while the boost lasts ──
+// ── Sparkles: bits flying off each gate flown through, and a short trail while the boost lasts ──
 export class Sparks {
   private mesh: InstancedMesh
   private items: { p: Vector3; v: Vector3; life: number; total: number; s: number; color: Color }[] = []

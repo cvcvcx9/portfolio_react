@@ -118,7 +118,7 @@ export class Jelly {
   private lagV = new Vector3()
   private press = 0
   pressTarget = 0
-  /** 0–1: how brightly the body glows, e.g. right after flying through an arch. */
+  /** 0–1: how brightly the body glows, e.g. right after flying through a gate. */
   glow = 0
   private bodyMat: MeshPhysicalMaterial
   private impIndex = 0
